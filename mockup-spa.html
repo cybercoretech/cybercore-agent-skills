@@ -7,7 +7,6 @@
 <link rel="icon" href="mockup-assets/icons/favicon.svg">
 <link rel="manifest" href="mockup-assets/manifest.webmanifest">
 <style>
-  /* ============ Cybercore design tokens ============ */
   :root {
     --cc-bg: #0b0c10;
     --cc-surface: #111318;
@@ -15,21 +14,16 @@
     --cc-surface-3: #1c212c;
     --cc-text: #e8eaf2;
     --cc-text-muted: #94a3b8;
-    --cc-text-dim: #64748b;
     --cc-accent: #8b5cf6;
     --cc-accent-hover: #a78bfa;
     --cc-accent-dim: rgba(139, 92, 246, 0.10);
     --cc-success: #22c55e;
-    --cc-success-dim: rgba(34, 197, 94, 0.10);
     --cc-danger: #ef4444;
-    --cc-warning: #f59e0b;
-    --cc-info: #06b6d4;
     --cc-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     --cc-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --cc-radius: 10px;
     --cc-radius-lg: 16px;
     --cc-shadow: 0 24px 50px -15px rgba(0,0,0,0.6);
-    --cc-shadow-lg: 0 40px 80px -20px rgba(0,0,0,0.7);
     --cc-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     --cc-border-glass: rgba(255,255,255,0.08);
     --cc-glow: rgba(139, 92, 246, 0.3);
@@ -69,7 +63,6 @@
     background-attachment: fixed;
   }
 
-  /* Skip link */
   .skip-link {
     position: absolute;
     top: -48px;
@@ -85,7 +78,6 @@
   }
   .skip-link:focus { top: 16px; }
 
-  /* Top bar */
   .topbar {
     position: sticky;
     top: 0;
@@ -94,7 +86,7 @@
     padding: 0 24px;
     background: rgba(11, 12, 16, 0.8);
     border-bottom: 1px solid var(--cc-border);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -226,7 +218,6 @@
   }
   .mobile-nav a:hover { background: var(--cc-surface-2); color: var(--cc-accent); }
 
-  /* Hero */
   .hero {
     padding: 72px 0 48px;
     border-bottom: 1px solid var(--cc-border);
@@ -240,7 +231,7 @@
     display: flex;
     align-items: baseline;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .hero .section-num {
     font-size: 15px;
@@ -264,9 +255,9 @@
     font-size: 44px;
     font-weight: 900;
     line-height: 1.0;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     letter-spacing: -1.5px;
-    background: linear-gradient(135deg, var(--cc-text) 0%, var(--cc-accent) 50%, var(--cc-info) 100%);
+    background: linear-gradient(135deg, var(--cc-text) 0%, var(--cc-accent) 50%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -289,10 +280,10 @@
     background: var(--cc-surface);
     border: 1px solid var(--cc-border);
     border-radius: var(--cc-radius-lg);
-    padding: 22px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     transition: transform var(--cc-transition), border-color var(--cc-transition);
   }
   .stat:hover { border-color: var(--cc-accent); transform: translateY(-2px); }
@@ -311,7 +302,6 @@
     text-transform: uppercase;
   }
 
-  /* Filters & controls */
   .controls {
     display: flex;
     align-items: center;
@@ -343,7 +333,6 @@
     background: var(--cc-accent-dim);
   }
 
-  /* Toast */
   #toast {
     position: fixed;
     bottom: 24px;
@@ -366,9 +355,7 @@
     transition: all var(--cc-transition);
   }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  #toast .toast-icon { color: var(--cc-success); font-weight: 700; }
 
-  /* ============ Skills Explorer ============ */
   .explorer {
     max-width: 1400px;
     margin: 0 auto;
@@ -393,105 +380,90 @@
     font-style: italic;
   }
 
-  /* Cards layout */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-  }
-
-  .skill-card {
-    background: var(--cc-surface);
+  .matrix-wrap {
     border: 1px solid var(--cc-border);
     border-radius: var(--cc-radius-lg);
-    padding: 24px;
-    cursor: pointer;
-    transition: all var(--cc-transition);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    background: var(--cc-surface);
+    overflow: hidden;
   }
-  .skill-card:hover {
-    border-color: var(--cc-accent);
-    box-shadow: var(--cc-shadow);
-    transform: translateY(-6px);
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
   }
-  .skill-card .card-header {
+  thead {
+    background: var(--cc-surface-2);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  th {
+    text-align: left;
+    color: var(--cc-text-muted);
+    padding: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--cc-border);
+    font-family: var(--cc-font);
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  th:first-child { position: sticky; left: 0; z-index: 6; background: var(--cc-surface-2); }
+  td {
+    padding: 16px;
+    border-bottom: 1px solid var(--cc-border);
+    color: var(--cc-text);
+    white-space: nowrap;
+  }
+  td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 6;
+    background: var(--cc-surface);
+    font-weight: 700;
+    color: var(--cc-accent);
+    font-family: var(--cc-font);
+    font-size: 14px;
+    border-right: 1px solid var(--cc-border);
+  }
+  tr:hover td { background: var(--cc-surface-2); }
+  tr.filtered-out { display: none; }
+
+  .skill-cell {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 12px;
   }
-  .skill-card .skill-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: var(--cc-accent-dim);
-    color: var(--cc-accent);
+  .skill-row { cursor: pointer; }
+  .skill-row:hover { opacity: 0.9; }
+  .skill-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 800;
+    color: var(--cc-accent);
   }
-  .skill-card .skill-name {
-    font-weight: 700;
-    color: var(--cc-text);
-    font-family: var(--cc-font);
-    font-size: 16px;
-  }
-  .skill-card .skill-desc {
-    font-size: 13px;
-    color: var(--cc-text-muted);
-    margin: 12px 0 16px;
-    line-height: 1.5;
-    flex: 1;
-  }
-  .skill-card .skill-cats {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-  }
-  .skill-card .cat-chip {
-    padding: 4px 10px;
+  .skill-info { display: flex; flex-direction: column; }
+  .skill-name { font-weight: 700; color: var(--cc-text); font-family: var(--cc-font); font-size: 14px; }
+  .skill-desc { font-size: 11px; color: var(--cc-text-muted); margin-top: 4px; }
+  .skill-cats { display: flex; gap: 6px; margin-top: 6px; }
+  .cat-chip {
+    padding: 3px 8px;
     border: 1px solid var(--cc-border);
     border-radius: 10px;
     font-size: 10px;
     color: var(--cc-text-muted);
     font-family: var(--cc-font);
   }
-  .skill-card .skill-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-  }
-  .skill-card .deployed-count {
-    font-size: 11px;
-    color: var(--cc-text-muted);
-    font-family: var(--cc-font);
-  }
-  .skill-card .card-action {
-    width: 28px;
-    height: 28px;
-    border: 1px solid var(--cc-border);
-    border-radius: 8px;
-    background: var(--cc-surface-2);
-    color: var(--cc-text-muted);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    transition: all var(--cc-transition);
-  }
-  .skill-card .card-action:hover {
-    border-color: var(--cc-accent);
-    color: var(--cc-accent);
-    background: var(--cc-accent-dim);
-  }
+  .status-cell { text-align: center; }
+  .status-yes { color: var(--cc-success); font-weight: 800; font-family: var(--cc-font); }
+  .status-no { color: var(--cc-text-muted); font-size: 11px; }
 
-  /* Agent ecosystem cards */
   .agent-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -552,12 +524,8 @@
     color: var(--cc-text-muted);
     font-family: var(--cc-font);
   }
-  .agent-card .stat-item .value {
-    color: var(--cc-accent);
-    font-weight: 700;
-  }
+  .agent-card .stat-item .value { color: var(--cc-accent); font-weight: 700; }
 
-  /* Detail panel */
   .detail-panel {
     display: none;
     position: fixed;
@@ -593,15 +561,7 @@
     border-bottom: 1px solid var(--cc-border);
     background: var(--cc-surface-2);
   }
-  .detail-title {
-    font-weight: 800;
-    font-size: 20px;
-    color: var(--cc-text);
-    letter-spacing: -0.5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .detail-title { font-weight: 800; font-size: 20px; color: var(--cc-text); letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
   .detail-close {
     background: none;
     border: none;
@@ -631,36 +591,10 @@
     font-family: var(--cc-font);
   }
   .detail-main h3:first-child { margin-top: 0; }
-  .detail-main p {
-    color: var(--cc-text-muted);
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 16px;
-  }
-  .detail-main code {
-    background: var(--cc-surface-2);
-    border: 1px solid var(--cc-border);
-    color: var(--cc-accent);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: var(--cc-font);
-    font-size: 12px;
-  }
-  .detail-main pre {
-    background: var(--cc-surface-2);
-    border: 1px solid var(--cc-border);
-    border-radius: var(--cc-radius);
-    padding: 16px;
-    font-family: var(--cc-font);
-    font-size: 12px;
-    color: var(--cc-text);
-    overflow-x: auto;
-    margin-bottom: 16px;
-  }
-  .detail-main a {
-    color: var(--cc-accent);
-    text-decoration: none;
-  }
+  .detail-main p { color: var(--cc-text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+  .detail-main code { background: var(--cc-surface-2); border: 1px solid var(--cc-border); color: var(--cc-accent); padding: 2px 6px; border-radius: 4px; font-family: var(--cc-font); font-size: 12px; }
+  .detail-main pre { background: var(--cc-surface-2); border: 1px solid var(--cc-border); border-radius: var(--cc-radius); padding: 16px; font-family: var(--cc-font); font-size: 12px; color: var(--cc-text); overflow-x: auto; margin-bottom: 16px; }
+  .detail-main a { color: var(--cc-accent); text-decoration: none; }
   .detail-main a:hover { text-decoration: underline; }
 
   .detail-sidebar {
@@ -669,22 +603,9 @@
     background: var(--cc-surface-2);
     overflow-y: auto;
   }
-  .detail-sidebar h4 {
-    font-size: 12px;
-    color: var(--cc-accent);
-    font-weight: 700;
-    margin: 20px 0 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    font-family: var(--cc-font);
-  }
+  .detail-sidebar h4 { font-size: 12px; color: var(--cc-accent); font-weight: 700; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--cc-font); }
   .detail-sidebar h4:first-child { margin-top: 0; }
-  .detail-sidebar p {
-    font-size: 12px;
-    color: var(--cc-text-muted);
-    line-height: 1.5;
-    margin-bottom: 12px;
-  }
+  .detail-sidebar p { font-size: 12px; color: var(--cc-text-muted); line-height: 1.5; margin-bottom: 12px; }
   .detail-sidebar .copy-btn {
     width: 100%;
     padding: 10px 14px;
@@ -699,149 +620,9 @@
     transition: all var(--cc-transition);
     margin-top: 6px;
   }
-  .detail-sidebar .copy-btn:hover {
-    border-color: var(--cc-accent);
-    color: var(--cc-accent);
-    background: var(--cc-accent-dim);
-  }
-  .detail-sidebar .copy-btn.copied {
-    color: var(--cc-success);
-    border-color: var(--cc-success);
-  }
+  .detail-sidebar .copy-btn:hover { border-color: var(--cc-accent); color: var(--cc-accent); background: var(--cc-accent-dim); }
+  .detail-sidebar .copy-btn.copied { color: var(--cc-success); border-color: var(--cc-success); }
 
-  /* Agent detail */
-  .agent-detail {
-    background: var(--cc-surface);
-    border: 1px solid var(--cc-border);
-    border-radius: var(--cc-radius);
-    padding: 16px;
-  }
-  .agent-detail .prop {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    font-size: 12px;
-  }
-  .agent-detail .prop-key {
-    color: var(--cc-accent);
-    font-weight: 700;
-    width: 110px;
-    font-family: var(--cc-font);
-  }
-  .agent-detail .prop-val {
-    color: var(--cc-text-muted);
-  }
-  .agent-detail .skill-list {
-    margin-top: 12px;
-    border-top: 1px solid var(--cc-border);
-    padding-top: 12px;
-  }
-  .agent-detail .skill-list .skill-tag {
-    display: inline-block;
-    padding: 4px 8px;
-    border: 1px solid var(--cc-border);
-    border-radius: 6px;
-    font-size: 11px;
-    color: var(--cc-text);
-    margin: 4px 4px 0 0;
-  }
-
-  /* Golden rules */
-  .rules-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-  }
-  .rule-card {
-    background: var(--cc-surface);
-    border: 1px solid var(--cc-border);
-    border-radius: var(--cc-radius-lg);
-    padding: 24px;
-  }
-  .rule-card h3 {
-    font-size: 15px;
-    color: var(--cc-accent);
-    font-weight: 700;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-family: var(--cc-font);
-  }
-  .rule-card ul {
-    list-style: none;
-    padding: 0;
-  }
-  .rule-card li {
-    color: var(--cc-text-muted);
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 10px;
-    position: relative;
-    padding-left: 18px;
-  }
-  .rule-card li:before {
-    content: "▹";
-    color: var(--cc-accent);
-    position: absolute;
-    left: 0;
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  /* Deployment commands */
-  .deploy-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-  .deploy-card {
-    background: var(--cc-surface);
-    border: 1px solid var(--cc-border);
-    border-radius: var(--cc-radius-lg);
-    padding: 20px;
-  }
-  .deploy-card h4 {
-    font-size: 14px;
-    color: var(--cc-accent);
-    font-weight: 700;
-    margin-bottom: 10px;
-    font-family: var(--cc-font);
-  }
-  .deploy-card pre {
-    background: var(--cc-surface-2);
-    border: 1px solid var(--cc-border);
-    border-radius: 6px;
-    padding: 12px;
-    font-family: var(--cc-font);
-    font-size: 12px;
-    color: var(--cc-text);
-    margin-bottom: 10px;
-    overflow-x: auto;
-  }
-  .deploy-card .copy-btn {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid var(--cc-border);
-    border-radius: 6px;
-    background: var(--cc-surface-2);
-    color: var(--cc-text);
-    font-family: var(--cc-font);
-    font-size: 12px;
-    cursor: pointer;
-    text-align: left;
-    transition: all var(--cc-transition);
-  }
-  .deploy-card .copy-btn:hover {
-    border-color: var(--cc-accent);
-    color: var(--cc-accent);
-    background: var(--cc-accent-dim);
-  }
-  .deploy-card .copy-btn.copied {
-    color: var(--cc-success);
-    border-color: var(--cc-success);
-  }
-
-  /* Footer */
   footer {
     border-top: 1px solid var(--cc-border);
     background: var(--cc-surface);
@@ -871,19 +652,9 @@
   .footer-line1 .sep { color: var(--cc-text-muted); margin: 0 4px; }
   .footer-line1 a { color: var(--cc-accent); text-decoration: none; }
   .footer-line1 a:hover { text-decoration: underline; }
-  .footer-notes {
-    font-size: 12px;
-    color: var(--cc-text-muted);
-    line-height: 1.6;
-  }
-  .footer-attribution {
-    font-size: 11px;
-    color: var(--cc-text-muted);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
+  .footer-notes { font-size: 12px; color: var(--cc-text-muted); line-height: 1.6; }
+  .footer-attribution { font-size: 11px; color: var(--cc-text-muted); letter-spacing: 0.5px; text-transform: uppercase; }
 
-  /* Responsive */
   @media (max-width: 900px) {
     .wrap { padding: 0 16px; }
     .hero h1 { font-size: 30px; }
@@ -893,55 +664,19 @@
     .topbar .nav-center { display: none; }
     .topbar .right { gap: 8px; }
     .mobile-menu-btn { display: block; }
-    .search-wrap {
-      position: absolute;
-      top: 72px;
-      left: 0;
-      right: 0;
-      background: var(--cc-surface);
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--cc-border);
-      z-index: 55;
-    }
-    .detail-body {
-      grid-template-columns: 1fr;
-    }
-    .detail-sidebar {
-      border-left: none;
-      border-top: 1px solid var(--cc-border);
-    }
-    .topbar .right { gap: 8px; }
-    .topbar .search-wrap { position: static; padding: 12px 24px; border: none; }
+    .search-wrap { position: absolute; top: 72px; left: 0; right: 0; background: var(--cc-surface); padding: 16px 24px; border-bottom: 1px solid var(--cc-border); z-index: 55; }
+    .detail-body { grid-template-columns: 1fr; }
+    .detail-sidebar { border-left: none; border-top: 1px solid var(--cc-border); }
     table { font-size: 11px; }
     th, td { padding: 10px; font-size: 11px; }
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--cc-surface);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--cc-surface-3);
-    border-radius: var(--cc-radius);
-    border: 2px solid var(--cc-surface);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--cc-accent);
-    border-color: var(--cc-accent-dim);
-  }
-  ::-webkit-scrollbar-corner {
-    background: var(--cc-bg);
-  }
-
-  /* Custom selection */
-  ::selection {
-    background: var(--cc-accent-dim);
-    color: var(--cc-accent);
-  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--cc-surface); }
+  ::-webkit-scrollbar-thumb { background: var(--cc-surface-3); border-radius: var(--cc-radius); border: 2px solid var(--cc-surface); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--cc-accent); border-color: var(--cc-accent-dim); }
+  ::-webkit-scrollbar-corner { background: var(--cc-bg); }
+  ::selection { background: var(--cc-accent-dim); color: var(--cc-accent); }
 </style>
 </head>
 <body>
@@ -949,10 +684,7 @@
 <a href="#content" class="skip-link">Skip to content</a>
 
 <header class="topbar">
-  <a href="#" class="brand" onclick="return false;">
-    <span class="mark">z/ea</span> agent-skills
-  </a>
-
+  <a href="#" class="brand" onclick="return false;"><span class="mark">z/ea</span> agent-skills</a>
   <nav class="nav-center">
     <a href="#">Home</a>
     <a href="#agents">Agents</a>
@@ -961,16 +693,10 @@
     <a href="#rules">Rules</a>
     <a href="#repo">Repository</a>
   </nav>
-
   <div class="right">
     <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Menu">☰</button>
-    <div class="search-wrap" id="searchWrap">
-      <input type="search" id="skillSearch" placeholder="Search skills & agents…" aria-label="Search skills and agents">
-    </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" onclick="toggleTheme()">
-      <span class="dot"></span>
-      <span id="themeLabel">Dark</span>
-    </button>
+    <div class="search-wrap" id="searchWrap"><input type="search" id="skillSearch" placeholder="Search skills & agents…" aria-label="Search skills and agents"></div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" onclick="toggleTheme()"><span class="dot"></span><span id="themeLabel">Dark</span></button>
   </div>
 </header>
 
@@ -984,8 +710,6 @@
 </nav>
 
 <main class="wrap" id="content">
-
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-inner">
       <div class="section-head">
@@ -993,29 +717,14 @@
         <span class="section-title">Agent Skill Catalog</span>
       </div>
       <div class="section-lead">The shared guardrails, rules, and skills powering 13 AI coding agents across the Cybercore ecosystem.</div>
-
       <h1>Agent × Skill Matrix</h1>
-      <p class="lead-text">Click any skill or agent card to open its full detail panel. Search across names, descriptions, and full skill documentation. Deep-link to any skill with a URL.</p>
-
+      <p class="lead-text">Click any skill card to open its full detail panel. Search across names, descriptions, and full skill documentation. Deep-link to any skill with a URL.</p>
       <div class="stat-strip">
-        <div class="stat">
-          <div class="stat-value animating" id="statAgents">0</div>
-          <div class="stat-label">agents</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value animating" id="statSkills">0</div>
-          <div class="stat-label">skills</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value animating" id="statFiles">0</div>
-          <div class="stat-label">skill files</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value animating" id="statFavs">0</div>
-          <div class="stat-label">favorited</div>
-        </div>
+        <div class="stat"><div class="stat-value animating" id="statAgents">0</div><div class="stat-label">agents</div></div>
+        <div class="stat"><div class="stat-value animating" id="statSkills">0</div><div class="stat-label">skills</div></div>
+        <div class="stat"><div class="stat-value animating" id="statFiles">0</div><div class="stat-label">skill files</div></div>
+        <div class="stat"><div class="stat-value animating" id="statFavs">0</div><div class="stat-label">favorited</div></div>
       </div>
-
       <div class="filters">
         <button class="chip active" onclick="filterCategory('all', this)">All Skills</button>
         <button class="chip" onclick="filterCategory('web', this)">Web &amp; Frontend</button>
@@ -1026,40 +735,53 @@
     </div>
   </section>
 
-  <!-- Skills Explorer -->
   <section id="skills" class="explorer">
     <div class="section-head">
       <h2>Skill Catalog</h2>
       <p class="section-subtitle">Filter, search, favorite, and open any skill for full documentation.</p>
     </div>
-    <div class="cards-grid" id="cardsGrid">
-      <!-- Skill cards injected by JS -->
+    <div class="matrix-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Skill</th>
+            <th class="agent-col" data-agent="opencode">OpenCode</th>
+            <th class="agent-col" data-agent="claude">Claude</th>
+            <th class="agent-col" data-agent="codex">Codex</th>
+            <th class="agent-col" data-agent="copilot">Copilot</th>
+            <th class="agent-col" data-agent="crush">Crush</th>
+            <th class="agent-col" data-agent="gemini">Gemini</th>
+            <th class="agent-col" data-agent="hermes">Hermes</th>
+            <th class="agent-col" data-agent="kimi-code">Kimi-Code</th>
+            <th class="agent-col" data-agent="openclaw">OpenClaw</th>
+            <th class="agent-col" data-agent="ollama">Ollama</th>
+            <th class="agent-col" data-agent="pi">Pi</th>
+            <th class="agent-col" data-agent="ori">Ori</th>
+            <th class="agent-col" data-agent="qwen">Qwen</th>
+            <th style="width: 220px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
     </div>
   </section>
 
-  <!-- Agent Ecosystem -->
   <section id="agents" class="explorer">
     <div class="section-head">
       <h2>Agent Ecosystem</h2>
       <p class="section-subtitle">Select any agent to view its configuration, deployed skills, and setup command.</p>
     </div>
-    <div class="agent-grid" id="agentGrid">
-      <!-- Agent cards injected by JS -->
-    </div>
+    <div class="agent-grid" id="agentGrid"></div>
   </section>
 
-  <!-- Deployment Center -->
   <section id="deploy" class="explorer">
     <div class="section-head">
       <h2>Deployment Center</h2>
       <p class="section-subtitle">One command per agent installs all guardrails and skills into your target repository.</p>
     </div>
-    <div class="deploy-grid" id="deployGrid">
-      <!-- Deploy cards injected by JS -->
-    </div>
+    <div class="deploy-grid" id="deployGrid"></div>
   </section>
 
-  <!-- Golden Rules -->
   <section id="rules" class="explorer">
     <div class="section-head">
       <h2>Golden Rules</h2>
@@ -1068,79 +790,40 @@
     <div class="rules-grid">
       <div class="rule-card">
         <h3>Zero Unapproved Actions</h3>
-        <ul>
-          <li>Never edit code, overwrite files, or run state-modifying commands without presenting a plan and obtaining explicit user confirmation.</li>
-          <li>Always show the diff and intent before editing any file.</li>
-          <li>Never make changes silently or "just to try something."</li>
-        </ul>
+        <ul><li>Never edit code, overwrite files, or run state-modifying commands without presenting a plan and obtaining explicit user confirmation.</li><li>Always show the diff and intent before editing any file.</li><li>Never make changes silently or "just to try something."</li></ul>
       </div>
       <div class="rule-card">
         <h3>No Rogue Bug-Fixing Loops</h3>
-        <ul>
-          <li>If a build fails or a test errors out, STOP immediately.</li>
-          <li>Explain the error directly to the user.</li>
-          <li>Do not attempt recursive auto-fix attempts without permission.</li>
-        </ul>
+        <ul><li>If a build fails or a test errors out, STOP immediately.</li><li>Explain the error directly to the user.</li><li>Do not attempt recursive auto-fix attempts without permission.</li></ul>
       </div>
       <div class="rule-card">
         <h3>Preserve Existing Architecture</h3>
-        <ul>
-          <li>Do not rewrite whole functions or refactor files unless explicitly instructed.</li>
-          <li>Do not change library dependencies or public API signatures without request.</li>
-          <li>Make the minimal change required to fulfill the user's explicit request.</li>
-        </ul>
+        <ul><li>Do not rewrite whole functions or refactor files unless explicitly instructed.</li><li>Do not change library dependencies or public API signatures without request.</li><li>Make the minimal change required to fulfill the user's explicit request.</li></ul>
       </div>
     </div>
   </section>
 
-  <!-- Repository -->
   <section id="repo" class="explorer">
     <div class="section-head">
       <h2>Repository</h2>
       <p class="section-subtitle">Source, issues, license, and contribution information.</p>
     </div>
     <div class="deploy-grid" style="max-width: 500px;">
-      <div class="deploy-card">
-        <h4>Repository</h4>
-        <pre>https://github.com/cybercoretech/cybercore-agent-skills</pre>
-        <button class="copy-btn" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills')">Copy Repo URL</button>
-      </div>
-      <div class="deploy-card">
-        <h4>License</h4>
-        <pre>MIT</pre>
-        <button class="copy-btn" onclick="copyText('MIT')">Copy License</button>
-      </div>
-      <div class="deploy-card">
-        <h4>Issues</h4>
-        <pre>https://github.com/cybercoretech/cybercore-agent-skills/issues</pre>
-        <button class="copy-btn" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills/issues')">Copy Issues URL</button>
-      </div>
+      <div class="deploy-card"><h4>Repository</h4><pre>https://github.com/cybercoretech/cybercore-agent-skills</pre><button class="copy-btn" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills')">Copy Repo URL</button></div>
+      <div class="deploy-card"><h4>License</h4><pre>MIT</pre><button class="copy-btn" onclick="copyText('MIT')">Copy License</button></div>
+      <div class="deploy-card"><h4>Issues</h4><pre>https://github.com/cybercoretech/cybercore-agent-skills/issues</pre><button class="copy-btn" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills/issues')">Copy Issues URL</button></div>
     </div>
   </section>
-
 </main>
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-line1">
-      <span class="org">CYBERCORE TECH</span>
-      <span class="sep">/</span>
-      <span>agent-skills</span>
-      <span class="sep">/</span>
-      <span>MIT</span>
-      <span style="display:inline-block;width:16px;"></span>
-      <a href="https://github.com/cybercoretech/cybercore-agent-skills" target="_blank" rel="noopener">GITHUB REPOSITORY ↗</a>
-    </div>
-    <div class="footer-notes">
-      Deploy any skill into any repository: <code>bash ~/Projects/ai/&lt;agent&gt;/agent-project-setup/setup-&lt;agent&gt;.sh</code>
-    </div>
-    <div class="footer-attribution">
-      CYBERCORE TECH · AI AGENT ECOSYSTEM · MIT
-    </div>
+    <div class="footer-line1"><span class="org">CYBERCORE TECH</span><span class="sep">/</span><span>agent-skills</span><span class="sep">/</span><span>MIT</span><span style="display:inline-block;width:16px;"></span><a href="https://github.com/cybercoretech/cybercore-agent-skills" target="_blank" rel="noopener">GITHUB REPOSITORY ↗</a></div>
+    <div class="footer-notes">Deploy any skill into any repository: <code>bash ~/Projects/ai/&lt;agent&gt;/agent-project-setup/setup-&lt;agent&gt;.sh</code></div>
+    <div class="footer-attribution">CYBERCORE TECH · AI AGENT ECOSYSTEM · MIT</div>
   </div>
 </footer>
 
-<!-- Skill Detail Panel -->
 <div class="detail-panel" id="detailPanel">
   <div class="detail-card">
     <div class="detail-header">
@@ -1148,543 +831,25 @@
       <button class="detail-close" onclick="closeDetail()" aria-label="Close">✕</button>
     </div>
     <div class="detail-body">
-      <div class="detail-main" id="detailMain">
-        <!-- Skill details injected here -->
-      </div>
-      <div class="detail-sidebar" id="detailSidebar">
-        <!-- Sidebar content injected here -->
-      </div>
+      <div class="detail-main" id="detailMain"></div>
+      <div class="detail-sidebar" id="detailSidebar"></div>
     </div>
   </div>
 </div>
 
 <script>
-  /* ============ Catalog Data ============ */
   const skills = [
-    {
-      id: 'web-design-and-frontend-craft',
-      name: 'Web Design & Frontend Craft',
-      category: 'web',
-      desc: 'UI/UX direction, CSS custom properties, neon/cyber aesthetics, component systems, accessibility, performance',
-      icon: '🎨',
-      full: `# Web Design & Frontend Craft
-
-You are a senior product designer, UI engineer, and frontend craftsperson. Your job is to create websites that feel intentionally designed, visually memorable, technically sound, accessible, responsive, and fast.
-
-This skill applies to landing pages, marketing sites, product sites, documentation, portfolios, dashboards, admin panels, single-page applications (SPAs), and component libraries.
-
-## The Non-Negotiable Design Standard
-
-**Do not produce generic AI-looking websites.** Avoid the predictable combination of a purple/blue gradient, giant centered heading, three identical cards, random blobs, and a generic SaaS layout unless that is genuinely right for the brand.
-
-Before coding:
-1. Inspect the repository, existing app, package manifest, routes, assets, styles, and deployment target.
-2. Identify the product, audience, primary user action, content, brand personality, and technical constraints.
-3. Determine whether this is a new design or an extension of an existing visual system.
-4. Choose one coherent visual direction and explain it briefly when the user has not already specified one.
-5. Build around the actual content and product. Do not fill space with invented claims, fake testimonials, fake customer logos, fake metrics, or meaningless filler.
-6. Preserve working behavior and existing conventions unless a change is required.
-
-## Design Tokens
-
-Use CSS custom properties for design tokens even when Tailwind or Bootstrap is present.
-
-\`\`\`css
-:root {
-  color-scheme: dark;
-  --cc-bg: #0b0c10;
-  --cc-surface: #111318;
-  --cc-text: #e8eaf2;
-  --cc-text-muted: #94a3b8;
-  --cc-accent: #8b5cf6;
-  --cc-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-\`\`\`
-
-## Key Capabilities
-
-- Semantic HTML and modern CSS Grid/Flexbox
-- CSS custom properties for design tokens
-- Responsive design with mobile-first breakpoints
-- Accessible contrast, keyboard behavior, and focus indicators
-- Asset optimization (SVG, PNG, WebP, AVIF)
-- Motion that respects prefers-reduced-motion
-
-## When to Activate
-
-Use this skill when building or redesigning any frontend surface: landing pages, dashboards, documentation sites, SPAs, or component libraries.
-
-## Supported Files
-
-- \`mockup/index.html\` — Interactive SPA mockup
-- \`mockup/footer.json\` — Footer data schema
-- \`mockup/themes.json\` — Theme chooser catalog`
-    },
-    {
-      id: 'system-administration',
-      name: 'System Administration',
-      category: 'system',
-      desc: 'Arch Linux, Omarchy, systemd, package management, user services, dotfiles',
-      icon: '🐧',
-      full: `# System Administration
-
-You are a senior Linux systems administrator specializing in Arch Linux, Omarchy, and Cybercore environments.
-
-## Scope
-
-- Systemd units and user services (\`systemctl --user\`, \`systemd-run\`)
-- Package management (\`pacman\`, \`yay\`, \`makepkg\`, AUR)
-- Dotfiles management and bare-repo patterns
-- User services, timers, and scheduled tasks
-- System monitoring and logging (\`journalctl\`, \`loginctl\`)
-- Omarchy shell plugin structure
-
-## Key Capabilities
-
-- Prefer user services over system services when possible
-- Test changes in a nested Hyprland session before applying to the live desktop
-- Never modify /etc, /usr, /usr/local/bin, /boot without explicit approval
-- Never install to the user's phone without asking
-
-## When to Activate
-
-Use this skill for Linux system administration tasks on Arch Linux, Omarchy systems, and Cybercore infrastructure.
-
-## Supported Files
-
-- \`~/.config/omarchy/plugins/<id>/\` — Omarchy plugin directory
-- \`systemctl --user\` — User service management`
-    },
-    {
-      id: 'shell-scripting',
-      name: 'Shell Scripting',
-      category: 'system',
-      desc: 'Zsh, preexec/precmd hooks, ZLE widgets, keybindings, safe command execution',
-      icon: '🐚',
-      full: `# Shell Scripting
-
-You are a senior shell scripting specialist focused on Zsh, dotfiles automation, and agent integration.
-
-## Scope
-
-- Zsh configuration (.zshrc, .zshenv, .zprofile)
-- preexec/precmd hooks
-- ZLE widgets and keybindings (zle -N, bindkey)
-- Shell functions and aliases
-- Safe command execution and error handling
-
-## Key Capabilities
-
-- Use add-zsh-hook for preexec/precmd instead of manual hook registration
-- Save and restore file descriptors when redirecting stderr/stdout
-- Check [[ -t 2 ]] before terminal-dependent operations
-- Use emulate -L zsh in functions to ensure clean shell options
-- Quote all variable expansions to prevent word splitting
-
-## When to Activate
-
-Use this skill for shell scripting, dotfiles automation, Zsh configuration, and zle widget development.
-
-## Supported Files
-
-- \`~/.zshrc\`, \`~/.zshenv\`, \`~/.zprofile\`
-- \`~/.zsh_functions\` — Custom zsh functions`
-    },
-    {
-      id: 'git-workflow',
-      name: 'Git Workflow',
-      category: 'system',
-      desc: 'Commit conventions, branch strategies, PR hygiene, safe Git operations',
-      icon: '🔀',
-      full: `# Git Workflow
-
-You are a Git workflow specialist focused on Cybercore repository standards.
-
-## Scope
-
-- Commit conventions and message standards
-- Branch naming and lifecycle strategies
-- Pull request hygiene and review process
-- Safe Git operations and recovery
-
-## Commit Standards
-
-**Format:**
-\`\`\`
-<type>: <description>
-
-<optional body>
-
-👻 Code & Design by Darkstardevx 🤖 Generated with <Agent>
-
-Co-Authored-By: <Agent> <noreply@agent-domain.com>
-\`\`\`
-
-**Types:** feat:, fix:, docs:, refactor:, test:, chore:
-
-## Key Capabilities
-
-- Create feature branches: feat/..., fix/..., docs:...
-- Never commit directly to main
-- One PR at a time per repo — never stack PRs
-- git diff --check before committing (whitespace errors)
-- git config user.email must be 19244308+darkstardevx@users.noreply.github.com
-
-## When to Activate
-
-Use this skill for any Git-related workflow: commits, branches, PRs, merges, rebases, and repository management.
-
-## Supported Files
-
-- \`~/.gitconfig\` — Git configuration
-- \`AGENTS.md\` — Agent instructions`
-    },
-    {
-      id: 'security-guidelines',
-      name: 'Security Guidelines',
-      category: 'system',
-      desc: 'Secret handling, credential management, SSH/GPG keys, secure IPC',
-      icon: '🔒',
-      full: `# Security Guidelines
-
-You are a security specialist focused on protecting secrets, credentials, and sensitive data in development environments.
-
-## Scope
-
-- Secret and credential management
-- .env and token file protection
-- SSH/GPG key handling
-- Secure IPC (Unix sockets, D-Bus)
-- File permissions and ownership
-- Credential rotation and revocation
-
-## Absolute Constraints (Never Violate)
-
-**NEVER:**
-- Print, log, commit, or echo tokens, passwords, keystore files, .env contents, or credential files
-- Paste secrets into commit messages, PR bodies, test fixtures, or documentation
-- Run bash -x, set -x, or set -o xtrace on scripts that source secrets
-- Store secrets in world-readable files or public locations
-
-## Key Capabilities
-
-- Restrict credentials to the user and any explicitly named, cleared audience
-- Store credentials in owner-only files (0600) under the app's XDG config directory
-- Use IPC sockets that are user-only (0600, under $XDG_RUNTIME_DIR), never TCP on 0.0.0.0
-- Never hotlink random third-party images in production
-
-## When to Activate
-
-Use this skill for any security-related task: secret management, credential rotation, file permissions, secure IPC, or access control.
-
-## Supported Files
-
-- \`~/.cargo/credentials.toml\`
-- \`~/.claude/.credentials.json\`
-- \`~/.env\`, \`.env.*\`
-- \`~/.ssh/`, \`~/.gnupg/`
-- Sensitive files matching \**/credentials*, \**/*secret*, \**/*private-key*`
-    },
-    {
-      id: 'testing-qa',
-      name: 'Testing & QA',
-      category: 'devops',
-      desc: 'Rust, shell, Qt/QML, Astro testing standards, CI/CD verification',
-      icon: '🧪',
-      full: `# Testing & QA
-
-You are a testing and QA specialist focused on Rust, shell scripts, and desktop applications.
-
-## Scope
-
-- Rust unit tests, integration tests, clippy, fmt
-- Shell script testing and validation
-- Qt/QML application testing (qmllint, offscreen platform)
-- CI/CD pipeline verification
-- Test doubles and stubs
-- Test data management (no real user data)
-
-## Required CI Checks (Rust)
-
-\`\`\`bash
-cargo fmt --check
-cargo clippy --all-targets -- -D warnings
-cargo test
-RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
-\`\`\`
-
-## Key Capabilities
-
-- MSRV compliance: Match the crate's rust-version (1.80, 1.85, or 1.88)
-- Error handling: thiserror in libraries, anyhow in binaries
-- Never touch real user data in tests
-- Use QStandardPaths::setTestModeEnabled(true) and temp dirs in Qt tests
-- Never send real notifications, emails, or network calls to real services
-
-## When to Activate
-
-Use this skill for any testing or quality assurance task: writing tests, running CI, debugging failures, or verifying code quality.
-
-## Supported Files
-
-- Cargo.toml, Cargo.lock — Rust project configuration
-- .github/workflows/ — CI/CD pipeline definitions
-- \`tests/\` directories — Test files`
-    },
-    {
-      id: 'rust-development',
-      name: 'Rust Development',
-      category: 'language',
-      desc: 'Cargo workspaces, crates.io publishing, MSRV compliance, error handling',
-      icon: '🦀',
-      full: `# Rust Development Standards
-
-You are a senior Rust developer focused on the Cybercore ecosystem and crates.io publishing.
-
-## Scope
-
-- Cargo workspace patterns and crate structure
-- crates.io publishing and version management
-- MSRV (Minimum Supported Rust Version) compliance
-- Error handling patterns (thiserror, anyhow)
-- Memory management and borrowing
-- Async runtimes and concurrency
-
-## Safety Rules
-
-**STOP AND REPORT before any of these:**
-- cargo publish without explicit user approval
-- Raising MSRV without reporting why
-- Using unsafe blocks without explicit user approval and a detailed safety comment explaining invariants
-- .unwrap() and .expect() in production library code; return Result<T, E> and utilize proper error propagation (?)
-- Dependencies on untagged git refs or local paths instead of crates.io versions
-
-## MSRV Compliance
-
-| Crate | MSRV | Edition |
-|-------|------|---------|
-| Most Cybercore crates | 1.80 | 2021 |
-| Some newer crates | 1.85 | 2021/2024 |
-| vdb-rs | 1.88 | 2024 |
-
-## Key Capabilities
-
-- Match the crate's edition and rust-version
-- Don't use newer std APIs than MSRV allows
-- Depend on cybercore and other published crates from crates.io with a version
-- One binary with subcommands over new binaries (cyberterm +daemon, +mcp)
-
-## When to Activate
-
-Use this skill for any Rust development task: writing crates, debugging compilation errors, managing dependencies, or publishing to crates.io.
-
-## Supported Files
-
-- Cargo.toml — Package manifest
-- Cargo.lock — Dependency lock file
-- src/**/*.rs — Rust source files
-- build.rs — Build script`
-    },
-    {
-      id: 'qt-cpp-desktop',
-      name: 'Qt/C++ Desktop',
-      category: 'language',
-      desc: 'Qt6/C++, QML, Quickshell/Omarchy plugins, qmake6',
-      icon: '🖥️',
-      full: `# Qt6/C++ Desktop Development
-
-You are a senior Qt6/C++ developer specializing in desktop applications and Omarchy/Quickshell shell plugins.
-
-## Scope
-
-- Qt6/C++ applications with qmake6
-- QML UI components and Quickshell/Omarchy plugins
-- .pro files, .pri shared settings, qml.qrc, qmldir
-- C++20 with RAII patterns
-- QObject parent ownership and QML exposure
-
-## Safety Rules
-
-**STOP AND REPORT before any of these:**
-- Editing ~/.config/hypr or ~/.config/omarchy (use the omarchy skill for those)
-- Running omarchy-restart-shell or hyprctl reload/keyword
-- Killing user's apps or changing the live desktop session
-- Adding CMake to a qmake project
-
-## Key Capabilities
-
-- qmake6 build system — never add CMake to a qmake project
-- RAII for resource management
-- QObject parent owns children — don't wrap in unique_ptr
-- Expose to QML with Q_PROPERTY/QML_ELEMENT/QML_SINGLETON
-- Keep heavy work off UI thread (QtConcurrent, worker QThread)
-
-## When to Activate
-
-Use this skill for Qt6/C++ desktop application development, QML UI components, or Omarchy/Quickshell shell plugins.
-
-## Supported Files
-
-- *.pro — Qt project files
-- *.pri — Qt project includes
-- qml.qrc — Qt resource collection
-- qmldir — QML module directory
-- *.cpp, *.h — C++ source files`
-    },
-    {
-      id: 'android-development',
-      name: 'Android Development',
-      category: 'language',
-      desc: 'Gradle, APK signing, Android CLI tooling',
-      icon: '📱',
-      full: `# Android Development
-
-You are an Android developer specializing in Gradle builds, APK signing, and CLI tooling.
-
-## Scope
-
-- Gradle build configuration and variants
-- APK signing and release builds
-- Android CLI tools (adb, sdkmanager, avdmanager)
-- Environment variable management for Android builds
-- Version code/name management
-
-## Safety Rules
-
-**STOP AND REPORT before any of these:**
-- cargo publish, AUR pushes, or app-store uploads
-- Publishing to F-Droid or Google Play without authorization
-- Modifying signing keystores or release keys
-- Never install to the user's phone without asking
-
-## Key Capabilities
-
-- Gradle build configuration and variants
-- APK signing and release builds
-- Android CLI tools (adb, sdkmanager, avdmanager)
-- Version code/name management
-- Environment variable management for Android builds
-
-## When to Activate
-
-Use this skill for any Android development task: building APKs, signing releases, managing dependencies, or debugging Android applications.
-
-## Supported Files
-
-- build.gradle — Gradle build configuration
-- settings.gradle — Gradle settings
-- AndroidManifest.xml — Android manifest
-- res/** — Android resources
-- src/** — Java/Kotlin source files`
-    },
-    {
-      id: 'api-backend',
-      name: 'API Backend',
-      category: 'devops',
-      desc: 'REST API design, JSON schemas, error handling',
-      icon: '☁️',
-      full: `# API Backend Development
-
-You are a backend developer specializing in REST API design, JSON schemas, and HTTP service patterns.
-
-## Scope
-
-- RESTful API design and endpoints
-- JSON request/response schemas
-- Error handling and status codes
-- HTTP service patterns and middleware
-- Authentication and authorization
-- API versioning and deprecation
-
-## Design Principles
-
-1. **RESTful design** — Use HTTP methods correctly (GET, POST, PUT, PATCH, DELETE)
-2. **JSON-first** — All request/response bodies use JSON
-3. **Stateless** — Each request contains all information needed
-4. **Versioned** — API version in URL or header (/v1/, Accept: application/vnd.api+json;version=1)
-5. **Self-describing** — Error responses include enough info to debug
-
-## Error Handling
-
-| Status Code | Meaning | Use Case |
-|-------------|---------|----------|
-| 200 | OK | Successful request |
-| 201 | Created | Resource created |
-| 400 | Bad Request | Client error, validation |
-| 401 | Unauthorized | Authentication required |
-| 404 | Not Found | Resource doesn't exist |
-| 500 | Internal Server Error | Server error |
-
-## Key Capabilities
-
-- Use plural resource names (/users, /projects)
-- Nest resources when appropriate (/users/123/projects)
-- Return created resource in 201 response
-- Use Location header for created resource URL
-- Consistent error response format across all endpoints
-
-## When to Activate
-
-Use this skill for any API backend development task: designing REST APIs, implementing endpoints, handling authentication, or debugging HTTP services.
-
-## Supported Files
-
-- routes/** — Route definitions
-- controllers/** — Controller logic
-- models/** — Data models
-- schemas/** — JSON schemas
-- tests/** — API tests`
-    },
-    {
-      id: 'container-devops',
-      name: 'Container & DevOps',
-      category: 'devops',
-      desc: 'Docker, GitHub Actions, CI/CD, Cloudflare Pages',
-      icon: '📦',
-      full: `# Container & DevOps
-
-You are a DevOps engineer specializing in containerization, CI/CD pipelines, and deployment automation.
-
-## Scope
-
-- Docker images and multi-stage builds
-- GitHub Actions workflows
-- CI/CD pipeline design and debugging
-- Container registries and image tagging
-- Deployment strategies and rollbacks
-- Environment variable and secret management
-- Cloudflare Pages deployment
-
-## Safety Rules
-
-**STOP AND REPORT before any of these:**
-- git push --force or rewriting pushed history
-- Cloudflare/Pages deploys by hand
-- Modifying production CI/CD pipelines without authorization
-- Changes to spend limits or billing configurations
-- Cross-Region resource creation
-
-## Key Capabilities
-
-- Use multi-stage builds to reduce image size
-- Pin base image versions (don't use latest)
-- Run as non-root user (USER directive)
-- Use .dockerignore to exclude secrets and build artifacts
-- Use reusable workflows when possible
-- Pin action versions (commit SHA or specific tag)
-
-## When to Activate
-
-Use this skill for any DevOps task: containerizing applications, configuring CI/CD pipelines, deploying to production, or managing infrastructure.
-
-## Supported Files
-
-- Dockerfile — Container build definition
-- .dockerignore — Docker ignore file
-- .github/workflows/ — GitHub Actions workflows
-- wrangler.toml — Cloudflare Pages configuration
-- docker-compose.yml — Docker Compose configuration`
-    }
+    { id: 'web-design-and-frontend-craft', name: 'Web Design & Frontend Craft', category: 'web', desc: 'UI/UX direction, CSS custom properties, neon/cyber aesthetics, component systems, accessibility, performance', icon: '🎨', full: '# Web Design & Frontend Craft\n\nYou are a senior product designer, UI engineer, and frontend craftsperson. Your job is to create websites that feel intentionally designed, visually memorable, technically sound, accessible, responsive, and fast.\n\nThis skill applies to landing pages, marketing sites, product sites, documentation, portfolios, dashboards, admin panels, single-page applications (SPAs), and component libraries.\n\n## Key Capabilities\n\n- Semantic HTML and modern CSS Grid/Flexbox\n- CSS custom properties for design tokens\n- Responsive design with mobile-first breakpoints\n- Accessible contrast, keyboard behavior, and focus indicators\n- Asset optimization (SVG, PNG, WebP, AVIF)\n- Motion that respects prefers-reduced-motion\n\n## When to Activate\n\nUse this skill when building or redesigning any frontend surface: landing pages, dashboards, documentation sites, SPAs, or component libraries.\n\n## Supported Files\n\n- `mockup/index.html` — Interactive SPA mockup\n- `mockup/footer.json` — Footer data schema\n- `mockup/themes.json` — Theme chooser catalog` },
+    { id: 'system-administration', name: 'System Administration', category: 'system', desc: 'Arch Linux, Omarchy, systemd, package management, user services, dotfiles', icon: '🐧', full: '# System Administration\n\nYou are a senior Linux systems administrator specializing in Arch Linux, Omarchy, and Cybercore environments.\n\n## Scope\n\n- Systemd units and user services (`systemctl --user`, `systemd-run`)\n- Package management (`pacman`, `yay`, `makepkg`, AUR)\n- Dotfiles management and bare-repo patterns\n- User services, timers, and scheduled tasks\n- System monitoring and logging (`journalctl`, `loginctl`)\n- Omarchy shell plugin structure\n\n## Key Capabilities\n\n- Prefer user services over system services when possible\n- Test changes in a nested Hyprland session before applying to the live desktop\n- Never modify /etc, /usr, /usr/local/bin, /boot without explicit approval\n- Never install to the user\'s phone without asking\n\n## When to Activate\n\nUse this skill for Linux system administration tasks on Arch Linux, Omarchy systems, and Cybercore infrastructure.\n\n## Supported Files\n\n- `~/.config/omarchy/plugins/<id>/` — Omarchy plugin directory\n- `systemctl --user` — User service management` },
+    { id: 'shell-scripting', name: 'Shell Scripting', category: 'system', desc: 'Zsh, preexec/precmd hooks, ZLE widgets, keybindings, safe command execution', icon: '🐚', full: '# Shell Scripting\n\nYou are a senior shell scripting specialist focused on Zsh, dotfiles automation, and agent integration.\n\n## Scope\n\n- Zsh configuration (.zshrc, .zshenv, .zprofile)\n- preexec/precmd hooks\n- ZLE widgets and keybindings (zle -N, bindkey)\n- Shell functions and aliases\n- Safe command execution and error handling\n\n## Key Capabilities\n\n- Use add-zsh-hook for preexec/precmd instead of manual hook registration\n- Save and restore file descriptors when redirecting stderr/stdout\n- Check [[ -t 2 ]] before terminal-dependent operations\n- Use emulate -L zsh in functions to ensure clean shell options\n- Quote all variable expansions to prevent word splitting\n\n## When to Activate\n\nUse this skill for shell scripting, dotfiles automation, Zsh configuration, and zle widget development.\n\n## Supported Files\n\n- `~/.zshrc`, `~/.zshenv`, `~/.zprofile`\n- `~/.zsh_functions` — Custom zsh functions` },
+    { id: 'git-workflow', name: 'Git Workflow', category: 'system', desc: 'Commit conventions, branch strategies, PR hygiene, safe Git operations', icon: '🔀', full: '# Git Workflow\n\nYou are a Git workflow specialist focused on Cybercore repository standards.\n\n## Scope\n\n- Commit conventions and message standards\n- Branch naming and lifecycle strategies\n- Pull request hygiene and review process\n- Safe Git operations and recovery\n\n## Commit Standards\n\n**Format:**\n\`\`\`\n<type>: <description>\n\n<optional body>\n\n👻 Code & Design by Darkstardevx 🤖 Generated with <Agent>\n\nCo-Authored-By: <Agent> <noreply@agent-domain.com>\n\`\`\`\n\n**Types:** feat:, fix:, docs:, refactor:, test:, chore:\n\n## Key Capabilities\n\n- Create feature branches: feat/..., fix/..., docs:...\n- Never commit directly to main\n- One PR at a time per repo — never stack PRs\n- git diff --check before committing (whitespace errors)\n- git config user.email must be 19244308+darkstardevx@users.noreply.github.com\n\n## When to Activate\n\nUse this skill for any Git-related workflow: commits, branches, PRs, merges, rebases, and repository management.\n\n## Supported Files\n\n- `~/.gitconfig` — Git configuration\n- `AGENTS.md` — Agent instructions` },
+    { id: 'security-guidelines', name: 'Security Guidelines', category: 'system', desc: 'Secret handling, credential management, SSH/GPG keys, secure IPC', icon: '🔒', full: '# Security Guidelines\n\nYou are a security specialist focused on protecting secrets, credentials, and sensitive data in development environments.\n\n## Scope\n\n- Secret and credential management\n- .env and token file protection\n- SSH/GPG key handling\n- Secure IPC (Unix sockets, D-Bus)\n- File permissions and ownership\n- Credential rotation and revocation\n\n## Absolute Constraints (Never Violate)\n\n**NEVER:**\n- Print, log, commit, or echo tokens, passwords, keystore files, .env contents, or credential files\n- Paste secrets into commit messages, PR bodies, test fixtures, or documentation\n- Run bash -x, set -x, or set -o xtrace on scripts that source secrets\n- Store secrets in world-readable files or public locations\n\n## Key Capabilities\n\n- Restrict credentials to the user and any explicitly named, cleared audience\n- Store credentials in owner-only files (0600) under the app\'s XDG config directory\n- Use IPC sockets that are user-only (0600, under $XDG_RUNTIME_DIR), never TCP on 0.0.0.0\n- Never hotlink random third-party images in production\n\n## When to Activate\n\nUse this skill for any security-related task: secret management, credential rotation, file permissions, secure IPC, or access control.\n\n## Supported Files\n\n- `~/.cargo/credentials.toml`\n- `~/.claude/.credentials.json`\n- `~/.env`, `.env.*`\n- `~/.ssh/`, `~/.gnupg/`\n- Sensitive files matching `**/credentials*`, `**/*secret*`, `**/*private-key*` },
+    { id: 'testing-qa', name: 'Testing & QA', category: 'devops', desc: 'Rust, shell, Qt/QML, Astro testing standards, CI/CD verification', icon: '🧪', full: '# Testing & QA\n\nYou are a testing and QA specialist focused on Rust, shell scripts, and desktop applications.\n\n## Scope\n\n- Rust unit tests, integration tests, clippy, fmt\n- Shell script testing and validation\n- Qt/QML application testing (qmllint, offscreen platform)\n- CI/CD pipeline verification\n- Test doubles and stubs\n- Test data management (no real user data)\n\n## Required CI Checks (Rust)\n\n\`\`\`bash\ncargo fmt --check\ncargo clippy --all-targets -- -D warnings\ncargo test\nRUSTDOCFLAGS="-D warnings" cargo doc --no-deps\n\`\`\`\n\n## Key Capabilities\n\n- MSRV compliance: Match the crate\'s rust-version (1.80, 1.85, or 1.88)\n- Error handling: thiserror in libraries, anyhow in binaries\n- Never touch real user data in tests\n- Use QStandardPaths::setTestModeEnabled(true) and temp dirs in Qt tests\n- Never send real notifications, emails, or network calls to real services\n\n## When to Activate\n\nUse this skill for any testing or quality assurance task: writing tests, running CI, debugging failures, or verifying code quality.\n\n## Supported Files\n\n- Cargo.toml, Cargo.lock — Rust project configuration\n- .github/workflows/ — CI/CD pipeline definitions\n- `tests/` directories — Test files` },
+    { id: 'rust-development', name: 'Rust Development', category: 'language', desc: 'Cargo workspaces, crates.io publishing, MSRV compliance, error handling', icon: '🦀', full: '# Rust Development Standards\n\nYou are a senior Rust developer focused on the Cybercore ecosystem and crates.io publishing.\n\n## Scope\n\n- Cargo workspace patterns and crate structure\n- crates.io publishing and version management\n- MSRV (Minimum Supported Rust Version) compliance\n- Error handling patterns (thiserror, anyhow)\n- Memory management and borrowing\n- Async runtimes and concurrency\n\n## Safety Rules\n\n**STOP AND REPORT before any of these:**\n- cargo publish without explicit user approval\n- Raising MSRV without reporting why\n- Using unsafe blocks without explicit user approval and a detailed safety comment explaining invariants\n- .unwrap() and .expect() in production library code; return Result<T, E> and utilize proper error propagation (?)\n- Dependencies on untagged git refs or local paths instead of crates.io versions\n\n## MSRV Compliance\n\n| Crate | MSRV | Edition |\n|-------|------|---------|\n| Most Cybercore crates | 1.80 | 2021 |\n| Some newer crates | 1.85 | 2021/2024 |\n| vdb-rs | 1.88 | 2024 |\n\n## Key Capabilities\n\n- Match the crate\'s edition and rust-version\n- Don\'t use newer std APIs than MSRV allows\n- Depend on cybercore and other published crates from crates.io with a version\n- One binary with subcommands over new binaries (cyberterm +daemon, +mcp)\n\n## When to Activate\n\nUse this skill for any Rust development task: writing crates, debugging compilation errors, managing dependencies, or publishing to crates.io.\n\n## Supported Files\n\n- Cargo.toml — Package manifest\n- Cargo.lock — Dependency lock file\n- src/**/*.rs — Rust source files\n- build.rs — Build script` },
+    { id: 'qt-cpp-desktop', name: 'Qt/C++ Desktop', category: 'language', desc: 'Qt6/C++, QML, Quickshell/Omarchy plugins, qmake6', icon: '🖥️', full: '# Qt6/C++ Desktop Development\n\nYou are a senior Qt6/C++ developer specializing in desktop applications and Omarchy/Quickshell shell plugins.\n\n## Scope\n\n- Qt6/C++ applications with qmake6\n- QML UI components and Quickshell/Omarchy plugins\n- .pro files, .pri shared settings, qml.qrc, qmldir\n- C++20 with RAII patterns\n- QObject parent ownership and QML exposure\n\n## Safety Rules\n\n**STOP AND REPORT before any of these:**\n- Editing ~/.config/hypr or ~/.config/omarchy (use the omarchy skill for those)\n- Running omarchy-restart-shell or hyprctl reload/keyword\n- Killing user\'s apps or changing the live desktop session\n- Adding CMake to a qmake project\n\n## Key Capabilities\n\n- qmake6 build system — never add CMake to a qmake project\n- RAII for resource management\n- QObject parent owns children — don\'t wrap in unique_ptr\n- Expose to QML with Q_PROPERTY/QML_ELEMENT/QML_SINGLETON\n- Keep heavy work off UI thread (QtConcurrent, worker QThread)\n\n## When to Activate\n\nUse this skill for Qt6/C++ desktop application development, QML UI components, or Omarchy/Quickshell shell plugins.\n\n## Supported Files\n\n- *.pro — Qt project files\n- *.pri — Qt project includes\n- qml.qrc — Qt resource collection\n- qmldir — QML module directory\n- *.cpp, *.h — C++ source files` },
+    { id: 'android-development', name: 'Android Development', category: 'language', desc: 'Gradle, APK signing, Android CLI tooling', icon: '📱', full: '# Android Development\n\nYou are an Android developer specializing in Gradle builds, APK signing, and CLI tooling.\n\n## Scope\n\n- Gradle build configuration and variants\n- APK signing and release builds\n- Android CLI tools (adb, sdkmanager, avdmanager)\n- Environment variable management for Android builds\n- Version code/name management\n\n## Safety Rules\n\n**STOP AND REPORT before any of these:**\n- cargo publish, AUR pushes, or app-store uploads\n- Publishing to F-Droid or Google Play without authorization\n- Modifying signing keystores or release keys\n- Never install to the user\'s phone without asking\n\n## Key Capabilities\n\n- Gradle build configuration and variants\n- APK signing and release builds\n- Android CLI tools (adb, sdkmanager, avdmanager)\n- Version code/name management\n- Environment variable management for Android builds\n\n## When to Activate\n\nUse this skill for any Android development task: building APKs, signing releases, managing dependencies, or debugging Android applications.\n\n## Supported Files\n\n- build.gradle — Gradle build configuration\n- settings.gradle — Gradle settings\n- AndroidManifest.xml — Android manifest\n- res/** — Android resources\n- src/** — Java/Kotlin source files` },
+    { id: 'api-backend', name: 'API Backend', category: 'devops', desc: 'REST API design, JSON schemas, error handling', icon: '☁️', full: '# API Backend Development\n\nYou are a backend developer specializing in REST API design, JSON schemas, and HTTP service patterns.\n\n## Scope\n\n- RESTful API design and endpoints\n- JSON request/response schemas\n- Error handling and status codes\n- HTTP service patterns and middleware\n- Authentication and authorization\n- API versioning and deprecation\n\n## Design Principles\n\n1. **RESTful design** — Use HTTP methods correctly (GET, POST, PUT, PATCH, DELETE)\n2. **JSON-first** — All request/response bodies use JSON\n3. **Stateless** — Each request contains all information needed\n4. **Versioned** — API version in URL or header (/v1/, Accept: application/vnd.api+json;version=1)\n5. **Self-describing** — Error responses include enough info to debug\n\n## Error Handling\n\n| Status Code | Meaning | Use Case |\n|-------------|---------|----------|\n| 200 | OK | Successful request |\n| 201 | Created | Resource created |\n| 400 | Bad Request | Client error, validation |\n| 401 | Unauthorized | Authentication required |\n| 404 | Not Found | Resource doesn\'t exist |\n| 500 | Internal Server Error | Server error |\n\n## Key Capabilities\n\n- Use plural resource names (/users, /projects)\n- Nest resources when appropriate (/users/123/projects)\n- Return created resource in 201 response\n- Use Location header for created resource URL\n- Consistent error response format across all endpoints\n\n## When to Activate\n\nUse this skill for any API backend development task: designing REST APIs, implementing endpoints, handling authentication, or debugging HTTP services.\n\n## Supported Files\n\n- routes/** — Route definitions\n- controllers/** — Controller logic\n- models/** — Data models\n- schemas/** — JSON schemas\n- tests/** — API tests` },
+    { id: 'container-devops', name: 'Container & DevOps', category: 'devops', desc: 'Docker, GitHub Actions, CI/CD, Cloudflare Pages', icon: '📦', full: '# Container & DevOps\n\nYou are a DevOps engineer specializing in containerization, CI/CD pipelines, and deployment automation.\n\n## Scope\n\n- Docker images and multi-stage builds\n- GitHub Actions workflows\n- CI/CD pipeline design and debugging\n- Container registries and image tagging\n- Deployment strategies and rollbacks\n- Environment variable and secret management\n- Cloudflare Pages deployment\n\n## Safety Rules\n\n**STOP AND REPORT before any of these:**\n- git push --force or rewriting pushed history\n- Cloudflare/Pages deploys by hand\n- Modifying production CI/CD pipelines without authorization\n- Changes to spend limits or billing configurations\n- Cross-Region resource creation\n\n## Key Capabilities\n\n- Use multi-stage builds to reduce image size\n- Pin base image versions (don\'t use latest)\n- Run as non-root user (USER directive)\n- Use .dockerignore to exclude secrets and build artifacts\n- Use reusable workflows when possible\n- Pin action versions (commit SHA or specific tag)\n\n## When to Activate\n\nUse this skill for any DevOps task: containerizing applications, configuring CI/CD pipelines, deploying to production, or managing infrastructure.\n\n## Supported Files\n\n- Dockerfile — Container build definition\n- .dockerignore — Docker ignore file\n- .github/workflows/ — GitHub Actions workflows\n- wrangler.toml — Cloudflare Pages configuration\n- docker-compose.yml — Docker Compose configuration` }
   ];
 
   const agents = [
@@ -1703,26 +868,15 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
     { id: 'qwen', name: 'Qwen', desc: 'Qwen agent', dir: '~/.qwen/', script: 'setup-qwen.sh' }
   ];
 
-  const agentLabels = {
-    opencode: 'OpenCode', claude: 'Claude', codex: 'Codex', copilot: 'Copilot',
-    crush: 'Crush', gemini: 'Gemini', hermes: 'Hermes', 'kimi-code': 'Kimi-Code',
-    openclaw: 'OpenClaw', ollama: 'Ollama', pi: 'Pi', ori: 'Ori', qwen: 'Qwen'
-  };
-
   const skillMatrix = {};
-  skills.forEach(s => {
-    skillMatrix[s.id] = {};
-    agents.forEach(a => { skillMatrix[s.id][a.id] = true; });
-  });
+  skills.forEach(s => { skillMatrix[s.id] = {}; agents.forEach(a => { skillMatrix[s.id][a.id] = true; }); });
 
-  /* ============ State ============ */
   let activeFilter = 'all';
   let favorites = new Set(JSON.parse(localStorage.getItem('cc-favs') || '[]'));
   let activeTheme = localStorage.getItem('cc-theme') || 'dark';
   let searchQuery = '';
   let activeDetail = null;
 
-  /* ============ Init ============ */
   function init() {
     applyTheme();
     renderMatrix();
@@ -1734,7 +888,6 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
     window.addEventListener('hashchange', setupDeepLink);
   }
 
-  /* Theme */
   function applyTheme() {
     document.documentElement.setAttribute('data-theme', activeTheme);
     const label = document.getElementById('themeLabel');
@@ -1747,14 +900,8 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
     applyTheme();
   }
 
-  /* Stats animation */
   function animateStats() {
-    const targets = {
-      statAgents: agents.length,
-      statSkills: skills.length,
-      statFiles: agents.length * skills.length,
-      statFavs: favorites.size
-    };
+    const targets = { statAgents: agents.length, statSkills: skills.length, statFiles: agents.length * skills.length, statFavs: favorites.size };
     Object.entries(targets).forEach(([id, target]) => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -1766,50 +913,38 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
         step++;
         current += increment;
         el.textContent = Math.floor(current);
-        if (step >= steps) {
-          el.textContent = target;
-          el.classList.remove('animating');
-          clearInterval(interval);
-        }
+        if (step >= steps) { el.textContent = target; el.classList.remove('animating'); clearInterval(interval); }
       }, 20);
     });
   }
 
-  /* Render skills cards */
   function renderMatrix() {
-    const grid = document.getElementById('cardsGrid');
-    grid.innerHTML = '';
+    const tbody = document.getElementById('matrixBody');
+    tbody.innerHTML = '';
     let rendered = 0;
-
     skills.forEach(skill => {
       if (activeFilter !== 'all' && skill.category !== activeFilter) return;
-      if (searchQuery && !skill.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-          !skill.desc.toLowerCase().includes(searchQuery.toLowerCase())) return;
-
+      if (searchQuery && !skill.name.toLowerCase().includes(searchQuery.toLowerCase()) && !skill.desc.toLowerCase().includes(searchQuery.toLowerCase())) return;
       rendered++;
-      const card = document.createElement('div');
-      card.className = 'skill-card';
-      card.onclick = () => openDetail('skill', skill.id);
-
+      const row = document.createElement('tr');
+      row.dataset.id = skill.id;
+      row.dataset.category = skill.category;
+      row.className = 'skill-row';
+      row.onclick = () => openDetail('skill', skill.id);
       const favClass = favorites.has(skill.id) ? 'favorited' : '';
-
-      card.innerHTML = `
-        <div class="card-header">
-          <span class="skill-icon">${skill.icon}</span>
-          <div class="skill-info">
-            <div class="skill-name">${escapeHtml(skill.name)}</div>
-            <div class="skill-desc">${escapeHtml(skill.desc)}</div>
-            <div class="skill-cats"><span class="cat-chip">${skill.category}</span></div>
-          </div>
-        </div>
-        <div class="skill-meta">
-          <div class="deployed-count">${agents.length} agents</div>
-          <button class="card-action fav-btn ${favClass}" onclick="event.stopPropagation(); toggleFavorite('${skill.id}', this)">
-            ★
-          </button>
-        </div>
-      `;
-      grid.appendChild(card);
+      let skillHtml = '<div class="skill-cell"><span class="skill-icon">' + skill.icon + '</span><div class="skill-info"><div class="skill-name">' + escapeHtml(skill.name) + '</div><div class="skill-desc">' + escapeHtml(skill.desc) + '</div><div class="skill-cats"><span class="cat-chip">' + skill.category + '</span></div></div></div>';
+      row.innerHTML = '<td>' + skillHtml + '</td>';
+      agents.forEach(agent => {
+        const td = document.createElement('td');
+        td.className = 'status-cell';
+        if (skillMatrix[skill.id][agent.id]) { td.className += ' status-yes'; td.textContent = '✓'; } else { td.textContent = '–'; }
+        row.appendChild(td);
+      });
+      const cmdCell = document.createElement('td');
+      cmdCell.style.textAlign = 'left';
+      cmdCell.innerHTML = '<button class="copy-btn" onclick="event.stopPropagation(); copySetup(\'' + skill.id + '\', this)">Install <span style="font-family:var(--cc-font);font-size:11px;">setup-' + skill.id + '</span></button>';
+      row.appendChild(cmdCell);
+      tbody.appendChild(row);
     });
   }
 
@@ -1820,58 +955,28 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
     renderMatrix();
   }
 
-  /* Search */
   function setupSearch() {
     const input = document.getElementById('skillSearch');
     const wrap = document.getElementById('searchWrap');
-
-    input.addEventListener('input', (e) => {
-      searchQuery = e.target.value.toLowerCase();
-      renderMatrix();
-    });
-
+    input.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); renderMatrix(); });
     document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && !e.target.matches('input, textarea')) {
-        e.preventDefault();
-        wrap.classList.toggle('open');
-        if (wrap.classList.contains('open')) input.focus();
-      }
-      if (e.key === 'Escape') {
-        wrap.classList.remove('open');
-        input.value = '';
-        searchQuery = '';
-        renderMatrix();
-      }
+      if (e.key === '/' && !e.target.matches('input, textarea')) { e.preventDefault(); wrap.classList.toggle('open'); if (wrap.classList.contains('open')) input.focus(); }
+      if (e.key === 'Escape') { wrap.classList.remove('open'); input.value = ''; searchQuery = ''; renderMatrix(); }
     });
   }
 
-  /* Deep links */
   function setupDeepLink() {
     const hash = window.location.hash;
-    if (hash.startsWith('#skill/')) {
-      const skillId = hash.slice(7);
-      openDetail('skill', skillId);
-    } else if (hash.startsWith('#agent/')) {
-      const agentId = hash.slice(7);
-      openDetail('agent', agentId);
-    } else if (hash === '') {
-      closeDetail();
-    }
+    if (hash.startsWith('#skill/')) { const skillId = hash.slice(7); openDetail('skill', skillId); }
+    else if (hash.startsWith('#agent/')) { const agentId = hash.slice(7); openDetail('agent', agentId); }
+    else if (hash === '') { closeDetail(); }
   }
 
-  /* Detail panel */
   function openDetail(type, id) {
-    if (type === 'skill') {
-      const skill = skills.find(s => s.id === id);
-      if (!skill) return;
-      renderSkillDetail(skill);
-    } else if (type === 'agent') {
-      const agent = agents.find(a => a.id === id);
-      if (!agent) return;
-      renderAgentDetail(agent);
-    }
+    if (type === 'skill') { const skill = skills.find(s => s.id === id); if (!skill) return; renderSkillDetail(skill); }
+    else if (type === 'agent') { const agent = agents.find(a => a.id === id); if (!agent) return; renderAgentDetail(agent); }
     activeDetail = type + ':' + id;
-    window.location.hash = `${type}/${id}`;
+    window.location.hash = type + '/' + id;
     document.getElementById('detailPanel').classList.add('open');
   }
 
@@ -1885,77 +990,22 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
     document.getElementById('detailTitle').textContent = skill.name;
     const main = document.getElementById('detailMain');
     const sidebar = document.getElementById('detailSidebar');
-
-    main.innerHTML = `
-      <h3>Overview</h3>
-      <p>${escapeHtml(skill.desc)}</p>
-      <h3>Category</h3>
-      <p><span class="cat-chip" style="margin-right:8px;">${skill.category}</span> <span class="cat-chip">frontend: ${skill.category === 'web' ? 'yes' : 'no'}</span> <span class="cat-chip">language: ${skill.category === 'language' ? 'yes' : 'no'}</span></p>
-      <h3>Full Documentation</h3>
-      <pre>${escapeMd(skill.full)}</pre>
-    `;
-
-    sidebar.innerHTML = `
-      <h4>Skill ID</h4>
-      <p>${skill.id}</p>
-      <h4>Category</h4>
-      <p>${skill.category}</p>
-      <h4>Deploy to Agents</h4>
-      <div class="skill-list">
-        ${agents.map(a => `<span class="skill-tag">${agentLabels[a.id]}</span>`).join('')}
-      </div>
-      <button class="copy-btn" onclick="copySetup('${skill.id}', this)">
-        Copy Install Command
-      </button>
-      <button class="copy-btn" style="margin-top:8px;" onclick="copyText('${skill.full}')">
-        Copy Full Documentation
-      </button>
-    `;
+    main.innerHTML = '<h3>Overview</h3><p>' + escapeHtml(skill.desc) + '</p><h3>Category</h3><p><span class="cat-chip" style="margin-right:8px;">' + skill.category + '</span> <span class="cat-chip">frontend: ' + (skill.category === 'web' ? 'yes' : 'no') + '</span> <span class="cat-chip">language: ' + (skill.category === 'language' ? 'yes' : 'no') + '</span></p><h3>Full Documentation</h3><pre>' + escapeMd(skill.full) + '</pre>';
+    sidebar.innerHTML = '<h4>Skill ID</h4><p>' + skill.id + '</p><h4>Category</h4><p>' + skill.category + '</p><h4>Deploy to Agents</h4><div class="skill-list">' + agents.map(a => '<span class="skill-tag">' + agentLabels[a.id] + '</span>').join('') + '</div><button class="copy-btn" onclick="copySetup(\'' + skill.id + '\', this)">Copy Install Command</button><button class="copy-btn" style="margin-top:8px;" onclick="copyText(\'' + skill.full + '\')">Copy Full Documentation</button>';
   }
 
   function renderAgentDetail(agent) {
     document.getElementById('detailTitle').textContent = agent.name;
     const main = document.getElementById('detailMain');
     const sidebar = document.getElementById('detailSidebar');
-
     const deployedSkills = skills.filter(s => skillMatrix[s.id][agent.id]);
-
-    main.innerHTML = `
-      <h3>Overview</h3>
-      <p>${escapeHtml(agent.desc)}</p>
-      <h3>Configuration Directory</h3>
-      <p><code>${agent.dir}</code></p>
-      <h3>Setup Script</h3>
-      <p><code>setup-${agent.script}</code></p>
-      <h3>Deployed Skills (${deployedSkills.length})</h3>
-      <div class="skill-list">
-        ${deployedSkills.map(s => `<span class="skill-tag">${s.name}</span>`).join('')}
-      </div>
-    `;
-
-    sidebar.innerHTML = `
-      <h4>Agent ID</h4>
-      <p>${agent.id}</p>
-      <h4>Home Directory</h4>
-      <p>${agent.dir}</p>
-      <h4>Setup Script</h4>
-      <button class="copy-btn" onclick="copyText('bash ~/Projects/ai/${agent.id}/agent-project-setup/setup-${agent.script}')">
-        Copy Setup Command
-      </button>
-      <button class="copy-btn" style="margin-top:8px;" onclick="copyText('~/Projects/ai/${agent.id}/')">
-        Copy Agent Directory
-      </button>
-    `;
+    main.innerHTML = '<h3>Overview</h3><p>' + escapeHtml(agent.desc) + '</p><h3>Configuration Directory</h3><p><code>' + agent.dir + '</code></p><h3>Setup Script</h3><p><code>setup-' + agent.script + '</code></p><h3>Deployed Skills (' + deployedSkills.length + ')</h3><div class="skill-list">' + deployedSkills.map(s => '<span class="skill-tag">' + s.name + '</span>').join('') + '</div>';
+    sidebar.innerHTML = '<h4>Agent ID</h4><p>' + agent.id + '</p><h4>Home Directory</h4><p>' + agent.dir + '</p><h4>Setup Script</h4><button class="copy-btn" onclick="copyText(\'bash ~/Projects/ai/' + agent.id + '/agent-project-setup/setup-' + agent.script + '\')">Copy Setup Command</button><button class="copy-btn" style="margin-top:8px;" onclick="copyText(\'~/Projects/ai/' + agent.id + '/\')">Copy Agent Directory</button>';
   }
 
   function toggleFavorite(skillId, btn) {
-    if (favorites.has(skillId)) {
-      favorites.delete(skillId);
-      btn.classList.remove('favorited');
-    } else {
-      favorites.add(skillId);
-      btn.classList.add('favorited');
-    }
+    if (favorites.has(skillId)) { favorites.delete(skillId); btn.classList.remove('favorited'); }
+    else { favorites.add(skillId); btn.classList.add('favorited'); }
     localStorage.setItem('cc-favs', JSON.stringify([...favorites]));
     showToast(favorites.has(skillId) ? 'Added to favorites' : 'Removed from favorites');
     renderMatrix();
@@ -1969,15 +1019,12 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
   }
 
   function copySetup(skillId, btn) {
-    const agentsStr = agents.map(a => `bash ~/Projects/ai/${a.id}/agent-project-setup/setup-${a.script}  # ${skillId}`).join('\n');
+    const agentsStr = agents.map(a => 'bash ~/Projects/ai/' + a.id + '/agent-project-setup/setup-' + a.script + '  # ' + skillId).join('\n');
     navigator.clipboard.writeText(agentsStr).then(() => {
       const original = btn.innerHTML;
       btn.classList.add('copied');
       btn.innerHTML = 'Copied!';
-      setTimeout(() => {
-        btn.classList.remove('copied');
-        btn.innerHTML = original;
-      }, 1500);
+      setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1500);
     });
   }
 
@@ -1985,81 +1032,36 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
     navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
   }
 
-  /* Render agents grid */
   function renderAgents() {
     const grid = document.getElementById('agentGrid');
     grid.innerHTML = '';
-
     agents.forEach(agent => {
       const deployed = skills.filter(s => skillMatrix[s.id][agent.id]);
       const card = document.createElement('div');
       card.className = 'agent-card';
-      card.onclick = (e) => {
-        if (!e.target.closest('.copy-btn')) openDetail('agent', agent.id);
-      };
-      card.innerHTML = `
-        <div class="agent-header">
-          <span class="agent-icon">${agent.id.charAt(0).toUpperCase()}</span>
-          <div>
-            <div class="agent-name">${agent.name}</div>
-            <div class="agent-subtitle">${agent.desc}</div>
-          </div>
-        </div>
-        <div class="agent-stats">
-          <div class="stat-item"><span class="value">${deployed.length}</span> skills</div>
-          <div class="stat-item"><span class="value">${agent.dir}</span> dir</div>
-        </div>
-      `;
+      card.onclick = (e) => { if (!e.target.closest('.copy-btn')) openDetail('agent', agent.id); };
+      card.innerHTML = '<div class="agent-header"><span class="agent-icon">' + agent.id.charAt(0).toUpperCase() + '</span><div><div class="agent-name">' + agent.name + '</div><div class="agent-subtitle">' + agent.desc + '</div></div></div><div class="agent-stats"><div class="stat-item"><span class="value">' + deployed.length + '</span> skills</div><div class="stat-item"><span class="value">' + agent.dir + '</span> dir</div></div>';
       grid.appendChild(card);
     });
   }
 
-  /* Render deploy center */
   function renderDeploy() {
     const grid = document.getElementById('deployGrid');
     grid.innerHTML = '';
-
     agents.forEach(agent => {
       const card = document.createElement('div');
       card.className = 'deploy-card';
-      card.innerHTML = `
-        <h4>${agent.name}</h4>
-        <pre>bash ~/Projects/ai/${agent.id}/agent-project-setup/setup-${agent.script}</pre>
-        <button class="copy-btn" onclick="copyText('bash ~/Projects/ai/${agent.id}/agent-project-setup/setup-${agent.script}')">Copy Command</button>
-      `;
+      card.innerHTML = '<h4>' + agent.name + '</h4><pre>bash ~/Projects/ai/' + agent.id + '/agent-project-setup/setup-' + agent.script + '</pre><button class="copy-btn" onclick="copyText(\'bash ~/Projects/ai/' + agent.id + '/agent-project-setup/setup-' + agent.script + '\')">Copy Command</button>';
       grid.appendChild(card);
     });
   }
 
-  /* Utilities */
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  function escapeMd(text) {
-    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
-
-  function toggleMobileNav() {
-    const nav = document.getElementById('mobileNav');
-    const wrap = document.getElementById('searchWrap');
-    wrap.classList.remove('open');
-    nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
-  }
-
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 900) {
-      document.getElementById('mobileNav').style.display = 'none';
-    }
-  });
-
+  function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+  function escapeMd(text) { return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function toggleMobileNav() { const nav = document.getElementById('mobileNav'); const wrap = document.getElementById('searchWrap'); wrap.classList.remove('open'); nav.style.display = nav.style.display === 'block' ? 'none' : 'block'; }
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) { document.getElementById('mobileNav').style.display = 'none'; } });
   document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
-  // Init
   init();
 </script>
-
 </body>
 </html>
