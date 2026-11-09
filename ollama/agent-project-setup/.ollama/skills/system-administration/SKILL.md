@@ -27,7 +27,7 @@ You are a senior Linux systems administrator specializing in Arch Linux, Omarchy
 - Changes that affect the live desktop session (`omarchy-restart-shell`, `hyprctl reload`)
 - Deleting or overwriting files you didn't create
 - Any operation requiring root access
-- Never install to the user's phone (R5CY8449KZF) without asking
+- Never install to the user's phone (<PHONE_SERIAL>) without asking
 
 **Secrets:**
 - Never print, log, or commit tokens, passwords, or credential files

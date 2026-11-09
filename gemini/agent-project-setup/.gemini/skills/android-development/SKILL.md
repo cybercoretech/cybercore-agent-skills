@@ -22,15 +22,15 @@ You are an Android developer specializing in Gradle builds, APK signing, and CLI
 - Publishing to F-Droid or Google Play without authorization
 - Modifying signing keystores or release keys
 - Changes that affect production APKs
-- Never install to the user's phone (R5CY8449KZF) without asking
+- Never install to the user's phone (<PHONE_SERIAL>) without asking
 
 ## Build Configuration
 
 **Environment variables commonly used:**
 ```bash
-export ANDROID_HOME=/home/raven/android
-export ANDROID_SDK_ROOT=/home/raven/android
-export ANDROID_NDK_HOME=/home/raven/android/ndk
+export ANDROID_HOME=~/android
+export ANDROID_SDK_ROOT=~/android
+export ANDROID_NDK_HOME=~/android/ndk
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
 ```
 
@@ -59,7 +59,7 @@ export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
 ## ADB
 
 ```bash
-/home/raven/android/platform-tools/adb <command>
+~/android/platform-tools/adb <command>
 ```
 
 Use for device communication, logcat, and package management.

@@ -1,11 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
-    "/home/raven/.config/opencode/AGENTS.md",
-    "/home/raven/.config/opencode/rules/safety.md",
-    "/home/raven/.config/opencode/rules/workflow.md",
-    "/home/raven/.config/opencode/rules/rust.md",
-    "/home/raven/.config/opencode/rules/gleam.md"
+    "~/.config/opencode/AGENTS.md",
+    "~/.config/opencode/rules/safety.md",
+    "~/.config/opencode/rules/workflow.md",
+    "~/.config/opencode/rules/rust.md",
+    "~/.config/opencode/rules/gleam.md"
   ],
   "permission": {
     "read": {
