@@ -22,12 +22,17 @@
     --cc-success: #22c55e;
     --cc-success-dim: rgba(34, 197, 94, 0.10);
     --cc-danger: #ef4444;
+    --cc-warning: #f59e0b;
+    --cc-info: #06b6d4;
     --cc-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     --cc-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --cc-radius: 8px;
-    --cc-radius-lg: 12px;
+    --cc-radius: 10px;
+    --cc-radius-lg: 16px;
     --cc-shadow: 0 24px 50px -15px rgba(0,0,0,0.6);
-    --cc-transition: 0.2s ease;
+    --cc-shadow-lg: 0 40px 80px -20px rgba(0,0,0,0.7);
+    --cc-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --cc-border-glass: rgba(255,255,255,0.08);
+    --cc-glow: rgba(139, 92, 246, 0.3);
   }
 
   [data-theme="light"] {
@@ -41,6 +46,9 @@
     --cc-accent-hover: #8b5cf6;
     --cc-accent-dim: rgba(139, 92, 246, 0.15);
     --cc-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+    --cc-shadow-lg: 0 40px 80px -20px rgba(0,0,0,0.15);
+    --cc-border-glass: rgba(0,0,0,0.05);
+    --cc-glow: rgba(139, 92, 246, 0.2);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,6 +60,13 @@
     line-height: 1.5;
     min-height: 100vh;
     overflow-x: hidden;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15), transparent 50%),
+      radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.1), transparent 50%),
+      radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08), transparent 50%),
+      radial-gradient(at 0% 100%, rgba(236, 72, 153, 0.06), transparent 50%),
+      var(--cc-bg);
+    background-attachment: fixed;
   }
 
   /* Skip link */
@@ -75,11 +90,11 @@
     position: sticky;
     top: 0;
     z-index: 60;
-    height: 64px;
+    height: 72px;
     padding: 0 24px;
-    background: var(--cc-surface);
+    background: rgba(11, 12, 16, 0.8);
     border-bottom: 1px solid var(--cc-border);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -98,7 +113,7 @@
   .topbar .nav-center {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 26px;
     margin-left: auto;
   }
   .topbar .nav-center a {
@@ -185,7 +200,7 @@
   .mobile-nav {
     display: none;
     position: absolute;
-    top: 64px;
+    top: 72px;
     left: 0;
     right: 0;
     background: var(--cc-surface);
@@ -213,7 +228,7 @@
 
   /* Hero */
   .hero {
-    padding: 56px 0 32px;
+    padding: 72px 0 48px;
     border-bottom: 1px solid var(--cc-border);
   }
   .hero-inner {
@@ -246,11 +261,15 @@
     margin-bottom: 24px;
   }
   .hero h1 {
-    font-size: 42px;
-    font-weight: 800;
-    line-height: 1.05;
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.0;
     margin-bottom: 16px;
     letter-spacing: -1.5px;
+    background: linear-gradient(135deg, var(--cc-text) 0%, var(--cc-accent) 50%, var(--cc-info) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .hero .lead-text {
     font-size: 18px;
@@ -374,125 +393,102 @@
     font-style: italic;
   }
 
-  .matrix-wrap {
+  /* Cards layout */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .skill-card {
+    background: var(--cc-surface);
     border: 1px solid var(--cc-border);
     border-radius: var(--cc-radius-lg);
-    background: var(--cc-surface);
-    overflow: hidden;
+    padding: 24px;
+    cursor: pointer;
+    transition: all var(--cc-transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
+  .skill-card:hover {
+    border-color: var(--cc-accent);
+    box-shadow: var(--cc-shadow);
+    transform: translateY(-6px);
   }
-  thead {
-    background: var(--cc-surface-2);
-    position: sticky;
-    top: 0;
-    z-index: 5;
-  }
-  th {
-    text-align: left;
-    color: var(--cc-text-muted);
-    padding: 14px 16px;
-    font-weight: 700;
-    border-bottom: 1px solid var(--cc-border);
-    font-family: var(--cc-font);
-    font-size: 11px;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  th:first-child { position: sticky; left: 0; z-index: 6; background: var(--cc-surface-2); }
-  td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--cc-border);
-    color: var(--cc-text);
-    white-space: nowrap;
-  }
-  td:first-child {
-    position: sticky;
-    left: 0;
-    z-index: 6;
-    background: var(--cc-surface);
-    font-weight: 700;
-    color: var(--cc-accent);
-    font-family: var(--cc-font);
-    font-size: 14px;
-    border-right: 1px solid var(--cc-border);
-  }
-  tr:hover td { background: var(--cc-surface-2); }
-  tr:hover td:first-child { background: var(--cc-surface-2); }
-  tr.filtered-out { display: none; }
-
-  .skill-row {
+  .skill-card .card-header {
     display: flex;
     align-items: center;
     gap: 12px;
-    cursor: pointer;
+    margin-bottom: 12px;
   }
-  .skill-row:hover { opacity: 0.9; }
-  .skill-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+  .skill-card .skill-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--cc-accent-dim);
+    color: var(--cc-accent);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 800;
-    color: var(--cc-accent);
   }
-  .skill-info {
-    display: flex;
-    flex-direction: column;
-  }
-  .skill-name {
+  .skill-card .skill-name {
     font-weight: 700;
     color: var(--cc-text);
     font-family: var(--cc-font);
-    font-size: 14px;
+    font-size: 16px;
   }
-  .skill-desc {
-    font-size: 11px;
+  .skill-card .skill-desc {
+    font-size: 13px;
     color: var(--cc-text-muted);
-    margin-top: 4px;
+    margin: 12px 0 16px;
+    line-height: 1.5;
+    flex: 1;
   }
-  .skill-cats {
+  .skill-card .skill-cats {
     display: flex;
     gap: 6px;
-    margin-top: 6px;
+    margin-bottom: 16px;
   }
-  .cat-chip {
-    padding: 3px 8px;
+  .skill-card .cat-chip {
+    padding: 4px 10px;
     border: 1px solid var(--cc-border);
     border-radius: 10px;
     font-size: 10px;
     color: var(--cc-text-muted);
     font-family: var(--cc-font);
   }
-  .status-cell { text-align: center; }
-  .status-yes { color: var(--cc-success); font-weight: 800; font-family: var(--cc-font); }
-  .status-no { color: var(--cc-text-muted); font-size: 11px; }
-  .fav-btn {
+  .skill-card .skill-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+  .skill-card .deployed-count {
+    font-size: 11px;
+    color: var(--cc-text-muted);
+    font-family: var(--cc-font);
+  }
+  .skill-card .card-action {
     width: 28px;
     height: 28px;
     border: 1px solid var(--cc-border);
     border-radius: 8px;
-    background: transparent;
+    background: var(--cc-surface-2);
     color: var(--cc-text-muted);
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     transition: all var(--cc-transition);
   }
-  .fav-btn:hover { border-color: var(--cc-accent); color: var(--cc-accent); }
-  .fav-btn.favorited {
-    border-color: var(--cc-success);
-    color: var(--cc-success);
-    background: var(--cc-success-dim);
+  .skill-card .card-action:hover {
+    border-color: var(--cc-accent);
+    color: var(--cc-accent);
+    background: var(--cc-accent-dim);
   }
 
   /* Agent ecosystem cards */
@@ -513,7 +509,7 @@
   .agent-card:hover {
     border-color: var(--cc-accent);
     box-shadow: var(--cc-shadow);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
   }
   .agent-card .agent-header {
     display: flex;
@@ -522,22 +518,22 @@
     margin-bottom: 12px;
   }
   .agent-card .agent-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     background: var(--cc-accent-dim);
     color: var(--cc-accent);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 800;
   }
   .agent-card .agent-name {
     font-weight: 700;
     color: var(--cc-text);
     font-family: var(--cc-font);
-    font-size: 15px;
+    font-size: 16px;
   }
   .agent-card .agent-subtitle {
     font-size: 12px;
@@ -582,11 +578,11 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--cc-shadow);
-    animation: slideIn 0.25s ease;
+    box-shadow: var(--cc-shadow-lg);
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   @keyframes slideIn {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
   .detail-header {
@@ -622,7 +618,7 @@
     overflow-y: auto;
     padding: 24px;
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr 340px;
     gap: 24px;
   }
   .detail-main h3 {
@@ -899,7 +895,7 @@
     .mobile-menu-btn { display: block; }
     .search-wrap {
       position: absolute;
-      top: 64px;
+      top: 72px;
       left: 0;
       right: 0;
       background: var(--cc-surface);
@@ -918,6 +914,33 @@
     .topbar .search-wrap { position: static; padding: 12px 24px; border: none; }
     table { font-size: 11px; }
     th, td { padding: 10px; font-size: 11px; }
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--cc-surface);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--cc-surface-3);
+    border-radius: var(--cc-radius);
+    border: 2px solid var(--cc-surface);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--cc-accent);
+    border-color: var(--cc-accent-dim);
+  }
+  ::-webkit-scrollbar-corner {
+    background: var(--cc-bg);
+  }
+
+  /* Custom selection */
+  ::selection {
+    background: var(--cc-accent-dim);
+    color: var(--cc-accent);
   }
 </style>
 </head>
@@ -1009,31 +1032,8 @@
       <h2>Skill Catalog</h2>
       <p class="section-subtitle">Filter, search, favorite, and open any skill for full documentation.</p>
     </div>
-    <div class="matrix-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Skill</th>
-            <th class="agent-col" data-agent="opencode">OpenCode</th>
-            <th class="agent-col" data-agent="claude">Claude</th>
-            <th class="agent-col" data-agent="codex">Codex</th>
-            <th class="agent-col" data-agent="copilot">Copilot</th>
-            <th class="agent-col" data-agent="crush">Crush</th>
-            <th class="agent-col" data-agent="gemini">Gemini</th>
-            <th class="agent-col" data-agent="hermes">Hermes</th>
-            <th class="agent-col" data-agent="kimi-code">Kimi-Code</th>
-            <th class="agent-col" data-agent="openclaw">OpenClaw</th>
-            <th class="agent-col" data-agent="ollama">Ollama</th>
-            <th class="agent-col" data-agent="pi">Pi</th>
-            <th class="agent-col" data-agent="ori">Ori</th>
-            <th class="agent-col" data-agent="qwen">Qwen</th>
-            <th style="width: 220px;">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="matrixBody">
-          <!-- Rows injected by JS -->
-        </tbody>
-      </table>
+    <div class="cards-grid" id="cardsGrid">
+      <!-- Skill cards injected by JS -->
     </div>
   </section>
 
@@ -1159,10 +1159,7 @@
 </div>
 
 <script>
-  /* ============ Catalog Data ============
-     Canonical source generated from SKILL.md files.
-     Adding a skill here updates the whole catalog.
-  ============ */
+  /* ============ Catalog Data ============ */
   const skills = [
     {
       id: 'web-design-and-frontend-craft',
@@ -1778,10 +1775,10 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
     });
   }
 
-  /* Render skills matrix */
+  /* Render skills cards */
   function renderMatrix() {
-    const tbody = document.getElementById('matrixBody');
-    tbody.innerHTML = '';
+    const grid = document.getElementById('cardsGrid');
+    grid.innerHTML = '';
     let rendered = 0;
 
     skills.forEach(skill => {
@@ -1790,16 +1787,14 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
           !skill.desc.toLowerCase().includes(searchQuery.toLowerCase())) return;
 
       rendered++;
-      const row = document.createElement('tr');
-      row.dataset.id = skill.id;
-      row.dataset.category = skill.category;
-      row.className = 'skill-row';
-      row.onclick = () => openDetail('skill', skill.id);
+      const card = document.createElement('div');
+      card.className = 'skill-card';
+      card.onclick = () => openDetail('skill', skill.id);
 
       const favClass = favorites.has(skill.id) ? 'favorited' : '';
 
-      let skillHtml = `
-        <div class="skill-cell">
+      card.innerHTML = `
+        <div class="card-header">
           <span class="skill-icon">${skill.icon}</span>
           <div class="skill-info">
             <div class="skill-name">${escapeHtml(skill.name)}</div>
@@ -1807,31 +1802,14 @@ Use this skill for any DevOps task: containerizing applications, configuring CI/
             <div class="skill-cats"><span class="cat-chip">${skill.category}</span></div>
           </div>
         </div>
+        <div class="skill-meta">
+          <div class="deployed-count">${agents.length} agents</div>
+          <button class="card-action fav-btn ${favClass}" onclick="event.stopPropagation(); toggleFavorite('${skill.id}', this)">
+            ★
+          </button>
+        </div>
       `;
-      row.innerHTML = `<td>${skillHtml}</td>`;
-
-      agents.forEach(agent => {
-        const td = document.createElement('td');
-        td.className = 'status-cell';
-        if (skillMatrix[skill.id][agent.id]) {
-          td.className += ' status-yes';
-          td.textContent = '✓';
-        } else {
-          td.textContent = '–';
-        }
-        row.appendChild(td);
-      });
-
-      const cmdCell = document.createElement('td');
-      cmdCell.style.textAlign = 'left';
-      cmdCell.innerHTML = `
-        <button class="copy-btn" onclick="event.stopPropagation(); copySetup('${skill.id}', this)">
-          Install <span style="font-family:var(--cc-font);font-size:11px;">setup-${skill.id}</span>
-        </button>
-      `;
-      row.appendChild(cmdCell);
-
-      tbody.appendChild(row);
+      grid.appendChild(card);
     });
   }
 
