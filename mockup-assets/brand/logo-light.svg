@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="cc-accent-grad-light" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Light background circle -->
+  <circle cx="100" cy="100" r="90" fill="#ffffff" />
+  
+  <!-- Circuit lines -->
+  <path d="M30 100 L70 100 L70 60 L130 60 L130 140 L70 140 L70 190 L170 190" 
+        stroke="#7c3aed" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6" />
+  
+  <!-- Center node -->
+  <circle cx="100" cy="100" r="14" fill="#ffffff" stroke="#7c3aed" stroke-width="2" />
+  <circle cx="100" cy="100" r="6" fill="#7c3aed" />
+  
+  <!-- Outer nodes -->
+  <circle cx="40" cy="40" r="6" fill="#7c3aed" opacity="0.8" />
+  <circle cx="160" cy="40" r="6" fill="#7c3aed" opacity="0.8" />
+  <circle cx="40" cy="160" r="6" fill="#7c3aed" opacity="0.8" />
+  <circle cx="160" cy="160" r="6" fill="#7c3aed" opacity="0.8" />
+  
+  <!-- Text -->
+  <text x="100" cy="150" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" 
+        font-size="16" font-weight="800" fill="#0f172a" text-anchor="middle" letter-spacing="2">z/ea</text>
+  <text x="100" cy="172" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" 
+        font-size="10" fill="#7c3aed" text-anchor="middle" letter-spacing="1">AGENT SKILLS</text>
+</svg>
