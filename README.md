@@ -1,4 +1,4 @@
-# 🔒 blackbox-agent-skills
+# 🔒 cybercore-agent-skills
 
 > Internal agent guardrails, rules, and skills for Cybercore AI coding agents — OpenCode, Claude, Codex, Copilot, Crush, Gemini, Hermes, Kimi-Code, OpenClaw, Ollama, Pi, Ori, and Qwen.
 
