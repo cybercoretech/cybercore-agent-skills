@@ -1,0 +1,41 @@
+{
+  "name": "z/ea Agent Skills",
+  "short_name": "z/ea Skills",
+  "description": "Shared agent guardrails, rules, and skills for 13 AI coding agents — OpenCode, Claude, Codex, Copilot, Crush, Gemini, Hermes, Kimi-Code, OpenClaw, Ollama, Pi, Ori, and Qwen.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0b0c10",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "icons/favicon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["developer-tools", "productivity", "ai"],
+  "tags": ["cybercore", "agent-skills", "zsh", "autofix", "zsh-explain-autofix", "opencode", "claude", "codex", "copilot"]
+}

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="hero-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b0c10;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="400" fill="url(#hero-grad)" />
+  
+  <!-- Floating elements -->
+  <circle cx="100" cy="100" r="40" fill="#8b5cf6" opacity="0.1" />
+  <circle cx="700" cy="300" r="60" fill="#8b5cf6" opacity="0.08" />
+  <circle cx="300" cy="50" r="30" fill="#a78bfa" opacity="0.1" />
+  <circle cx="500" cy="250" r="40" fill="#8b5cf6" opacity="0.05" />
+  
+  <!-- Terminal window -->
+  <rect x="320" cy="80" width="340" height="260" rx="16" fill="#111318" stroke="#1f2430" stroke-width="2" />
+  
+  <!-- Terminal header -->
+  <rect x="320" cy="80" width="340" height="40" rx="16 16 0 0" fill="#161923" />
+  <circle cx="336" cy="96" r="5" fill="#ef4444" opacity="0.8" />
+  <circle cx="352" cy="96" r="5" fill="#f59e0b" opacity="0.8" />
+  <circle cx="368" cy="96" r="5" fill="#22c55e" opacity="0.8" />
+  
+  <!-- Code lines -->
+  <text x="340" cy="130" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#8b5cf6"># z/ea agent-skills</text>
+  <text x="340" cy="150" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#e8eaf2">const skills = ['web', 'system', 'llm'];</text>
+  <text x="340" cy="170" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#94a3b8">// Deploy to 13 agents</text>
+  <text x="340" cy="190" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#22c55e">✓ cybercore-agent-skills</text>
+  
+  <!-- Cursor -->
+  <rect x="340" cy="200" width="2" height="16" fill="#8b5cf6" />
+  
+  <!-- More code -->
+  <text x="340" cy="220" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#e8eaf2">$ yarn add cybercore-agent-skills</text>
+  <text x="340" cy="240" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#a78bfa">$ ./setup-claude.sh</text>
+  <text x="340" cy="260" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#a78bfa">$ ./setup-opencode.sh</text>
+  
+  <!-- Floating decorative elements -->
+  <rect x="50" cy="200" width="60" height="4" fill="#8b5cf6" opacity="0.3" />
+  <rect x="50" cy="210" width="40" height="4" fill="#a78bfa" opacity="0.3" />
+  <rect x="50" cy="220" width="50" height="4" fill="#8b5cf6" opacity="0.2" />
+  
+  <text x="50" cy="300" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#8b5cf6">▓▓▓▓▓▓▓▓▓▓▓▓</text>
+  <text x="50" cy="320" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#a78bfa">████████████</text>
+  <text x="50" cy="340" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#22c55e">░░░░░░░░░░░░</text>
+</svg>
