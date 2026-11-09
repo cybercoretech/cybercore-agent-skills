@@ -1,0 +1,50 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "/home/raven/.config/opencode/AGENTS.md",
+    "/home/raven/.config/opencode/rules/safety.md",
+    "/home/raven/.config/opencode/rules/workflow.md",
+    "/home/raven/.config/opencode/rules/rust.md",
+    "/home/raven/.config/opencode/rules/gleam.md"
+  ],
+  "permission": {
+    "read": {
+      "*": "ask",
+      "*.md": "allow",
+      "src/**": "allow",
+      "tests/**": "allow",
+      ".env*": "deny",
+      "**/*.pem": "deny"
+    },
+    "edit": {
+      "*": "ask",
+      "src/**": "ask",
+      "tests/**": "allow",
+      "AGENTS.md": "deny",
+      "opencode.json": "deny"
+    },
+    "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git log*": "allow",
+      "git diff*": "allow",
+      "cargo check*": "allow",
+      "cargo test*": "allow"
+    }
+  },
+  "mcp": {
+    "aws-mcp": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "mcp-proxy-for-aws@latest",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--metadata",
+        "INSTALL_SOURCE=aws-cli"
+      ],
+      "env": {
+        "AWS_MCP_PROXY_PROFILES": "darkstardevx"
+      }
+    }
+  }
+}
