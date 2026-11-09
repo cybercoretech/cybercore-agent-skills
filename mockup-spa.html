@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cybercore Agent Skills — Skill Catalog</title>
+<link rel="icon" href="mockup-assets/icons/favicon.svg">
+<link rel="manifest" href="mockup-assets/manifest.webmanifest">
+<style>
+  /* ============ Cybercore design tokens ============ */
+  :root {
+    --cc-bg: #0b0c10;
+    --cc-surface: #111318;
+    --cc-surface-2: #161923;
+    --cc-surface-3: #1c212c;
+    --cc-text: #e8eaf2;
+    --cc-text-muted: #94a3b8;
+    --cc-text-dim: #64748b;
+    --cc-accent: #8b5cf6;
+    --cc-accent-hover: #a78bfa;
+    --cc-accent-dim: rgba(139, 92, 246, 0.10);
+    --cc-success: #22c55e;
+    --cc-success-dim: rgba(34, 197, 94, 0.10);
+    --cc-danger: #ef4444;
+    --cc-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --cc-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --cc-radius: 8px;
+    --cc-radius-lg: 12px;
+    --cc-shadow: 0 24px 50px -15px rgba(0,0,0,0.6);
+    --cc-transition: 0.2s ease;
+  }
+
+  [data-theme="light"] {
+    --cc-bg: #f8fafc;
+    --cc-surface: #ffffff;
+    --cc-surface-2: #f1f5f9;
+    --cc-surface-3: #e2e8f0;
+    --cc-text: #0f172a;
+    --cc-text-muted: #64748b;
+    --cc-accent: #7c3aed;
+    --cc-accent-hover: #8b5cf6;
+    --cc-accent-dim: rgba(139, 92, 246, 0.15);
+    --cc-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cc-bg);
+    color: var(--cc-text);
+    font-family: var(--cc-font);
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Skip link */
+  .skip-link {
+    position: absolute;
+    top: -48px;
+    left: 16px;
+    background: var(--cc-accent);
+    color: var(--cc-bg);
+    padding: 8px 16px;
+    border-radius: var(--cc-radius);
+    text-decoration: none;
+    font-weight: 700;
+    z-index: 100;
+    transition: top var(--cc-transition);
+  }
+  .skip-link:focus { top: 16px; }
+
+  /* Top bar */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    height: 64px;
+    padding: 0 24px;
+    background: var(--cc-surface);
+    border-bottom: 1px solid var(--cc-border);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--cc-text);
+    text-decoration: none;
+  }
+  .topbar .brand .mark { color: var(--cc-accent); }
+  .topbar .nav-center {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+  }
+  .topbar .nav-center a {
+    color: var(--cc-text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color var(--cc-transition);
+  }
+  .topbar .nav-center a:hover { color: var(--cc-accent); }
+
+  .topbar .right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cc-surface-2);
+    border: 1px solid var(--cc-border);
+    color: var(--cc-text);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all var(--cc-transition);
+  }
+  .theme-toggle:hover { border-color: var(--cc-accent); }
+  .theme-toggle .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--cc-accent);
+    border: 1px solid var(--cc-bg);
+  }
+
+  .search-wrap {
+    position: relative;
+    display: none;
+    align-items: center;
+  }
+  .search-wrap.open { display: flex; }
+  .search-wrap input {
+    background: var(--cc-surface-2);
+    border: 1px solid var(--cc-border);
+    color: var(--cc-text);
+    padding: 8px 12px 8px 32px;
+    border-radius: var(--cc-radius);
+    font-family: var(--cc-font);
+    font-size: 13px;
+    outline: none;
+    width: 260px;
+    transition: border-color var(--cc-transition), box-shadow var(--cc-transition);
+  }
+  .search-wrap input:focus {
+    border-color: var(--cc-accent);
+    box-shadow: 0 0 0 3px var(--cc-accent-dim);
+  }
+  .search-wrap::before {
+    content: "/";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cc-accent);
+    font-weight: 700;
+    pointer-events: none;
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: 1px solid var(--cc-border);
+    color: var(--cc-text);
+    padding: 8px;
+    border-radius: var(--cc-radius);
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .mobile-menu-btn:hover { border-color: var(--cc-accent); }
+
+  .mobile-nav {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--cc-surface);
+    border-bottom: 1px solid var(--cc-border);
+    padding: 16px 24px;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 55;
+    animation: slideDown 0.2s ease;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .mobile-nav a {
+    display: block;
+    color: var(--cc-text);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: var(--cc-radius);
+    font-size: 14px;
+    transition: all var(--cc-transition);
+  }
+  .mobile-nav a:hover { background: var(--cc-surface-2); color: var(--cc-accent); }
+
+  /* Hero */
+  .hero {
+    padding: 56px 0 32px;
+    border-bottom: 1px solid var(--cc-border);
+  }
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .hero .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .hero .section-num {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--cc-accent);
+    letter-spacing: 0.5px;
+  }
+  .hero .section-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .hero .section-lead {
+    font-size: 15px;
+    color: var(--cc-text-muted);
+    font-style: italic;
+    margin-top: 6px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    letter-spacing: -1.5px;
+  }
+  .hero .lead-text {
+    font-size: 18px;
+    color: var(--cc-text-muted);
+    max-width: 64ch;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  .stat-strip {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .stat {
+    flex: 1;
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: transform var(--cc-transition), border-color var(--cc-transition);
+  }
+  .stat:hover { border-color: var(--cc-accent); transform: translateY(-2px); }
+  .stat-value {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--cc-accent);
+    letter-spacing: -1px;
+    font-family: var(--cc-font);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--cc-text-muted);
+    font-style: italic;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Filters & controls */
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    padding: 7px 16px;
+    border: 1px solid var(--cc-border);
+    border-radius: 26px;
+    background: var(--cc-surface-2);
+    color: var(--cc-text-muted);
+    font-size: 12px;
+    font-family: var(--cc-font);
+    cursor: pointer;
+    transition: all var(--cc-transition);
+  }
+  .chip:hover { border-color: var(--cc-accent); color: var(--cc-accent); }
+  .chip.active {
+    border-color: var(--cc-accent);
+    color: var(--cc-accent);
+    background: var(--cc-accent-dim);
+  }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-left: 3px solid var(--cc-success);
+    color: var(--cc-text);
+    padding: 12px 20px;
+    border-radius: var(--cc-radius);
+    font-size: 13px;
+    font-family: var(--cc-font);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--cc-transition);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast .toast-icon { color: var(--cc-success); font-weight: 700; }
+
+  /* ============ Skills Explorer ============ */
+  .explorer {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-head h2 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--cc-text);
+  }
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--cc-text-muted);
+    font-style: italic;
+  }
+
+  .matrix-wrap {
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    background: var(--cc-surface);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead {
+    background: var(--cc-surface-2);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  th {
+    text-align: left;
+    color: var(--cc-text-muted);
+    padding: 14px 16px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--cc-border);
+    font-family: var(--cc-font);
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  th:first-child { position: sticky; left: 0; z-index: 6; background: var(--cc-surface-2); }
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--cc-border);
+    color: var(--cc-text);
+    white-space: nowrap;
+  }
+  td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 6;
+    background: var(--cc-surface);
+    font-weight: 700;
+    color: var(--cc-accent);
+    font-family: var(--cc-font);
+    font-size: 14px;
+    border-right: 1px solid var(--cc-border);
+  }
+  tr:hover td { background: var(--cc-surface-2); }
+  tr:hover td:first-child { background: var(--cc-surface-2); }
+  tr.filtered-out { display: none; }
+
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+  .skill-row:hover { opacity: 0.9; }
+  .skill-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--cc-accent);
+  }
+  .skill-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .skill-name {
+    font-weight: 700;
+    color: var(--cc-text);
+    font-family: var(--cc-font);
+    font-size: 14px;
+  }
+  .skill-desc {
+    font-size: 11px;
+    color: var(--cc-text-muted);
+    margin-top: 4px;
+  }
+  .skill-cats {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .cat-chip {
+    padding: 3px 8px;
+    border: 1px solid var(--cc-border);
+    border-radius: 10px;
+    font-size: 10px;
+    color: var(--cc-text-muted);
+    font-family: var(--cc-font);
+  }
+  .status-cell { text-align: center; }
+  .status-yes { color: var(--cc-success); font-weight: 800; font-family: var(--cc-font); }
+  .status-no { color: var(--cc-text-muted); font-size: 11px; }
+  .fav-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--cc-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--cc-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all var(--cc-transition);
+  }
+  .fav-btn:hover { border-color: var(--cc-accent); color: var(--cc-accent); }
+  .fav-btn.favorited {
+    border-color: var(--cc-success);
+    color: var(--cc-success);
+    background: var(--cc-success-dim);
+  }
+
+  /* Agent ecosystem cards */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .agent-card {
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    padding: 20px;
+    cursor: pointer;
+    transition: all var(--cc-transition);
+  }
+  .agent-card:hover {
+    border-color: var(--cc-accent);
+    box-shadow: var(--cc-shadow);
+    transform: translateY(-2px);
+  }
+  .agent-card .agent-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .agent-card .agent-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--cc-accent-dim);
+    color: var(--cc-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .agent-card .agent-name {
+    font-weight: 700;
+    color: var(--cc-text);
+    font-family: var(--cc-font);
+    font-size: 15px;
+  }
+  .agent-card .agent-subtitle {
+    font-size: 12px;
+    color: var(--cc-text-muted);
+    margin-top: 4px;
+  }
+  .agent-card .agent-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--cc-border);
+  }
+  .agent-card .stat-item {
+    font-size: 11px;
+    color: var(--cc-text-muted);
+    font-family: var(--cc-font);
+  }
+  .agent-card .stat-item .value {
+    color: var(--cc-accent);
+    font-weight: 700;
+  }
+
+  /* Detail panel */
+  .detail-panel {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(6, 6, 9, 0.6);
+    backdrop-filter: blur(6px);
+  }
+  .detail-panel.open { display: flex; align-items: center; justify-content: center; }
+  .detail-card {
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    width: 90vw;
+    height: 85vh;
+    max-width: 900px;
+    max-height: 700px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--cc-shadow);
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--cc-border);
+    background: var(--cc-surface-2);
+  }
+  .detail-title {
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--cc-text);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .detail-close {
+    background: none;
+    border: none;
+    color: var(--cc-text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+  }
+  .detail-close:hover { color: var(--cc-accent); }
+
+  .detail-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+  }
+  .detail-main h3 {
+    font-size: 16px;
+    color: var(--cc-accent);
+    font-weight: 700;
+    margin: 24px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-family: var(--cc-font);
+  }
+  .detail-main h3:first-child { margin-top: 0; }
+  .detail-main p {
+    color: var(--cc-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .detail-main code {
+    background: var(--cc-surface-2);
+    border: 1px solid var(--cc-border);
+    color: var(--cc-accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--cc-font);
+    font-size: 12px;
+  }
+  .detail-main pre {
+    background: var(--cc-surface-2);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    padding: 16px;
+    font-family: var(--cc-font);
+    font-size: 12px;
+    color: var(--cc-text);
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+  .detail-main a {
+    color: var(--cc-accent);
+    text-decoration: none;
+  }
+  .detail-main a:hover { text-decoration: underline; }
+
+  .detail-sidebar {
+    border-left: 1px solid var(--cc-border);
+    padding: 20px 20px 24px;
+    background: var(--cc-surface-2);
+    overflow-y: auto;
+  }
+  .detail-sidebar h4 {
+    font-size: 12px;
+    color: var(--cc-accent);
+    font-weight: 700;
+    margin: 20px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-family: var(--cc-font);
+  }
+  .detail-sidebar h4:first-child { margin-top: 0; }
+  .detail-sidebar p {
+    font-size: 12px;
+    color: var(--cc-text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .detail-sidebar .copy-btn {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    background: var(--cc-surface);
+    color: var(--cc-text);
+    font-family: var(--cc-font);
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--cc-transition);
+    margin-top: 6px;
+  }
+  .detail-sidebar .copy-btn:hover {
+    border-color: var(--cc-accent);
+    color: var(--cc-accent);
+    background: var(--cc-accent-dim);
+  }
+  .detail-sidebar .copy-btn.copied {
+    color: var(--cc-success);
+    border-color: var(--cc-success);
+  }
+
+  /* Agent detail */
+  .agent-detail {
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    padding: 16px;
+  }
+  .agent-detail .prop {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+  .agent-detail .prop-key {
+    color: var(--cc-accent);
+    font-weight: 700;
+    width: 110px;
+    font-family: var(--cc-font);
+  }
+  .agent-detail .prop-val {
+    color: var(--cc-text-muted);
+  }
+  .agent-detail .skill-list {
+    margin-top: 12px;
+    border-top: 1px solid var(--cc-border);
+    padding-top: 12px;
+  }
+  .agent-detail .skill-list .skill-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid var(--cc-border);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--cc-text);
+    margin: 4px 4px 0 0;
+  }
+
+  /* Golden rules */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .rule-card {
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    padding: 24px;
+  }
+  .rule-card h3 {
+    font-size: 15px;
+    color: var(--cc-accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: var(--cc-font);
+  }
+  .rule-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .rule-card li {
+    color: var(--cc-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 18px;
+  }
+  .rule-card li:before {
+    content: "▹";
+    color: var(--cc-accent);
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* Deployment commands */
+  .deploy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .deploy-card {
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    padding: 20px;
+  }
+  .deploy-card h4 {
+    font-size: 14px;
+    color: var(--cc-accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-family: var(--cc-font);
+  }
+  .deploy-card pre {
+    background: var(--cc-surface-2);
+    border: 1px solid var(--cc-border);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: var(--cc-font);
+    font-size: 12px;
+    color: var(--cc-text);
+    margin-bottom: 10px;
+    overflow-x: auto;
+  }
+  .deploy-card .copy-btn {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--cc-border);
+    border-radius: 6px;
+    background: var(--cc-surface-2);
+    color: var(--cc-text);
+    font-family: var(--cc-font);
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--cc-transition);
+  }
+  .deploy-card .copy-btn:hover {
+    border-color: var(--cc-accent);
+    color: var(--cc-accent);
+    background: var(--cc-accent-dim);
+  }
+  .deploy-card .copy-btn.copied {
+    color: var(--cc-success);
+    border-color: var(--cc-success);
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--cc-border);
+    background: var(--cc-surface);
+    padding: 40px 0 56px;
+    margin-top: 48px;
+  }
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .footer-line1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cc-text);
+    flex-wrap: wrap;
+  }
+  .footer-line1 .org { color: var(--cc-accent); }
+  .footer-line1 .sep { color: var(--cc-text-muted); margin: 0 4px; }
+  .footer-line1 a { color: var(--cc-accent); text-decoration: none; }
+  .footer-line1 a:hover { text-decoration: underline; }
+  .footer-notes {
+    font-size: 12px;
+    color: var(--cc-text-muted);
+    line-height: 1.6;
+  }
+  .footer-attribution {
+    font-size: 11px;
+    color: var(--cc-text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .wrap { padding: 0 16px; }
+    .hero h1 { font-size: 30px; }
+    .stat-strip { flex-direction: column; gap: 16px; }
+    .controls { flex-direction: column; align-items: stretch; }
+    .filters { justify-content: center; }
+    .topbar .nav-center { display: none; }
+    .topbar .right { gap: 8px; }
+    .mobile-menu-btn { display: block; }
+    .search-wrap {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: var(--cc-surface);
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--cc-border);
+      z-index: 55;
+    }
+    .detail-body {
+      grid-template-columns: 1fr;
+    }
+    .detail-sidebar {
+      border-left: none;
+      border-top: 1px solid var(--cc-border);
+    }
+    .topbar .right { gap: 8px; }
+    .topbar .search-wrap { position: static; padding: 12px 24px; border: none; }
+    table { font-size: 11px; }
+    th, td { padding: 10px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#content" class="skip-link">Skip to content</a>
+
+<header class="topbar">
+  <a href="#" class="brand" onclick="return false;">
+    <span class="mark">z/ea</span> agent-skills
+  </a>
+
+  <nav class="nav-center">
+    <a href="#">Home</a>
+    <a href="#agents">Agents</a>
+    <a href="#skills">Skills</a>
+    <a href="#deploy">Deploy</a>
+    <a href="#rules">Rules</a>
+    <a href="#repo">Repository</a>
+  </nav>
+
+  <div class="right">
+    <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Menu">☰</button>
+    <div class="search-wrap" id="searchWrap">
+      <input type="search" id="skillSearch" placeholder="Search skills & agents…" aria-label="Search skills and agents">
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" onclick="toggleTheme()">
+      <span class="dot"></span>
+      <span id="themeLabel">Dark</span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#">Home</a>
+  <a href="#agents">Agents</a>
+  <a href="#skills">Skills</a>
+  <a href="#deploy">Deploy</a>
+  <a href="#rules">Rules</a>
+  <a href="#repo">Repository</a>
+</nav>
+
+<main class="wrap" id="content">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="section-head">
+        <span class="section-num">01 /</span>
+        <span class="section-title">Agent Skill Catalog</span>
+      </div>
+      <div class="section-lead">The shared guardrails, rules, and skills powering 13 AI coding agents across the Cybercore ecosystem.</div>
+
+      <h1>Agent × Skill Matrix</h1>
+      <p class="lead-text">Click any skill or agent card to open its full detail panel. Search across names, descriptions, and full skill documentation. Deep-link to any skill with a URL.</p>
+
+      <div class="stat-strip">
+        <div class="stat">
+          <div class="stat-value animating" id="statAgents">0</div>
+          <div class="stat-label">agents</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value animating" id="statSkills">0</div>
+          <div class="stat-label">skills</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value animating" id="statFiles">0</div>
+          <div class="stat-label">skill files</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value animating" id="statFavs">0</div>
+          <div class="stat-label">favorited</div>
+        </div>
+      </div>
+
+      <div class="filters">
+        <button class="chip active" onclick="filterCategory('all', this)">All Skills</button>
+        <button class="chip" onclick="filterCategory('web', this)">Web &amp; Frontend</button>
+        <button class="chip" onclick="filterCategory('system', this)">System</button>
+        <button class="chip" onclick="filterCategory('devops', this)">DevOps</button>
+        <button class="chip" onclick="filterCategory('language', this)">Languages</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Explorer -->
+  <section id="skills" class="explorer">
+    <div class="section-head">
+      <h2>Skill Catalog</h2>
+      <p class="section-subtitle">Filter, search, favorite, and open any skill for full documentation.</p>
+    </div>
+    <div class="matrix-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Skill</th>
+            <th class="agent-col" data-agent="opencode">OpenCode</th>
+            <th class="agent-col" data-agent="claude">Claude</th>
+            <th class="agent-col" data-agent="codex">Codex</th>
+            <th class="agent-col" data-agent="copilot">Copilot</th>
+            <th class="agent-col" data-agent="crush">Crush</th>
+            <th class="agent-col" data-agent="gemini">Gemini</th>
+            <th class="agent-col" data-agent="hermes">Hermes</th>
+            <th class="agent-col" data-agent="kimi-code">Kimi-Code</th>
+            <th class="agent-col" data-agent="openclaw">OpenClaw</th>
+            <th class="agent-col" data-agent="ollama">Ollama</th>
+            <th class="agent-col" data-agent="pi">Pi</th>
+            <th class="agent-col" data-agent="ori">Ori</th>
+            <th class="agent-col" data-agent="qwen">Qwen</th>
+            <th style="width: 220px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Agent Ecosystem -->
+  <section id="agents" class="explorer">
+    <div class="section-head">
+      <h2>Agent Ecosystem</h2>
+      <p class="section-subtitle">Select any agent to view its configuration, deployed skills, and setup command.</p>
+    </div>
+    <div class="agent-grid" id="agentGrid">
+      <!-- Agent cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Deployment Center -->
+  <section id="deploy" class="explorer">
+    <div class="section-head">
+      <h2>Deployment Center</h2>
+      <p class="section-subtitle">One command per agent installs all guardrails and skills into your target repository.</p>
+    </div>
+    <div class="deploy-grid" id="deployGrid">
+      <!-- Deploy cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Golden Rules -->
+  <section id="rules" class="explorer">
+    <div class="section-head">
+      <h2>Golden Rules</h2>
+      <p class="section-subtitle">Non-negotiable guardrails that every agent follows.</p>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <h3>Zero Unapproved Actions</h3>
+        <ul>
+          <li>Never edit code, overwrite files, or run state-modifying commands without presenting a plan and obtaining explicit user confirmation.</li>
+          <li>Always show the diff and intent before editing any file.</li>
+          <li>Never make changes silently or "just to try something."</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <h3>No Rogue Bug-Fixing Loops</h3>
+        <ul>
+          <li>If a build fails or a test errors out, STOP immediately.</li>
+          <li>Explain the error directly to the user.</li>
+          <li>Do not attempt recursive auto-fix attempts without permission.</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <h3>Preserve Existing Architecture</h3>
+        <ul>
+          <li>Do not rewrite whole functions or refactor files unless explicitly instructed.</li>
+          <li>Do not change library dependencies or public API signatures without request.</li>
+          <li>Make the minimal change required to fulfill the user's explicit request.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repository -->
+  <section id="repo" class="explorer">
+    <div class="section-head">
+      <h2>Repository</h2>
+      <p class="section-subtitle">Source, issues, license, and contribution information.</p>
+    </div>
+    <div class="deploy-grid" style="max-width: 500px;">
+      <div class="deploy-card">
+        <h4>Repository</h4>
+        <pre>https://github.com/cybercoretech/cybercore-agent-skills</pre>
+        <button class="copy-btn" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills')">Copy Repo URL</button>
+      </div>
+      <div class="deploy-card">
+        <h4>License</h4>
+        <pre>MIT</pre>
+        <button class="copy-btn" onclick="copyText('MIT')">Copy License</button>
+      </div>
+      <div class="deploy-card">
+        <h4>Issues</h4>
+        <pre>https://github.com/cybercoretech/cybercore-agent-skills/issues</pre>
+        <button class="copy-btn" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills/issues')">Copy Issues URL</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-line1">
+      <span class="org">CYBERCORE TECH</span>
+      <span class="sep">/</span>
+      <span>agent-skills</span>
+      <span class="sep">/</span>
+      <span>MIT</span>
+      <span style="display:inline-block;width:16px;"></span>
+      <a href="https://github.com/cybercoretech/cybercore-agent-skills" target="_blank" rel="noopener">GITHUB REPOSITORY ↗</a>
+    </div>
+    <div class="footer-notes">
+      Deploy any skill into any repository: <code>bash ~/Projects/ai/&lt;agent&gt;/agent-project-setup/setup-&lt;agent&gt;.sh</code>
+    </div>
+    <div class="footer-attribution">
+      CYBERCORE TECH · AI AGENT ECOSYSTEM · MIT
+    </div>
+  </div>
+</footer>
+
+<!-- Skill Detail Panel -->
+<div class="detail-panel" id="detailPanel">
+  <div class="detail-card">
+    <div class="detail-header">
+      <div class="detail-title" id="detailTitle">Skill Name</div>
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">✕</button>
+    </div>
+    <div class="detail-body">
+      <div class="detail-main" id="detailMain">
+        <!-- Skill details injected here -->
+      </div>
+      <div class="detail-sidebar" id="detailSidebar">
+        <!-- Sidebar content injected here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ============ Catalog Data ============
+     Canonical source generated from SKILL.md files.
+     Adding a skill here updates the whole catalog.
+  ============ */
+  const skills = [
+    {
+      id: 'web-design-and-frontend-craft',
+      name: 'Web Design & Frontend Craft',
+      category: 'web',
+      desc: 'UI/UX direction, CSS custom properties, neon/cyber aesthetics, component systems, accessibility, performance',
+      icon: '🎨',
+      full: `# Web Design & Frontend Craft
+
+You are a senior product designer, UI engineer, and frontend craftsperson. Your job is to create websites that feel intentionally designed, visually memorable, technically sound, accessible, responsive, and fast.
+
+This skill applies to landing pages, marketing sites, product sites, documentation, portfolios, dashboards, admin panels, single-page applications (SPAs), and component libraries.
+
+## The Non-Negotiable Design Standard
+
+**Do not produce generic AI-looking websites.** Avoid the predictable combination of a purple/blue gradient, giant centered heading, three identical cards, random blobs, and a generic SaaS layout unless that is genuinely right for the brand.
+
+Before coding:
+1. Inspect the repository, existing app, package manifest, routes, assets, styles, and deployment target.
+2. Identify the product, audience, primary user action, content, brand personality, and technical constraints.
+3. Determine whether this is a new design or an extension of an existing visual system.
+4. Choose one coherent visual direction and explain it briefly when the user has not already specified one.
+5. Build around the actual content and product. Do not fill space with invented claims, fake testimonials, fake customer logos, fake metrics, or meaningless filler.
+6. Preserve working behavior and existing conventions unless a change is required.
+
+## Design Tokens
+
+Use CSS custom properties for design tokens even when Tailwind or Bootstrap is present.
+
+\`\`\`css
+:root {
+  color-scheme: dark;
+  --cc-bg: #0b0c10;
+  --cc-surface: #111318;
+  --cc-text: #e8eaf2;
+  --cc-text-muted: #94a3b8;
+  --cc-accent: #8b5cf6;
+  --cc-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+\`\`\`
+
+## Key Capabilities
+
+- Semantic HTML and modern CSS Grid/Flexbox
+- CSS custom properties for design tokens
+- Responsive design with mobile-first breakpoints
+- Accessible contrast, keyboard behavior, and focus indicators
+- Asset optimization (SVG, PNG, WebP, AVIF)
+- Motion that respects prefers-reduced-motion
+
+## When to Activate
+
+Use this skill when building or redesigning any frontend surface: landing pages, dashboards, documentation sites, SPAs, or component libraries.
+
+## Supported Files
+
+- \`mockup/index.html\` — Interactive SPA mockup
+- \`mockup/footer.json\` — Footer data schema
+- \`mockup/themes.json\` — Theme chooser catalog`
+    },
+    {
+      id: 'system-administration',
+      name: 'System Administration',
+      category: 'system',
+      desc: 'Arch Linux, Omarchy, systemd, package management, user services, dotfiles',
+      icon: '🐧',
+      full: `# System Administration
+
+You are a senior Linux systems administrator specializing in Arch Linux, Omarchy, and Cybercore environments.
+
+## Scope
+
+- Systemd units and user services (\`systemctl --user\`, \`systemd-run\`)
+- Package management (\`pacman\`, \`yay\`, \`makepkg\`, AUR)
+- Dotfiles management and bare-repo patterns
+- User services, timers, and scheduled tasks
+- System monitoring and logging (\`journalctl\`, \`loginctl\`)
+- Omarchy shell plugin structure
+
+## Key Capabilities
+
+- Prefer user services over system services when possible
+- Test changes in a nested Hyprland session before applying to the live desktop
+- Never modify /etc, /usr, /usr/local/bin, /boot without explicit approval
+- Never install to the user's phone without asking
+
+## When to Activate
+
+Use this skill for Linux system administration tasks on Arch Linux, Omarchy systems, and Cybercore infrastructure.
+
+## Supported Files
+
+- \`~/.config/omarchy/plugins/<id>/\` — Omarchy plugin directory
+- \`systemctl --user\` — User service management`
+    },
+    {
+      id: 'shell-scripting',
+      name: 'Shell Scripting',
+      category: 'system',
+      desc: 'Zsh, preexec/precmd hooks, ZLE widgets, keybindings, safe command execution',
+      icon: '🐚',
+      full: `# Shell Scripting
+
+You are a senior shell scripting specialist focused on Zsh, dotfiles automation, and agent integration.
+
+## Scope
+
+- Zsh configuration (.zshrc, .zshenv, .zprofile)
+- preexec/precmd hooks
+- ZLE widgets and keybindings (zle -N, bindkey)
+- Shell functions and aliases
+- Safe command execution and error handling
+
+## Key Capabilities
+
+- Use add-zsh-hook for preexec/precmd instead of manual hook registration
+- Save and restore file descriptors when redirecting stderr/stdout
+- Check [[ -t 2 ]] before terminal-dependent operations
+- Use emulate -L zsh in functions to ensure clean shell options
+- Quote all variable expansions to prevent word splitting
+
+## When to Activate
+
+Use this skill for shell scripting, dotfiles automation, Zsh configuration, and zle widget development.
+
+## Supported Files
+
+- \`~/.zshrc\`, \`~/.zshenv\`, \`~/.zprofile\`
+- \`~/.zsh_functions\` — Custom zsh functions`
+    },
+    {
+      id: 'git-workflow',
+      name: 'Git Workflow',
+      category: 'system',
+      desc: 'Commit conventions, branch strategies, PR hygiene, safe Git operations',
+      icon: '🔀',
+      full: `# Git Workflow
+
+You are a Git workflow specialist focused on Cybercore repository standards.
+
+## Scope
+
+- Commit conventions and message standards
+- Branch naming and lifecycle strategies
+- Pull request hygiene and review process
+- Safe Git operations and recovery
+
+## Commit Standards
+
+**Format:**
+\`\`\`
+<type>: <description>
+
+<optional body>
+
+👻 Code & Design by Darkstardevx 🤖 Generated with <Agent>
+
+Co-Authored-By: <Agent> <noreply@agent-domain.com>
+\`\`\`
+
+**Types:** feat:, fix:, docs:, refactor:, test:, chore:
+
+## Key Capabilities
+
+- Create feature branches: feat/..., fix/..., docs:...
+- Never commit directly to main
+- One PR at a time per repo — never stack PRs
+- git diff --check before committing (whitespace errors)
+- git config user.email must be 19244308+darkstardevx@users.noreply.github.com
+
+## When to Activate
+
+Use this skill for any Git-related workflow: commits, branches, PRs, merges, rebases, and repository management.
+
+## Supported Files
+
+- \`~/.gitconfig\` — Git configuration
+- \`AGENTS.md\` — Agent instructions`
+    },
+    {
+      id: 'security-guidelines',
+      name: 'Security Guidelines',
+      category: 'system',
+      desc: 'Secret handling, credential management, SSH/GPG keys, secure IPC',
+      icon: '🔒',
+      full: `# Security Guidelines
+
+You are a security specialist focused on protecting secrets, credentials, and sensitive data in development environments.
+
+## Scope
+
+- Secret and credential management
+- .env and token file protection
+- SSH/GPG key handling
+- Secure IPC (Unix sockets, D-Bus)
+- File permissions and ownership
+- Credential rotation and revocation
+
+## Absolute Constraints (Never Violate)
+
+**NEVER:**
+- Print, log, commit, or echo tokens, passwords, keystore files, .env contents, or credential files
+- Paste secrets into commit messages, PR bodies, test fixtures, or documentation
+- Run bash -x, set -x, or set -o xtrace on scripts that source secrets
+- Store secrets in world-readable files or public locations
+
+## Key Capabilities
+
+- Restrict credentials to the user and any explicitly named, cleared audience
+- Store credentials in owner-only files (0600) under the app's XDG config directory
+- Use IPC sockets that are user-only (0600, under $XDG_RUNTIME_DIR), never TCP on 0.0.0.0
+- Never hotlink random third-party images in production
+
+## When to Activate
+
+Use this skill for any security-related task: secret management, credential rotation, file permissions, secure IPC, or access control.
+
+## Supported Files
+
+- \`~/.cargo/credentials.toml\`
+- \`~/.claude/.credentials.json\`
+- \`~/.env\`, \`.env.*\`
+- \`~/.ssh/`, \`~/.gnupg/`
+- Sensitive files matching \**/credentials*, \**/*secret*, \**/*private-key*`
+    },
+    {
+      id: 'testing-qa',
+      name: 'Testing & QA',
+      category: 'devops',
+      desc: 'Rust, shell, Qt/QML, Astro testing standards, CI/CD verification',
+      icon: '🧪',
+      full: `# Testing & QA
+
+You are a testing and QA specialist focused on Rust, shell scripts, and desktop applications.
+
+## Scope
+
+- Rust unit tests, integration tests, clippy, fmt
+- Shell script testing and validation
+- Qt/QML application testing (qmllint, offscreen platform)
+- CI/CD pipeline verification
+- Test doubles and stubs
+- Test data management (no real user data)
+
+## Required CI Checks (Rust)
+
+\`\`\`bash
+cargo fmt --check
+cargo clippy --all-targets -- -D warnings
+cargo test
+RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
+\`\`\`
+
+## Key Capabilities
+
+- MSRV compliance: Match the crate's rust-version (1.80, 1.85, or 1.88)
+- Error handling: thiserror in libraries, anyhow in binaries
+- Never touch real user data in tests
+- Use QStandardPaths::setTestModeEnabled(true) and temp dirs in Qt tests
+- Never send real notifications, emails, or network calls to real services
+
+## When to Activate
+
+Use this skill for any testing or quality assurance task: writing tests, running CI, debugging failures, or verifying code quality.
+
+## Supported Files
+
+- Cargo.toml, Cargo.lock — Rust project configuration
+- .github/workflows/ — CI/CD pipeline definitions
+- \`tests/\` directories — Test files`
+    },
+    {
+      id: 'rust-development',
+      name: 'Rust Development',
+      category: 'language',
+      desc: 'Cargo workspaces, crates.io publishing, MSRV compliance, error handling',
+      icon: '🦀',
+      full: `# Rust Development Standards
+
+You are a senior Rust developer focused on the Cybercore ecosystem and crates.io publishing.
+
+## Scope
+
+- Cargo workspace patterns and crate structure
+- crates.io publishing and version management
+- MSRV (Minimum Supported Rust Version) compliance
+- Error handling patterns (thiserror, anyhow)
+- Memory management and borrowing
+- Async runtimes and concurrency
+
+## Safety Rules
+
+**STOP AND REPORT before any of these:**
+- cargo publish without explicit user approval
+- Raising MSRV without reporting why
+- Using unsafe blocks without explicit user approval and a detailed safety comment explaining invariants
+- .unwrap() and .expect() in production library code; return Result<T, E> and utilize proper error propagation (?)
+- Dependencies on untagged git refs or local paths instead of crates.io versions
+
+## MSRV Compliance
+
+| Crate | MSRV | Edition |
+|-------|------|---------|
+| Most Cybercore crates | 1.80 | 2021 |
+| Some newer crates | 1.85 | 2021/2024 |
+| vdb-rs | 1.88 | 2024 |
+
+## Key Capabilities
+
+- Match the crate's edition and rust-version
+- Don't use newer std APIs than MSRV allows
+- Depend on cybercore and other published crates from crates.io with a version
+- One binary with subcommands over new binaries (cyberterm +daemon, +mcp)
+
+## When to Activate
+
+Use this skill for any Rust development task: writing crates, debugging compilation errors, managing dependencies, or publishing to crates.io.
+
+## Supported Files
+
+- Cargo.toml — Package manifest
+- Cargo.lock — Dependency lock file
+- src/**/*.rs — Rust source files
+- build.rs — Build script`
+    },
+    {
+      id: 'qt-cpp-desktop',
+      name: 'Qt/C++ Desktop',
+      category: 'language',
+      desc: 'Qt6/C++, QML, Quickshell/Omarchy plugins, qmake6',
+      icon: '🖥️',
+      full: `# Qt6/C++ Desktop Development
+
+You are a senior Qt6/C++ developer specializing in desktop applications and Omarchy/Quickshell shell plugins.
+
+## Scope
+
+- Qt6/C++ applications with qmake6
+- QML UI components and Quickshell/Omarchy plugins
+- .pro files, .pri shared settings, qml.qrc, qmldir
+- C++20 with RAII patterns
+- QObject parent ownership and QML exposure
+
+## Safety Rules
+
+**STOP AND REPORT before any of these:**
+- Editing ~/.config/hypr or ~/.config/omarchy (use the omarchy skill for those)
+- Running omarchy-restart-shell or hyprctl reload/keyword
+- Killing user's apps or changing the live desktop session
+- Adding CMake to a qmake project
+
+## Key Capabilities
+
+- qmake6 build system — never add CMake to a qmake project
+- RAII for resource management
+- QObject parent owns children — don't wrap in unique_ptr
+- Expose to QML with Q_PROPERTY/QML_ELEMENT/QML_SINGLETON
+- Keep heavy work off UI thread (QtConcurrent, worker QThread)
+
+## When to Activate
+
+Use this skill for Qt6/C++ desktop application development, QML UI components, or Omarchy/Quickshell shell plugins.
+
+## Supported Files
+
+- *.pro — Qt project files
+- *.pri — Qt project includes
+- qml.qrc — Qt resource collection
+- qmldir — QML module directory
+- *.cpp, *.h — C++ source files`
+    },
+    {
+      id: 'android-development',
+      name: 'Android Development',
+      category: 'language',
+      desc: 'Gradle, APK signing, Android CLI tooling',
+      icon: '📱',
+      full: `# Android Development
+
+You are an Android developer specializing in Gradle builds, APK signing, and CLI tooling.
+
+## Scope
+
+- Gradle build configuration and variants
+- APK signing and release builds
+- Android CLI tools (adb, sdkmanager, avdmanager)
+- Environment variable management for Android builds
+- Version code/name management
+
+## Safety Rules
+
+**STOP AND REPORT before any of these:**
+- cargo publish, AUR pushes, or app-store uploads
+- Publishing to F-Droid or Google Play without authorization
+- Modifying signing keystores or release keys
+- Never install to the user's phone without asking
+
+## Key Capabilities
+
+- Gradle build configuration and variants
+- APK signing and release builds
+- Android CLI tools (adb, sdkmanager, avdmanager)
+- Version code/name management
+- Environment variable management for Android builds
+
+## When to Activate
+
+Use this skill for any Android development task: building APKs, signing releases, managing dependencies, or debugging Android applications.
+
+## Supported Files
+
+- build.gradle — Gradle build configuration
+- settings.gradle — Gradle settings
+- AndroidManifest.xml — Android manifest
+- res/** — Android resources
+- src/** — Java/Kotlin source files`
+    },
+    {
+      id: 'api-backend',
+      name: 'API Backend',
+      category: 'devops',
+      desc: 'REST API design, JSON schemas, error handling',
+      icon: '☁️',
+      full: `# API Backend Development
+
+You are a backend developer specializing in REST API design, JSON schemas, and HTTP service patterns.
+
+## Scope
+
+- RESTful API design and endpoints
+- JSON request/response schemas
+- Error handling and status codes
+- HTTP service patterns and middleware
+- Authentication and authorization
+- API versioning and deprecation
+
+## Design Principles
+
+1. **RESTful design** — Use HTTP methods correctly (GET, POST, PUT, PATCH, DELETE)
+2. **JSON-first** — All request/response bodies use JSON
+3. **Stateless** — Each request contains all information needed
+4. **Versioned** — API version in URL or header (/v1/, Accept: application/vnd.api+json;version=1)
+5. **Self-describing** — Error responses include enough info to debug
+
+## Error Handling
+
+| Status Code | Meaning | Use Case |
+|-------------|---------|----------|
+| 200 | OK | Successful request |
+| 201 | Created | Resource created |
+| 400 | Bad Request | Client error, validation |
+| 401 | Unauthorized | Authentication required |
+| 404 | Not Found | Resource doesn't exist |
+| 500 | Internal Server Error | Server error |
+
+## Key Capabilities
+
+- Use plural resource names (/users, /projects)
+- Nest resources when appropriate (/users/123/projects)
+- Return created resource in 201 response
+- Use Location header for created resource URL
+- Consistent error response format across all endpoints
+
+## When to Activate
+
+Use this skill for any API backend development task: designing REST APIs, implementing endpoints, handling authentication, or debugging HTTP services.
+
+## Supported Files
+
+- routes/** — Route definitions
+- controllers/** — Controller logic
+- models/** — Data models
+- schemas/** — JSON schemas
+- tests/** — API tests`
+    },
+    {
+      id: 'container-devops',
+      name: 'Container & DevOps',
+      category: 'devops',
+      desc: 'Docker, GitHub Actions, CI/CD, Cloudflare Pages',
+      icon: '📦',
+      full: `# Container & DevOps
+
+You are a DevOps engineer specializing in containerization, CI/CD pipelines, and deployment automation.
+
+## Scope
+
+- Docker images and multi-stage builds
+- GitHub Actions workflows
+- CI/CD pipeline design and debugging
+- Container registries and image tagging
+- Deployment strategies and rollbacks
+- Environment variable and secret management
+- Cloudflare Pages deployment
+
+## Safety Rules
+
+**STOP AND REPORT before any of these:**
+- git push --force or rewriting pushed history
+- Cloudflare/Pages deploys by hand
+- Modifying production CI/CD pipelines without authorization
+- Changes to spend limits or billing configurations
+- Cross-Region resource creation
+
+## Key Capabilities
+
+- Use multi-stage builds to reduce image size
+- Pin base image versions (don't use latest)
+- Run as non-root user (USER directive)
+- Use .dockerignore to exclude secrets and build artifacts
+- Use reusable workflows when possible
+- Pin action versions (commit SHA or specific tag)
+
+## When to Activate
+
+Use this skill for any DevOps task: containerizing applications, configuring CI/CD pipelines, deploying to production, or managing infrastructure.
+
+## Supported Files
+
+- Dockerfile — Container build definition
+- .dockerignore — Docker ignore file
+- .github/workflows/ — GitHub Actions workflows
+- wrangler.toml — Cloudflare Pages configuration
+- docker-compose.yml — Docker Compose configuration`
+    }
+  ];
+
+  const agents = [
+    { id: 'opencode', name: 'OpenCode', desc: 'OpenCode coding agent', dir: '~/.config/opencode/', script: 'setup-agent.sh' },
+    { id: 'claude', name: 'Claude', desc: 'Claude Code assistant', dir: '~/.claude/', script: 'setup-claude.sh' },
+    { id: 'codex', name: 'Codex', desc: 'OpenAI Codex agent', dir: '~/.codex/', script: 'setup-codex.sh' },
+    { id: 'copilot', name: 'Copilot', desc: 'GitHub Copilot agent', dir: '~/.copilot/', script: 'setup-copilot.sh' },
+    { id: 'crush', name: 'Crush', desc: 'Crush terminal agent', dir: '~/.crush/', script: 'setup-crush.sh' },
+    { id: 'gemini', name: 'Gemini', desc: 'Google Gemini agent', dir: '~/.gemini/', script: 'setup-gemini.sh' },
+    { id: 'hermes', name: 'Hermes', desc: 'Hermes agent', dir: '~/.hermes/', script: 'setup-hermes.sh' },
+    { id: 'kimi-code', name: 'Kimi-Code', desc: 'Kimi Code agent', dir: '~/.kimi-code/', script: 'setup-kimi-code.sh' },
+    { id: 'openclaw', name: 'OpenClaw', desc: 'OpenClaw agent', dir: '~/.openclaw/', script: 'setup-openclaw.sh' },
+    { id: 'ollama', name: 'Ollama', desc: 'Ollama LLM agent', dir: '~/.ollama/', script: 'setup-ollama.sh' },
+    { id: 'pi', name: 'Pi', desc: 'Pi assistant agent', dir: '~/.pi/', script: 'setup-pi.sh' },
+    { id: 'ori', name: 'Ori', desc: 'Ori agent', dir: '~/.ori/', script: 'setup-ori.sh' },
+    { id: 'qwen', name: 'Qwen', desc: 'Qwen agent', dir: '~/.qwen/', script: 'setup-qwen.sh' }
+  ];
+
+  const agentLabels = {
+    opencode: 'OpenCode', claude: 'Claude', codex: 'Codex', copilot: 'Copilot',
+    crush: 'Crush', gemini: 'Gemini', hermes: 'Hermes', 'kimi-code': 'Kimi-Code',
+    openclaw: 'OpenClaw', ollama: 'Ollama', pi: 'Pi', ori: 'Ori', qwen: 'Qwen'
+  };
+
+  const skillMatrix = {};
+  skills.forEach(s => {
+    skillMatrix[s.id] = {};
+    agents.forEach(a => { skillMatrix[s.id][a.id] = true; });
+  });
+
+  /* ============ State ============ */
+  let activeFilter = 'all';
+  let favorites = new Set(JSON.parse(localStorage.getItem('cc-favs') || '[]'));
+  let activeTheme = localStorage.getItem('cc-theme') || 'dark';
+  let searchQuery = '';
+  let activeDetail = null;
+
+  /* ============ Init ============ */
+  function init() {
+    applyTheme();
+    renderMatrix();
+    renderAgents();
+    renderDeploy();
+    animateStats();
+    setupSearch();
+    setupDeepLink();
+    window.addEventListener('hashchange', setupDeepLink);
+  }
+
+  /* Theme */
+  function applyTheme() {
+    document.documentElement.setAttribute('data-theme', activeTheme);
+    const label = document.getElementById('themeLabel');
+    if (label) label.textContent = activeTheme === 'dark' ? 'Dark' : 'Light';
+  }
+
+  function toggleTheme() {
+    activeTheme = activeTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('cc-theme', activeTheme);
+    applyTheme();
+  }
+
+  /* Stats animation */
+  function animateStats() {
+    const targets = {
+      statAgents: agents.length,
+      statSkills: skills.length,
+      statFiles: agents.length * skills.length,
+      statFavs: favorites.size
+    };
+    Object.entries(targets).forEach(([id, target]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let current = 0;
+      const steps = 20;
+      const increment = target / steps;
+      let step = 0;
+      const interval = setInterval(() => {
+        step++;
+        current += increment;
+        el.textContent = Math.floor(current);
+        if (step >= steps) {
+          el.textContent = target;
+          el.classList.remove('animating');
+          clearInterval(interval);
+        }
+      }, 20);
+    });
+  }
+
+  /* Render skills matrix */
+  function renderMatrix() {
+    const tbody = document.getElementById('matrixBody');
+    tbody.innerHTML = '';
+    let rendered = 0;
+
+    skills.forEach(skill => {
+      if (activeFilter !== 'all' && skill.category !== activeFilter) return;
+      if (searchQuery && !skill.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !skill.desc.toLowerCase().includes(searchQuery.toLowerCase())) return;
+
+      rendered++;
+      const row = document.createElement('tr');
+      row.dataset.id = skill.id;
+      row.dataset.category = skill.category;
+      row.className = 'skill-row';
+      row.onclick = () => openDetail('skill', skill.id);
+
+      const favClass = favorites.has(skill.id) ? 'favorited' : '';
+
+      let skillHtml = `
+        <div class="skill-cell">
+          <span class="skill-icon">${skill.icon}</span>
+          <div class="skill-info">
+            <div class="skill-name">${escapeHtml(skill.name)}</div>
+            <div class="skill-desc">${escapeHtml(skill.desc)}</div>
+            <div class="skill-cats"><span class="cat-chip">${skill.category}</span></div>
+          </div>
+        </div>
+      `;
+      row.innerHTML = `<td>${skillHtml}</td>`;
+
+      agents.forEach(agent => {
+        const td = document.createElement('td');
+        td.className = 'status-cell';
+        if (skillMatrix[skill.id][agent.id]) {
+          td.className += ' status-yes';
+          td.textContent = '✓';
+        } else {
+          td.textContent = '–';
+        }
+        row.appendChild(td);
+      });
+
+      const cmdCell = document.createElement('td');
+      cmdCell.style.textAlign = 'left';
+      cmdCell.innerHTML = `
+        <button class="copy-btn" onclick="event.stopPropagation(); copySetup('${skill.id}', this)">
+          Install <span style="font-family:var(--cc-font);font-size:11px;">setup-${skill.id}</span>
+        </button>
+      `;
+      row.appendChild(cmdCell);
+
+      tbody.appendChild(row);
+    });
+  }
+
+  function filterCategory(category, btn) {
+    activeFilter = category;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    renderMatrix();
+  }
+
+  /* Search */
+  function setupSearch() {
+    const input = document.getElementById('skillSearch');
+    const wrap = document.getElementById('searchWrap');
+
+    input.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase();
+      renderMatrix();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !e.target.matches('input, textarea')) {
+        e.preventDefault();
+        wrap.classList.toggle('open');
+        if (wrap.classList.contains('open')) input.focus();
+      }
+      if (e.key === 'Escape') {
+        wrap.classList.remove('open');
+        input.value = '';
+        searchQuery = '';
+        renderMatrix();
+      }
+    });
+  }
+
+  /* Deep links */
+  function setupDeepLink() {
+    const hash = window.location.hash;
+    if (hash.startsWith('#skill/')) {
+      const skillId = hash.slice(7);
+      openDetail('skill', skillId);
+    } else if (hash.startsWith('#agent/')) {
+      const agentId = hash.slice(7);
+      openDetail('agent', agentId);
+    } else if (hash === '') {
+      closeDetail();
+    }
+  }
+
+  /* Detail panel */
+  function openDetail(type, id) {
+    if (type === 'skill') {
+      const skill = skills.find(s => s.id === id);
+      if (!skill) return;
+      renderSkillDetail(skill);
+    } else if (type === 'agent') {
+      const agent = agents.find(a => a.id === id);
+      if (!agent) return;
+      renderAgentDetail(agent);
+    }
+    activeDetail = type + ':' + id;
+    window.location.hash = `${type}/${id}`;
+    document.getElementById('detailPanel').classList.add('open');
+  }
+
+  function closeDetail() {
+    document.getElementById('detailPanel').classList.remove('open');
+    activeDetail = null;
+    window.location.hash = '';
+  }
+
+  function renderSkillDetail(skill) {
+    document.getElementById('detailTitle').textContent = skill.name;
+    const main = document.getElementById('detailMain');
+    const sidebar = document.getElementById('detailSidebar');
+
+    main.innerHTML = `
+      <h3>Overview</h3>
+      <p>${escapeHtml(skill.desc)}</p>
+      <h3>Category</h3>
+      <p><span class="cat-chip" style="margin-right:8px;">${skill.category}</span> <span class="cat-chip">frontend: ${skill.category === 'web' ? 'yes' : 'no'}</span> <span class="cat-chip">language: ${skill.category === 'language' ? 'yes' : 'no'}</span></p>
+      <h3>Full Documentation</h3>
+      <pre>${escapeMd(skill.full)}</pre>
+    `;
+
+    sidebar.innerHTML = `
+      <h4>Skill ID</h4>
+      <p>${skill.id}</p>
+      <h4>Category</h4>
+      <p>${skill.category}</p>
+      <h4>Deploy to Agents</h4>
+      <div class="skill-list">
+        ${agents.map(a => `<span class="skill-tag">${agentLabels[a.id]}</span>`).join('')}
+      </div>
+      <button class="copy-btn" onclick="copySetup('${skill.id}', this)">
+        Copy Install Command
+      </button>
+      <button class="copy-btn" style="margin-top:8px;" onclick="copyText('${skill.full}')">
+        Copy Full Documentation
+      </button>
+    `;
+  }
+
+  function renderAgentDetail(agent) {
+    document.getElementById('detailTitle').textContent = agent.name;
+    const main = document.getElementById('detailMain');
+    const sidebar = document.getElementById('detailSidebar');
+
+    const deployedSkills = skills.filter(s => skillMatrix[s.id][agent.id]);
+
+    main.innerHTML = `
+      <h3>Overview</h3>
+      <p>${escapeHtml(agent.desc)}</p>
+      <h3>Configuration Directory</h3>
+      <p><code>${agent.dir}</code></p>
+      <h3>Setup Script</h3>
+      <p><code>setup-${agent.script}</code></p>
+      <h3>Deployed Skills (${deployedSkills.length})</h3>
+      <div class="skill-list">
+        ${deployedSkills.map(s => `<span class="skill-tag">${s.name}</span>`).join('')}
+      </div>
+    `;
+
+    sidebar.innerHTML = `
+      <h4>Agent ID</h4>
+      <p>${agent.id}</p>
+      <h4>Home Directory</h4>
+      <p>${agent.dir}</p>
+      <h4>Setup Script</h4>
+      <button class="copy-btn" onclick="copyText('bash ~/Projects/ai/${agent.id}/agent-project-setup/setup-${agent.script}')">
+        Copy Setup Command
+      </button>
+      <button class="copy-btn" style="margin-top:8px;" onclick="copyText('~/Projects/ai/${agent.id}/')">
+        Copy Agent Directory
+      </button>
+    `;
+  }
+
+  function toggleFavorite(skillId, btn) {
+    if (favorites.has(skillId)) {
+      favorites.delete(skillId);
+      btn.classList.remove('favorited');
+    } else {
+      favorites.add(skillId);
+      btn.classList.add('favorited');
+    }
+    localStorage.setItem('cc-favs', JSON.stringify([...favorites]));
+    showToast(favorites.has(skillId) ? 'Added to favorites' : 'Removed from favorites');
+    renderMatrix();
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.querySelector('.toast-text').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  function copySetup(skillId, btn) {
+    const agentsStr = agents.map(a => `bash ~/Projects/ai/${a.id}/agent-project-setup/setup-${a.script}  # ${skillId}`).join('\n');
+    navigator.clipboard.writeText(agentsStr).then(() => {
+      const original = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = 'Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = original;
+      }, 1500);
+    });
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
+  }
+
+  /* Render agents grid */
+  function renderAgents() {
+    const grid = document.getElementById('agentGrid');
+    grid.innerHTML = '';
+
+    agents.forEach(agent => {
+      const deployed = skills.filter(s => skillMatrix[s.id][agent.id]);
+      const card = document.createElement('div');
+      card.className = 'agent-card';
+      card.onclick = (e) => {
+        if (!e.target.closest('.copy-btn')) openDetail('agent', agent.id);
+      };
+      card.innerHTML = `
+        <div class="agent-header">
+          <span class="agent-icon">${agent.id.charAt(0).toUpperCase()}</span>
+          <div>
+            <div class="agent-name">${agent.name}</div>
+            <div class="agent-subtitle">${agent.desc}</div>
+          </div>
+        </div>
+        <div class="agent-stats">
+          <div class="stat-item"><span class="value">${deployed.length}</span> skills</div>
+          <div class="stat-item"><span class="value">${agent.dir}</span> dir</div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  /* Render deploy center */
+  function renderDeploy() {
+    const grid = document.getElementById('deployGrid');
+    grid.innerHTML = '';
+
+    agents.forEach(agent => {
+      const card = document.createElement('div');
+      card.className = 'deploy-card';
+      card.innerHTML = `
+        <h4>${agent.name}</h4>
+        <pre>bash ~/Projects/ai/${agent.id}/agent-project-setup/setup-${agent.script}</pre>
+        <button class="copy-btn" onclick="copyText('bash ~/Projects/ai/${agent.id}/agent-project-setup/setup-${agent.script}')">Copy Command</button>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  /* Utilities */
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function escapeMd(text) {
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const wrap = document.getElementById('searchWrap');
+    wrap.classList.remove('open');
+    nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+  }
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) {
+      document.getElementById('mobileNav').style.display = 'none';
+    }
+  });
+
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+  // Init
+  init();
+</script>
+
+</body>
+</html>
