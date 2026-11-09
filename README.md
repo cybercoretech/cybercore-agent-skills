@@ -1,11 +1,15 @@
-# 🛡️ cybercore-agent-skills
+# 🔒 blackbox-agent-skills
 
-> Shared agent guardrails, rules, and skills for all Cybercore AI coding agents — OpenCode, Claude, Codex, Copilot, Crush, Gemini, Hermes, Kimi-Code, OpenClaw, Ollama, Pi, Ori, and Qwen.
+> Internal agent guardrails, rules, and skills for Cybercore AI coding agents — OpenCode, Claude, Codex, Copilot, Crush, Gemini, Hermes, Kimi-Code, OpenClaw, Ollama, Pi, Ori, and Qwen.
 
-[![GitHub Pages](https://img.shields.io/badge/cybercoretech.github.io-cybercore--agent--skills-blue)](https://cybercoretech.github.io/cybercore-agent-skills/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![13 Agents](https://img.shields.io/badge/Agents-13-purple)](https://github.com/cybercoretech/cybercore-agent-skills)
-[![10 Skills](https://img.shields.io/badge/Skills-10-green)](https://github.com/cybercoretech/cybercore-agent-skills/tree/main)
+[![13 Agents](https://img.shields.io/badge/Agents-13-purple)](https://github.com/cybercoretech/blackbox-agent-skills)
+[![10 Skills](https://img.shields.io/badge/Skills-10-green)](https://github.com/cybercoretech/blackbox-agent-skills/tree/main)
+[![Private](https://img.shields.io/badge/Visibility-Private-red)](https://github.com/cybercoretech/blackbox-agent-skills)
+
+---
+
+> **Internal build.** Contains personal/local paths (`~/android`, `~/.config/opencode/`, `<PHONE_SERIAL>`) and device-specific references. For the public version, see [cybercoretech/cybercore-agent-skills](https://github.com/cybercoretech/cybercore-agent-skills).
 
 ---
 
