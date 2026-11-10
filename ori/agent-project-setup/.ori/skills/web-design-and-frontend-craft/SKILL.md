@@ -54,9 +54,9 @@ The Cybercore ecosystem uses a specific token system. When working on Cybercore 
 
 **Families:** cyberpunk, cyberdyne, cybercore-tech, cyberdark, neon-noir, synthwave, void, omarchy, dystopian, futuristic, terminal-ghost, neosynth, plasma-core, signal-cities, cryo-*, darkwave-terminal, ghost-protocol-x, ghostcore-veil, ghostwire-matrix, neon-ghost-omarchy, neon-specter-tty, omarchy-cyber-synth, phantom-wave-core, subgrid-wave-ui, synth-decay-crt, synth-syntax-grid, synthwave-dusk, terminal-specter, tokengrid-neon, wavefront-cyber, cryo-frost-net, cryo-glacial-drift, cryo-quantum-frost, cryo-subzero-core, cryo-terminal-blue, cyber-pulse-dark, cyber-shattered, cybercore-vortex, cybergrid-zsh, cyberpunk-noir.
 
-## 3. Workrate Report Design Tokens (Secondary Palette)
+## 3. Secondary Palette Example
 
-The Workrate Report (`workrate-report.pages.dev`) uses a distinct retro-wrestling aesthetic:
+A secondary palette can support a distinct editorial or retro-sports aesthetic:
 
 ```css
 :root {
@@ -330,7 +330,7 @@ Typography is a major part of the design, not a finishing detail.
 - Never use typography alone to indicate an interactive state.
 
 **Cybercore font stack:** Inter (body/UI), JetBrains Mono (monospace/terminal accents).
-**Workrate Report font stack:** Anton (display), Inter (UI), Source Serif 4 (prose).
+**Example font stack:** Anton (display), Inter (UI), Source Serif 4 (prose).
 **Neon Coffin Video font stack:** UnifrakturMaguntia (town paper masthead), IM FELL English (town paper body).
 
 ## 11. Color, Contrast, and Visual Polish
@@ -355,7 +355,7 @@ Good open-source icon sources: - Lucide: https://github.com/lucide-icons/lucide 
 
 Rules: - Prefer a project's existing icon package. - If starting fresh, choose one family based on the product and framework. - Use consistent sizing and stroke weight. - Use icons to improve recognition, not to fill empty space. - Use accessible labels for icon-only controls. - Avoid emoji as interface icons unless the product's brand explicitly calls for them. - Do not hand-draw complex icon paths when a maintained icon set has the correct asset. - Use inline SVG for simple, scalable UI illustrations and decorative marks. - Set SVG `viewBox`, dimensions, and `aria-hidden`/accessible title appropriately. - Sanitize untrusted SVG before embedding it. Never insert untrusted SVG markup directly. - Optimize exported SVGs and remove editor metadata where safe. - Keep SVG fills/strokes configurable with `currentColor` when the design needs theme support.
 
-**Inline SVG brand assets:** In the Workrate Report, brand SVGs in `src/components/brand/` are *generated* by `brand/tools/themeable.py` (fixed colors → CSS vars). Do not hand-edit them.
+**Inline SVG brand assets:** If brand SVGs are generated from design tokens, update their source generator and regenerate them rather than hand-editing generated output.
 
 ## 13. Asset-pack Creation
 

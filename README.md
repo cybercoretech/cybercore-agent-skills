@@ -1,245 +1,83 @@
-# 🔒 cybercore-agent-skills
+# CyberCore Agent Skills
 
-> Internal agent guardrails, rules, and skills for Cybercore AI coding agents — OpenCode, Claude, Codex, Copilot, Crush, Gemini, Hermes, Kimi-Code, OpenClaw, Ollama, Pi, Ori, and Qwen.
+Reusable guardrails, rules, and skills for 13 AI coding agents. Each template includes four shared rule files and 11 reusable skills, adapted to the configuration layout of its agent.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![13 Agents](https://img.shields.io/badge/Agents-13-purple)](https://github.com/cybercoretech/blackbox-agent-skills)
-[![10 Skills](https://img.shields.io/badge/Skills-10-green)](https://github.com/cybercoretech/blackbox-agent-skills/tree/main)
-[![Private](https://img.shields.io/badge/Visibility-Private-red)](https://github.com/cybercoretech/blackbox-agent-skills)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![13 agents](https://img.shields.io/badge/agents-13-purple)](#supported-agents)
+[![11 skills](https://img.shields.io/badge/skills-11-green)](#included-skills)
 
----
+## Supported agents
 
-> **Internal build.** Contains personal/local paths (`~/android`, `~/.config/opencode/`, `<PHONE_SERIAL>`) and device-specific references. For the public version, see [cybercoretech/cybercore-agent-skills](https://github.com/cybercoretech/cybercore-agent-skills).
+Claude, Codex, GitHub Copilot, Crush, Gemini CLI, Hermes, Kimi Code, Ollama, OpenClaw, OpenCode, Ori, Pi, and Qwen.
 
----
+Each template is stored at `<agent>/agent-project-setup/` and contains the agent's root instruction file, four rules, 11 skills, and an installer.
 
-## 📦 What's Inside
+## Quick start
 
-Each agent has its own project template under `Projects/ai/<agent>/agent-project-setup/` containing guardrails, rules, and skills that can be deployed into any target repository.
-
-| Agent | Home Dir | Template Dir | Setup Script |
-|-------|----------|-------------|--------------|
-| 🦾 **OpenCode** | `~/.config/opencode/` | `opencode/agent-project-setup/` | `setup-agent.sh` |
-| 🤖 **Claude** | `~/.claude/` | `claude/agent-project-setup/` | `setup-claude.sh` |
-| 📓 **Codex** | `~/.codex/` | `codex/agent-project-setup/` | `setup-codex.sh` |
-| 🤖 **Copilot** | `~/.copilot/` | `copilot/agent-project-setup/` | `setup-copilot.sh` |
-| 💥 **Crush** | `~/.crush/` | `crush/agent-project-setup/` | `setup-crush.sh` |
-| 💎 **Gemini** | `~/.gemini/` | `gemini/agent-project-setup/` | `setup-gemini.sh` |
-| 📬 **Hermes** | `~/.hermes/` | `hermes/agent-project-setup/` | `setup-hermes.sh` |
-| 🌙 **Kimi-Code** | `~/.kimi-code/` | `kimi-code/agent-project-setup/` | `setup-kimi-code.sh` |
-| 🦷 **OpenClaw** | `~/.openclaw/` | `openclaw/agent-project-setup/` | `setup-openclaw.sh` |
-| 🦙 **Ollama** | `~/.ollama/` | `ollama/agent-project-setup/` | `setup-ollama.sh` |
-| 🥧 **Pi** | `~/.pi/` | `pi/agent-project-setup/` | `setup-pi.sh` |
-| 🦉 **Ori** | `~/.ori/` | `ori/agent-project-setup/` | `setup-ori.sh` |
-| 👂 **Qwen** | `~/.qwen/` | `qwen/agent-project-setup/` | `setup-qwen.sh` |
-
----
-
-## 🧩 Skills (10 Total)
-
-Each agent template includes the same 10 skills in its `.<agent>/skills/` directory:
-
-| Skill | ID | Description |
-|-------|-----|-------------|
-| 🎨 **Web Design & Frontend Craft** | `web-design-and-frontend-craft` | UI/UX direction, CSS custom properties, neon/cyber aesthetics, component systems, accessibility, performance |
-| 🐧 **System Administration** | `system-administration` | Arch Linux, Omarchy, systemd, package management, user services, dotfiles |
-| 🐚 **Shell Scripting** | `shell-scripting` | Zsh, preexec/precmd hooks, ZLE widgets, keybindings, safe command execution |
-| 🔀 **Git Workflow** | `git-workflow` | Commit conventions, branch strategies, PR hygiene, safe Git operations |
-| 🔒 **Security Guidelines** | `security-guidelines` | Secret handling, credential management, SSH/GPG keys, secure IPC |
-| 🧪 **Testing & QA** | `testing-qa` | Rust, shell, Qt/QML, Astro testing standards, CI/CD verification |
-| 🦀 **Rust Development** | `rust-development` | Cargo workspaces, crates.io publishing, MSRV compliance, error handling |
-| 🖥️ **Qt/C++ Desktop** | `qt-cpp-desktop` | Qt6/C++, QML, Quickshell/Omarchy plugins, qmake6 |
-| 📱 **Android Development** | `android-development` | Gradle, APK signing, Android CLI tooling |
-| ☁️ **Container & DevOps** | `container-devops` | Docker, GitHub Actions, CI/CD, Cloudflare Pages |
-
----
-
-## 🚀 Quick Start
-
-Deploy an agent's guardrails into any target repository:
+Clone this repository, then run the installer for your agent from the project you want to configure:
 
 ```bash
+git clone https://github.com/cybercoretech/cybercore-agent-skills.git
 cd /path/to/your/project
-bash ~/Projects/ai/<agent>/agent-project-setup/setup-<agent>.sh
+bash /path/to/cybercore-agent-skills/codex/agent-project-setup/setup-codex.sh
 ```
 
-**Example — deploying Claude guardrails:**
+Replace `codex` with the agent directory you use. The installer locates its source files relative to itself, so the repository can live anywhere. OpenCode is project-level in this public distribution and uses `opencode/agent-project-setup/setup-agent.sh`.
+
+Installers merge rules and skills, preserve unrelated files, and back up existing template-managed files outside the project under `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/`. Backups are organized by project path, agent, and timestamp. Review the generated files and backup before committing them to your project.
+
+## Included skills
+
+| Skill | Purpose |
+|---|---|
+| `android-development` | Android SDK, Gradle, APK signing, and device tooling |
+| `api-backend` | API design, backend services, validation, and error handling |
+| `container-devops` | Containers, CI/CD, and deployment workflows |
+| `git-workflow` | Branches, commits, pull requests, and safe Git operations |
+| `qt-cpp-desktop` | Qt 6, C++, QML, and desktop application development |
+| `rust-development` | Cargo workspaces, MSRV, Rust APIs, and error handling |
+| `security-guidelines` | Secrets, credentials, permissions, and secure defaults |
+| `shell-scripting` | Bash/Zsh scripting, shell safety, and automation |
+| `system-administration` | Linux administration, systemd, packages, and services |
+| `testing-qa` | Unit, integration, UI, and CI testing practices |
+| `web-design-and-frontend-craft` | UI/UX, CSS systems, accessibility, and frontend performance |
+
+## Repository layout
+
+```text
+cybercore-agent-skills/
+├── claude/agent-project-setup/
+├── codex/agent-project-setup/
+├── copilot/agent-project-setup/
+├── crush/agent-project-setup/
+├── gemini/agent-project-setup/
+├── hermes/agent-project-setup/
+├── kimi-code/agent-project-setup/
+├── ollama/agent-project-setup/
+├── openclaw/agent-project-setup/
+├── opencode/agent-project-setup/
+├── ori/agent-project-setup/
+├── pi/agent-project-setup/
+└── qwen/agent-project-setup/
+```
+
+## Validation
+
+The repository's GitHub Actions workflow validates all 13 templates, parses all 143 skill frontmatter blocks, checks cross-agent skill parity, verifies shell syntax, and runs installer smoke tests in temporary directories.
+
+Run locally:
 
 ```bash
-cd ~/my-project
-bash ~/Projects/ai/claude/agent-project-setup/setup-claude.sh
+python3 -m pip install PyYAML
+python3 scripts/validate_templates.py
+python3 scripts/check_public_sanitization.py
+bash tests/smoke_installers.sh
 ```
 
-Each setup script copies:
-- `AGENTS.md` (or `CLAUDE.md` for Claude) — agent instructions & guardrails
-- `.<agent>/rules/*.md` — permission & safety rules
-- `.<agent>/skills/` — reusable agent skills
+## Safety
 
-Then restart your agent session in the target directory to load the new rules.
+Installers do not delete target content. Existing managed files are backed up before replacement. Review agent rules and permissions before using them in a production repository; agent capabilities and behavior vary by provider and version.
 
----
+## License
 
-## 📁 Repository Structure
-
-```
-Projects/ai/
-├── claude/
-│   └── agent-project-setup/
-│       ├── CLAUDE.md
-│       ├── settings.json
-│       ├── setup-claude.sh
-│       └── .claude/
-│           ├── rules/
-│           │   ├── safety.md
-│           ├── workflow.md
-│           ├── rust.md
-│           └── gleam.md
-│           └── skills/
-│               ├── web-design-and-frontend-craft/
-│               │   └── SKILL.md
-│               ├── system-administration/
-│               │   └── SKILL.md
-│               ├── shell-scripting/
-│               │   └── SKILL.md
-│               ├── git-workflow/
-│               │   └── SKILL.md
-│               ├── security-guidelines/
-│               │   └── SKILL.md
-│               ├── testing-qa/
-│               │   └── SKILL.md
-│               ├── rust-development/
-│               │   └── SKILL.md
-│               ├── qt-cpp-desktop/
-│               │   └── SKILL.md
-│               ├── android-development/
-│               │   └── SKILL.md
-│               └── container-devops/
-│                   └── SKILL.md
-├── codex/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-codex.sh
-│       └── .codex/
-│           ├── rules/
-│           └── skills/
-├── copilot/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-copilot.sh
-│       └── .copilot/
-│           ├── rules/
-│           └── skills/
-├── crush/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-crush.sh
-│       └── .crush/
-│           ├── rules/
-│           └── skills/
-├── gemini/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-gemini.sh
-│       └── .gemini/
-│           ├── rules/
-│           └── skills/
-├── hermes/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-hermes.sh
-│       └── .hermes/
-│           ├── rules/
-│           └── skills/
-├── kimi-code/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-kimi-code.sh
-│       └── .kimi-code/
-│           ├── rules/
-│           └── skills/
-├── openclaw/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-openclaw.sh
-│       └── .openclaw/
-│           ├── rules/
-│           └── skills/
-├── ollama/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-ollama.sh
-│       └── .ollama/
-│           ├── rules/
-│           └── skills/
-├── pi/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-pi.sh
-│       └── .pi/
-│           ├── rules/
-│           └── skills/
-├── ori/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       ├── setup-ori.sh
-│       └── .ori/
-│           ├── rules/
-│           └── skills/
-├── qwen/
-│   └── agent-project-setup/
-│       ├── AGENTS.md
-│       └── .qwen/
-│           ├── rules/
-│           └── skills/
-└── opencode/
-    └── agent-project-setup/
-        ├── AGENTS.md
-        ├── setup-agent.sh
-        └── .opencode/
-            ├── rules/
-            └── skills/
-```
-
----
-
-## 🛡️ Golden Rules (All Agents)
-
-1. **Zero Unapproved Destructive Actions** — Never edit code, overwrite files, or run state-modifying terminal commands without presenting a concise execution plan and obtaining explicit user confirmation.
-2. **No Rogue Bug-Fixing Loops** — If a build fails or a test errors out, STOP immediately. Explain the error directly to the user. Do NOT attempt recursive auto-fix attempts without permission.
-3. **Preserve Existing Architecture** — Do not rewrite whole functions, refactor files, or change library dependencies unless explicitly instructed to do so.
-
----
-
-## 📜 Commit Attribution
-
-All commits made under these guardrails should end with:
-
-```
-👻 Code & Design by Darkstardevx 🤖 Generated with <Agent Name>
-
-Co-Authored-By: <Agent> <noreply@agent-domain.com>
-```
-
-**Developer credit line:** `darkstardevx [dsdx.code@cybercoretech.net]`
-
-**Email:** For cybercoretech repos, `git config user.email` must be `19244308+darkstardevx@users.noreply.github.com`.
-
----
-
-## 📄 License
-
-MIT License — see [LICENSE](LICENSE) for details.
-
----
-
-## 🔗 Related
-
-- [Cybercore Tech](https://cybercoretech.github.io/) — Main org site
-- [Cybercore Framework](https://github.com/cybercoretech/cybercore) — Shared schemas, themes, design tokens
-- [vdb-rs](https://github.com/cybercoretech/vdb-rs) — Embedded Rust vector database
-
----
-
-<div align="center">
-  <sub>Built with ❤️ by the Cybercore agent ecosystem</sub>
-</div>
+MIT. See [LICENSE](LICENSE).

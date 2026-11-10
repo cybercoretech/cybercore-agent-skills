@@ -2,108 +2,43 @@ name: Validate Agent Templates
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: List agent directories
-        id: list-agents
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install validation dependency
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Validate template structure and skill frontmatter
+        run: python scripts/validate_templates.py
+
+      - name: Check for private machine and account references
+        run: python scripts/check_public_sanitization.py
+
+      - name: Validate shell syntax
+        shell: bash
         run: |
-          AGENTS=$(ls -d */agent-project-setup | sed 's|/agent-project-setup||' | tr '\n' ' ')
-          echo "AGENTS=$AGENTS" >> $GITHUB_OUTPUT
-          echo "Found agents: $AGENTS"
+          set -euo pipefail
+          while IFS= read -r -d '' script; do
+            bash -n "$script"
+          done < <(find . -path './.git' -prune -o -name 'setup-*.sh' -type f -print0)
+          bash -n tests/smoke_installers.sh
 
-      - name: Validate each agent template
-        run: |
-          AGENTS="claude codex copilot crush gemini hermes kimi-code openclaw ollama pi ori qwen opencode"
-          ERRORS=0
-
-          for AGENT in $AGENTS; do
-            DIR="Projects/ai/$AGENT/agent-project-setup"
-            echo "Validating $AGENT..."
-
-            # Required root files
-            if [ ! -f "$DIR/AGENTS.md" ] && [ ! -f "$DIR/CLAUDE.md" ]; then
-              echo "❌ $AGENT: Missing AGENTS.md or CLAUDE.md"
-              ERRORS=1
-            fi
-
-            if [ ! -f "$DIR/setup-*.sh" ]; then
-              echo "❌ $AGENT: Missing setup script"
-              ERRORS=1
-            fi
-
-            # Rules directory
-            if [ ! -d "$DIR/.$AGENT/rules" ]; then
-              echo "❌ $AGENT: Missing .$AGENT/rules/"
-              ERRORS=1
-            else
-              for RULE in safety workflow rust gleam; do
-                if [ ! -f "$DIR/.$AGENT/rules/$RULE.md" ]; then
-                  echo "❌ $AGENT: Missing rules/$RULE.md"
-                  ERRORS=1
-                fi
-              done
-            fi
-
-            # Skills directory
-            if [ ! -d "$DIR/.$AGENT/skills" ]; then
-              echo "❌ $AGENT: Missing .$AGENT/skills/"
-              ERRORS=1
-            else
-              for SKILL in web-design-and-frontend-craft system-administration shell-scripting git-workflow security-guidelines testing-qa rust-development qt-cpp-desktop android-development api-backend container-devops; do
-                if [ ! -f "$DIR/.$AGENT/skills/$SKILL/SKILL.md" ]; then
-                  echo "❌ $AGENT: Missing skills/$SKILL/SKILL.md"
-                  ERRORS=1
-                fi
-              done
-            fi
-
-            # Setup script executable
-            SETUP_SCRIPT="$DIR/setup-$AGENT.sh"
-            if [ -f "$SETUP_SCRIPT" ] && [ ! -x "$SETUP_SCRIPT" ]; then
-              echo "❌ $AGENT: setup-$AGENT.sh not executable"
-              ERRORS=1
-            fi
-          done
-
-          if [ $ERRORS -ne 0 ]; then
-            echo "❌ Validation failed!"
-            exit 1
-          fi
-
-          echo "✓ All agent templates validated successfully"
-
-      - name: Validate skill frontmatter
-        run: |
-          ERRORS=0
-          for FILE in $(find Projects/ai -path '*/skills/*/SKILL.md'); do
-            if ! head -1 "$FILE" | grep -q '^---$'; then
-              echo "❌ $FILE: Missing YAML frontmatter opening ---"
-              ERRORS=1
-            fi
-            if ! grep -q '^name:' "$FILE"; then
-              echo "❌ $FILE: Missing name in frontmatter"
-              ERRORS=1
-            fi
-            if ! grep -q '^description:' "$FILE"; then
-              echo "❌ $FILE: Missing description in frontmatter"
-              ERRORS=1
-            fi
-          done
-
-          if [ $ERRORS -ne 0 ]; then
-            echo "❌ Skill frontmatter validation failed!"
-            exit 1
-          fi
-
-          echo "✓ All skill frontmatter valid"
+      - name: Smoke-test all installers in temporary directories
+        run: bash tests/smoke_installers.sh

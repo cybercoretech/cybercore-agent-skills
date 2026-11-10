@@ -1,42 +1,30 @@
-#!/usr/bin/env zsh
-# ==============================================================================
-# Script Name: setup-agent.sh
-# Description: Copies agent-project-setup guardrails into the target repository root.
-# ==============================================================================
-
+#!/usr/bin/env bash
+# Deploy OpenCode project configuration, rules, and skills into the current project.
 set -euo pipefail
-
-# Define source template directory (Update this to your actual absolute path)
-TEMPLATE_DIR="$HOME/projects/agent-project-setup"
-TARGET_DIR="$(pwd)"
-
-echo "==> Deploying OpenCode agent guardrails to: $TARGET_DIR"
-
-# 1. Ensure target is a valid git repository or project root
-if [[ ! -d "$TARGET_DIR/.git" ]]; then
-    echo "⚠️ Warning: No .git directory found here. Continuing anyway..."
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+TEMPLATE_DIR="$SCRIPT_DIR"
+TARGET_DIR="$(pwd -P)"
+if [[ "$TARGET_DIR" == "$TEMPLATE_DIR" ]]; then
+  printf "ERROR: Run this script from the project you want to configure.\n" >&2
+  exit 1
 fi
-
-# 2. Copy root configuration files
-if [[ -f "$TEMPLATE_DIR/opencode.json" ]]; then
-    cp "$TEMPLATE_DIR/opencode.json" "$TARGET_DIR/opencode.json"
-    echo "  ✔ Copied opencode.json"
-else
-    echo "  ✖ Error: opencode.json not found in template directory!"
-    exit 1
+if [[ ! -f "$TEMPLATE_DIR/AGENTS.md" || ! -f "$TEMPLATE_DIR/opencode.json" || ! -d "$TEMPLATE_DIR/.opencode/rules" || ! -d "$TEMPLATE_DIR/.opencode/skills" ]]; then
+  printf "ERROR: OpenCode project template is incomplete: %s\n" "$TEMPLATE_DIR" >&2
+  exit 1
 fi
-
-if [[ -f "$TEMPLATE_DIR/AGENTS.md" ]]; then
-    cp "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
-    echo "  ✔ Copied AGENTS.md"
+STAMP="$(date +%Y%m%d-%H%M%S)-$$"
+BACKUP_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${TARGET_DIR##*/}-$(printf '%s' "$TARGET_DIR" | cksum | awk '{print $1}')/opencode/$STAMP"
+if [[ -e "$TARGET_DIR/AGENTS.md" || -e "$TARGET_DIR/opencode.json" || -e "$TARGET_DIR/.opencode" ]]; then
+  mkdir -p "$BACKUP_DIR"
+  for item in AGENTS.md opencode.json .opencode; do
+    if [[ -e "$TARGET_DIR/$item" ]]; then cp -a "$TARGET_DIR/$item" "$BACKUP_DIR/"; fi
+  done
+  printf "BACKUP: Existing OpenCode project files saved to %s\n" "$BACKUP_DIR"
 fi
-
-# 3. Copy the .opencode rules directory
-if [[ -d "$TEMPLATE_DIR/.opencode" ]]; then
-    mkdir -p "$TARGET_DIR/.opencode"
-    cp -r "$TEMPLATE_DIR/.opencode/" "$TARGET_DIR/.opencode/"
-    echo "  ✔ Copied .opencode/ rules suite"
-fi
-
-echo "==> Success! Agent guardrails successfully applied."
-echo "==> Restart your OpenCode session in this directory to load new rules."
+cp -a "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
+cp -a "$TEMPLATE_DIR/opencode.json" "$TARGET_DIR/opencode.json"
+mkdir -p "$TARGET_DIR/.opencode/rules" "$TARGET_DIR/.opencode/skills"
+cp -a "$TEMPLATE_DIR/.opencode/rules/." "$TARGET_DIR/.opencode/rules/"
+cp -a "$TEMPLATE_DIR/.opencode/skills/." "$TARGET_DIR/.opencode/skills/"
+printf "\nSUCCESS: OpenCode project configuration installed in %s\n" "$TARGET_DIR"
+printf "Restart OpenCode in this project to load the rules and skills.\n"

@@ -90,7 +90,6 @@ If the crate has an MSRV job, check with `cargo +<rust-version> check` when avai
 
 ## AUR Packages
 
-Cybercore packages are built as AUR packages in `~/Devspace/Cybercore/packaging/aur/`:
+AUR packages are typically maintained in the project repository under `packaging/aur/`:
 - `cyberterm-bin`, `cyberterm`
 - Verify in clean directories: `makepkg --verifysource`
-- Until the user pushes, live AUR packages may point at the dead `github.com/cybercore-tech`

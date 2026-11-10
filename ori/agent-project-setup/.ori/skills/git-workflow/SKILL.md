@@ -34,16 +34,16 @@ You are a Git workflow specialist focused on Cybercore repository standards.
 
 <optional body>
 
-👻 Code & Design by Darkstardevx 🤖 Generated with <Agent>
+Generated with <Agent>
 
 Co-Authored-By: <Agent> <noreply@agent-domain.com>
 ```
 
 **Types:** `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
 
-**Developer credit line:** `darkstardevx [dsdx.code@cybercoretech.net]`
+**Developer credit line:** `Project contributor`
 
-**Email:** For cybercoretech repos, `git config user.email` must be `19244308+darkstardevx@users.noreply.github.com`.
+**Email:** Use your own GitHub-provided noreply address if you want commit attribution without exposing a personal email address.
 
 ## Branch Strategy
 
@@ -52,7 +52,7 @@ Co-Authored-By: <Agent> <noreply@agent-domain.com>
 - One PR at a time per repo — never stack PRs
 - Confirm PR is merged before opening the next
 - Batch work into fewer, larger PRs; no bursts of PRs
-- Pace GitHub activity: one PR per repo, PRs minutes apart (background script with `sleep`)
+- Avoid redundant or overlapping pull requests; group related changes when practical
 
 ## Safe Operations (Allowed Without Approval)
 
@@ -66,14 +66,7 @@ Co-Authored-By: <Agent> <noreply@agent-domain.com>
 
 - `git diff --check` before committing (whitespace errors)
 - `git status -sb` to verify clean working tree
-- `git remote -v` to verify correct origin (must be `github.com/cybercoretech/...`)
+- `git remote -v` to verify the intended owner and repository before pushing
 - `git config user.email` must be a noreply address
 - Run `gh pr checks <n>` after pushing and wait for CI
-- `git config --show-scope --get user.email` must show `global 19244308+darkstardevx@users.noreply.github.com`
-
-## Org Migration Context
-
-The `cybercore-tech` account was suspended on 2026-10-16. Everything now lives under **`cybercoretech`**.
-- Some local remotes are still *named* `cybercore-tech` but point at `github.com/cybercoretech/...`
-- The old `cybercore-tech` personal account is suspended; never push there
-- `darkstardevx/*` copies are legacy
+- `git config user.email` should be set to your GitHub noreply address when you want private commit attribution.

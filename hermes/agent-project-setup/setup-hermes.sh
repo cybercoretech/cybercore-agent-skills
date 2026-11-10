@@ -1,44 +1,41 @@
-#!/usr/bin/env zsh
-# ==============================================================================
-# Script Name: setup-hermes.sh
-# Description: Copies hermes agent-project-setup guardrails into the target repository root.
-# ==============================================================================
-
+#!/usr/bin/env bash
+# Deploy the hermes project guardrails from this template directory.
 set -euo pipefail
 
-# Define source template directory (Update this to your actual absolute path)
-TEMPLATE_DIR="$HOME/Projects/ai/hermes/agent-project-setup"
-TARGET_DIR="$(pwd)"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+TEMPLATE_DIR="$SCRIPT_DIR"
+TARGET_DIR="$(pwd -P)"
 
-echo "==> Deploying hermes agent guardrails to: $TARGET_DIR"
-
-# 1. Ensure target is a valid git repository or project root
-if [[ ! -d "$TARGET_DIR/.git" ]]; then
-    echo "⚠️ Warning: No .git directory found here. Continuing anyway..."
+if [[ "$TARGET_DIR" == "$TEMPLATE_DIR" ]]; then
+  printf "ERROR: Run this script from the project you want to configure.\n" >&2
+  exit 1
 fi
 
-# 2. Copy root configuration files
-if [[ -f "$TEMPLATE_DIR/AGENTS.md" ]]; then
-    cp "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
-    echo "  ✔ Copied AGENTS.md"
-else
-    echo "  ✖ Error: AGENTS.md not found in template directory!"
-    exit 1
+if [[ ! -f "$TEMPLATE_DIR/AGENTS.md" || ! -d "$TEMPLATE_DIR/.hermes/rules" || ! -d "$TEMPLATE_DIR/.hermes/skills" ]]; then
+  printf "ERROR: Template is incomplete: %s\n" "$TEMPLATE_DIR" >&2
+  exit 1
 fi
 
-# 3. Copy the .hermes rules directory
-if [[ -d "$TEMPLATE_DIR/.hermes/rules" ]]; then
-    mkdir -p "$TARGET_DIR/.hermes/rules"
-    cp -r "$TEMPLATE_DIR/.hermes/rules/"* "$TARGET_DIR/.hermes/rules/"
-    echo "  ✔ Copied .hermes/rules/ suite"
+# Preserve existing files before merging or replacing template content.
+STAMP="$(date +%Y%m%d-%H%M%S)-$$"
+BACKUP_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${TARGET_DIR##*/}-$(printf '%s' "$TARGET_DIR" | cksum | awk '{print $1}')/hermes/$STAMP"
+BACKUP_NEEDED=0
+for item in "AGENTS.md" ".hermes"; do
+  if [[ -e "$TARGET_DIR/$item" ]]; then BACKUP_NEEDED=1; break; fi
+done
+
+if [[ "$BACKUP_NEEDED" -eq 1 ]]; then
+  mkdir -p "$BACKUP_DIR"
+  for item in "AGENTS.md" ".hermes"; do
+    if [[ -e "$TARGET_DIR/$item" ]]; then cp -a "$TARGET_DIR/$item" "$BACKUP_DIR/"; fi
+  done
+  printf "BACKUP: Existing target files saved to %s\n" "$BACKUP_DIR"
 fi
 
-# 4. Copy the .hermes skills directory
-if [[ -d "$TEMPLATE_DIR/.hermes/skills" ]]; then
-    mkdir -p "$TARGET_DIR/.hermes/skills"
-    cp -r "$TEMPLATE_DIR/.hermes/skills/" "$TARGET_DIR/.hermes/skills/"
-    echo "  ✔ Copied .hermes/skills/ suite"
-fi
+cp -a "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
+mkdir -p "$TARGET_DIR/.hermes/rules" "$TARGET_DIR/.hermes/skills"
+cp -a "$TEMPLATE_DIR/.hermes/rules/." "$TARGET_DIR/.hermes/rules/"
+cp -a "$TEMPLATE_DIR/.hermes/skills/." "$TARGET_DIR/.hermes/skills/"
 
-echo "==> Success! hermes agent guardrails successfully applied."
-echo "==> Restart your hermes session in this directory to load new rules."
+printf "\nSUCCESS: hermes guardrails installed in %s\n" "$TARGET_DIR"
+printf "Restart your agent session to load the new rules and skills.\n"

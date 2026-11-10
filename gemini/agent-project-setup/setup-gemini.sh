@@ -1,44 +1,41 @@
-#!/usr/bin/env zsh
-# ==============================================================================
-# Script Name: setup-gemini.sh
-# Description: Copies gemini agent-project-setup guardrails into the target repository root.
-# ==============================================================================
-
+#!/usr/bin/env bash
+# Deploy the gemini project guardrails from this template directory.
 set -euo pipefail
 
-# Define source template directory (Update this to your actual absolute path)
-TEMPLATE_DIR="$HOME/Projects/ai/gemini/agent-project-setup"
-TARGET_DIR="$(pwd)"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+TEMPLATE_DIR="$SCRIPT_DIR"
+TARGET_DIR="$(pwd -P)"
 
-echo "==> Deploying gemini agent guardrails to: $TARGET_DIR"
-
-# 1. Ensure target is a valid git repository or project root
-if [[ ! -d "$TARGET_DIR/.git" ]]; then
-    echo "⚠️ Warning: No .git directory found here. Continuing anyway..."
+if [[ "$TARGET_DIR" == "$TEMPLATE_DIR" ]]; then
+  printf "ERROR: Run this script from the project you want to configure.\n" >&2
+  exit 1
 fi
 
-# 2. Copy root configuration files
-if [[ -f "$TEMPLATE_DIR/AGENTS.md" ]]; then
-    cp "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
-    echo "  ✔ Copied AGENTS.md"
-else
-    echo "  ✖ Error: AGENTS.md not found in template directory!"
-    exit 1
+if [[ ! -f "$TEMPLATE_DIR/AGENTS.md" || ! -d "$TEMPLATE_DIR/.gemini/rules" || ! -d "$TEMPLATE_DIR/.gemini/skills" ]]; then
+  printf "ERROR: Template is incomplete: %s\n" "$TEMPLATE_DIR" >&2
+  exit 1
 fi
 
-# 3. Copy the .gemini rules directory
-if [[ -d "$TEMPLATE_DIR/.gemini/rules" ]]; then
-    mkdir -p "$TARGET_DIR/.gemini/rules"
-    cp -r "$TEMPLATE_DIR/.gemini/rules/"* "$TARGET_DIR/.gemini/rules/"
-    echo "  ✔ Copied .gemini/rules/ suite"
+# Preserve existing files before merging or replacing template content.
+STAMP="$(date +%Y%m%d-%H%M%S)-$$"
+BACKUP_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${TARGET_DIR##*/}-$(printf '%s' "$TARGET_DIR" | cksum | awk '{print $1}')/gemini/$STAMP"
+BACKUP_NEEDED=0
+for item in "AGENTS.md" ".gemini"; do
+  if [[ -e "$TARGET_DIR/$item" ]]; then BACKUP_NEEDED=1; break; fi
+done
+
+if [[ "$BACKUP_NEEDED" -eq 1 ]]; then
+  mkdir -p "$BACKUP_DIR"
+  for item in "AGENTS.md" ".gemini"; do
+    if [[ -e "$TARGET_DIR/$item" ]]; then cp -a "$TARGET_DIR/$item" "$BACKUP_DIR/"; fi
+  done
+  printf "BACKUP: Existing target files saved to %s\n" "$BACKUP_DIR"
 fi
 
-# 4. Copy the .gemini skills directory
-if [[ -d "$TEMPLATE_DIR/.gemini/skills" ]]; then
-    mkdir -p "$TARGET_DIR/.gemini/skills"
-    cp -r "$TEMPLATE_DIR/.gemini/skills/" "$TARGET_DIR/.gemini/skills/"
-    echo "  ✔ Copied .gemini/skills/ suite"
-fi
+cp -a "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
+mkdir -p "$TARGET_DIR/.gemini/rules" "$TARGET_DIR/.gemini/skills"
+cp -a "$TEMPLATE_DIR/.gemini/rules/." "$TARGET_DIR/.gemini/rules/"
+cp -a "$TEMPLATE_DIR/.gemini/skills/." "$TARGET_DIR/.gemini/skills/"
 
-echo "==> Success! gemini agent guardrails successfully applied."
-echo "==> Restart your gemini session in this directory to load new rules."
+printf "\nSUCCESS: gemini guardrails installed in %s\n" "$TARGET_DIR"
+printf "Restart your agent session to load the new rules and skills.\n"

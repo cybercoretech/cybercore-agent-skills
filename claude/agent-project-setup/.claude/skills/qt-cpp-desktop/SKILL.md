@@ -50,8 +50,8 @@ After adding source files:
 
 ## GPU Considerations
 
-- Old AMD Turks GPU — image processing stays CPU-only (libvips in Ghostframe)
-- Anything built on Chromium (Electron, QtWebEngine) needs `--disable-gpu-compositing` or it flickers
+- Test GPU-accelerated rendering across the supported driver and hardware matrix
+- If Chromium-based rendering flickers, isolate driver/compositor issues before applying flags such as `--disable-gpu-compositing`
 - `moc` chokes on some JSON raw string literals; keep large JSON in resources
 
 ## Testing

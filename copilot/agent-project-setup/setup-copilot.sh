@@ -1,44 +1,41 @@
-#!/usr/bin/env zsh
-# ==============================================================================
-# Script Name: setup-copilot.sh
-# Description: Copies Copilot agent-project-setup guardrails into the target repository root.
-# ==============================================================================
-
+#!/usr/bin/env bash
+# Deploy the copilot project guardrails from this template directory.
 set -euo pipefail
 
-# Define source template directory (Update this to your actual absolute path)
-TEMPLATE_DIR="$HOME/Projects/ai/copilot/agent-project-setup"
-TARGET_DIR="$(pwd)"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+TEMPLATE_DIR="$SCRIPT_DIR"
+TARGET_DIR="$(pwd -P)"
 
-echo "==> Deploying Copilot agent guardrails to: $TARGET_DIR"
-
-# 1. Ensure target is a valid git repository or project root
-if [[ ! -d "$TARGET_DIR/.git" ]]; then
-    echo "⚠️ Warning: No .git directory found here. Continuing anyway..."
+if [[ "$TARGET_DIR" == "$TEMPLATE_DIR" ]]; then
+  printf "ERROR: Run this script from the project you want to configure.\n" >&2
+  exit 1
 fi
 
-# 2. Copy root configuration files
-if [[ -f "$TEMPLATE_DIR/AGENTS.md" ]]; then
-    cp "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
-    echo "  ✔ Copied AGENTS.md"
-else
-    echo "  ✖ Error: AGENTS.md not found in template directory!"
-    exit 1
+if [[ ! -f "$TEMPLATE_DIR/AGENTS.md" || ! -d "$TEMPLATE_DIR/.copilot/rules" || ! -d "$TEMPLATE_DIR/.copilot/skills" ]]; then
+  printf "ERROR: Template is incomplete: %s\n" "$TEMPLATE_DIR" >&2
+  exit 1
 fi
 
-# 3. Copy the .copilot rules directory
-if [[ -d "$TEMPLATE_DIR/.copilot/rules" ]]; then
-    mkdir -p "$TARGET_DIR/.copilot/rules"
-    cp -r "$TEMPLATE_DIR/.copilot/rules/"* "$TARGET_DIR/.copilot/rules/"
-    echo "  ✔ Copied .copilot/rules/ suite"
+# Preserve existing files before merging or replacing template content.
+STAMP="$(date +%Y%m%d-%H%M%S)-$$"
+BACKUP_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${TARGET_DIR##*/}-$(printf '%s' "$TARGET_DIR" | cksum | awk '{print $1}')/copilot/$STAMP"
+BACKUP_NEEDED=0
+for item in "AGENTS.md" ".copilot"; do
+  if [[ -e "$TARGET_DIR/$item" ]]; then BACKUP_NEEDED=1; break; fi
+done
+
+if [[ "$BACKUP_NEEDED" -eq 1 ]]; then
+  mkdir -p "$BACKUP_DIR"
+  for item in "AGENTS.md" ".copilot"; do
+    if [[ -e "$TARGET_DIR/$item" ]]; then cp -a "$TARGET_DIR/$item" "$BACKUP_DIR/"; fi
+  done
+  printf "BACKUP: Existing target files saved to %s\n" "$BACKUP_DIR"
 fi
 
-# 4. Copy the .copilot skills directory
-if [[ -d "$TEMPLATE_DIR/.copilot/skills" ]]; then
-    mkdir -p "$TARGET_DIR/.copilot/skills"
-    cp -r "$TEMPLATE_DIR/.copilot/skills/" "$TARGET_DIR/.copilot/skills/"
-    echo "  ✔ Copied .copilot/skills/ suite"
-fi
+cp -a "$TEMPLATE_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
+mkdir -p "$TARGET_DIR/.copilot/rules" "$TARGET_DIR/.copilot/skills"
+cp -a "$TEMPLATE_DIR/.copilot/rules/." "$TARGET_DIR/.copilot/rules/"
+cp -a "$TEMPLATE_DIR/.copilot/skills/." "$TARGET_DIR/.copilot/skills/"
 
-echo "==> Success! Copilot agent guardrails successfully applied."
-echo "==> Restart your Copilot session in this directory to load new rules."
+printf "\nSUCCESS: copilot guardrails installed in %s\n" "$TARGET_DIR"
+printf "Restart your agent session to load the new rules and skills.\n"

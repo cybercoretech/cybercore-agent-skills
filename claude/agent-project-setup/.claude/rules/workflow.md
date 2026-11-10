@@ -11,5 +11,5 @@
 
 ## 3. Commit & Signature Standards
 - When creating Git commit messages, apply the standard developer credit line format:
-  `darkstardevx [dsdx.code@cybercoretech.net]`
+  `Project contributor`
 - Match commit messages to conventional standards (`feat:`, `fix:`, `docs:`, `refactor:`) matching the exact intent of the edit.
