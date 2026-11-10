@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0d">
+  <meta name="description" content="Explore the CyberCore Agent Skills catalog: reusable skills, supported AI agents, deployment commands, and shared guardrails.">
+  <title>CyberCore Agent Skills — Explorer</title>
+  <link rel="stylesheet" href="https://cybercoretech.github.io/kit/chooser.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>window.SITE = { dataRoot: 'https://cybercoretech.github.io/data', defaultTheme: 'cybercore-tech' };</script>
+  <script type="module" src="https://cybercoretech.github.io/kit/chooser.js"></script>
+  <script type="module" src="https://cybercoretech.github.io/kit/contact.js"></script>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+
+  <header class="topbar">
+    <a href="#" class="brand" aria-label="Cybercore Agent Skills home">
+      <span class="brand-mark" aria-hidden="true">CC</span>
+      <span class="mark">CYBERCORE</span><span class="brand-divider">/</span> Agent Skills
+    </a>
+    <nav class="nav-center" aria-label="Main navigation">
+      <a href="#content">Home</a>
+      <a href="#skills">Skill Matrix</a>
+      <a href="#agents">Agents</a>
+      <a href="#deploy">Deploy</a>
+      <a href="#rules">Golden Rules</a>
+      <a href="#repo">Repository</a>
+    </nav>
+    <div class="topbar-right"><button class="search-toggle" type="button" aria-label="Open search" onclick="toggleSearch()">⌕</button>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileNav()">☰</button>
+      <div class="search-wrap" id="searchWrap">
+        <input type="search" id="skillSearch" placeholder="Search skills, agents, or documentation…" aria-label="Search skills and agents" autocomplete="off">
+      </div>
+      <cybercore-theme-chooser default="cybercore-tech" adopt id="themeChooser" style="margin-left:16px;"></cybercore-theme-chooser>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <a href="#content">Home</a>
+    <a href="#skills">Skill Matrix</a>
+    <a href="#agents">Agents</a>
+    <a href="#deploy">Deploy</a>
+    <a href="#rules">Golden Rules</a>
+    <a href="#repo">Repository</a>
+  </nav>
+
+  <main class="wrap" id="content">
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="section-head">
+          <span class="section-num">01 /</span>
+          <span class="section-title">Agent Skill Catalog</span>
+        </div>
+        <h1>Agent × Skill Matrix</h1>
+        <p class="lead-text">A field guide to the reusable skills and guardrails shipped across the CyberCore agent ecosystem. Explore the catalog, inspect full documentation, and copy deployment commands.</p>
+        <div class="stat-strip">
+          <div class="stat">
+            <div class="stat-value" id="statAgents">0</div>
+            <div class="stat-label">agents</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="statSkills">0</div>
+            <div class="stat-label">skills per agent</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="statFiles">0</div>
+            <div class="stat-label">skill files total</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="statFavs">0</div>
+            <div class="stat-label">favorited</div>
+          </div>
+        </div>
+        <div class="controls">
+          <div class="filters">
+            <button class="chip chip--active filter-chip" aria-pressed="true" onclick="filterCategory('all', this)">All Skills</button>
+            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('web', this)">Web &amp; Frontend</button>
+            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('system', this)">System</button>
+            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('language', this)">Languages</button>
+            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('devops', this)">DevOps</button>
+            <button class="chip filter-chip favorites-filter" aria-pressed="false" onclick="filterCategory('favorites', this)">★ Favorites</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="hero-inner">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Skill Catalog</p>
+            <h2>Filter, search, favorite, open any skill</h2>
+          </div>
+        </div>
+        <div class="matrix-wrap" role="region" aria-label="Skill availability across agents" tabindex="0">
+          <table aria-label="Skills by supported AI agent">
+            <thead>
+              <tr>
+                <th>Skill</th>
+                <th class="agent-col" data-agent="opencode">OpenCode</th>
+                <th class="agent-col" data-agent="claude">Claude</th>
+                <th class="agent-col" data-agent="codex">Codex</th>
+                <th class="agent-col" data-agent="copilot">Copilot</th>
+                <th class="agent-col" data-agent="crush">Crush</th>
+                <th class="agent-col" data-agent="gemini">Gemini</th>
+                <th class="agent-col" data-agent="hermes">Hermes</th>
+                <th class="agent-col" data-agent="kimi-code">Kimi-Code</th>
+                <th class="agent-col" data-agent="openclaw">OpenClaw</th>
+                <th class="agent-col" data-agent="ollama">Ollama</th>
+                <th class="agent-col" data-agent="pi">Pi</th>
+                <th class="agent-col" data-agent="ori">Ori</th>
+                <th class="agent-col" data-agent="qwen">Qwen</th>
+                <th class="actions-cell">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="matrixBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="agents" class="section">
+      <div class="hero-inner">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Agent Ecosystem</p>
+            <h2>Select any agent</h2>
+          </div>
+        </div>
+        <div class="grid" id="agentGrid"></div>
+      </div>
+    </section>
+
+    <section id="deploy" class="section">
+      <div class="hero-inner">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Deployment Center</p>
+            <h2>One command per agent</h2>
+          </div>
+        </div>
+        <div class="grid" id="deployGrid"></div>
+      </div>
+    </section>
+
+    <section id="rules" class="section">
+      <div class="hero-inner">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Golden Rules</p>
+            <h2>Non-negotiable guardrails</h2>
+          </div>
+        </div>
+        <div class="grid" id="rulesGrid"></div>
+      </div>
+    </section>
+
+    <section id="repo" class="section">
+      <div class="hero-inner">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Repository</p>
+            <h2>Source, license, contribution</h2>
+          </div>
+        </div>
+        <div class="grid" style="max-width: 560px;">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">↗</span>
+              <div><div class="card-name">Repository</div></div>
+            </div>
+            <pre style="margin:10px 0; font-size:12px;">https://github.com/cybercoretech/cybercore-agent-skills</pre>
+            <button class="btn btn--ghost btn--icon" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills')">Copy</button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">📄</span>
+              <div><div class="card-name">License</div></div>
+            </div>
+            <pre style="margin:10px 0; font-size:12px;">MIT</pre>
+            <button class="btn btn--ghost btn--icon" onclick="copyText('MIT')">Copy</button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon">🐛</span>
+              <div><div class="card-name">Issues</div></div>
+            </div>
+            <pre style="margin:10px 0; font-size:12px;">https://github.com/cybercoretech/cybercore-agent-skills/issues</pre>
+            <button class="btn btn--ghost btn--icon" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills/issues')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <cybercore-contact repo="agent-skills"></cybercore-contact>
+  </footer>
+
+  <div class="detail-panel" id="detailPanel" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="detail-title" id="detailTitle">Skill Name</div>
+        <button class="detail-close" onclick="closeDetail()" aria-label="Close detail panel">✕</button>
+      </div>
+      <div class="detail-body">
+        <div class="detail-main" id="detailMain"></div>
+        <div class="detail-sidebar" id="detailSidebar"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">
+    <span class="chip chip--status chip--ok" style="pointer-events:none;">✓</span>
+    <span id="toastText">Copied to clipboard</span>
+  </div>
+<script src="script.js" defer></script>
+</body>
+</html>
