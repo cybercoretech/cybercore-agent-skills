@@ -1811,3 +1811,46 @@ footer > cybercore-contact {
     font-size: 15px;
   }
 }
+
+
+/* CYBERCORE COMPACT PAGE WIDTH — FINAL OVERRIDE */
+:root {
+  --cc-max-width: 1280px;
+}
+
+#content.wrap,
+main#content,
+main.wrap {
+  box-sizing: border-box;
+  width: min(1280px, calc(100% - 40px)) !important;
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+#skills .hero-inner,
+.hero-inner {
+  box-sizing: border-box;
+  width: min(1280px, calc(100% - 40px)) !important;
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+#skills .matrix-wrap,
+#skills .table-wrap,
+#skills .matrix-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  #content.wrap,
+  main#content,
+  main.wrap,
+  #skills .hero-inner,
+  .hero-inner {
+    width: calc(100% - 24px) !important;
+  }
+}
