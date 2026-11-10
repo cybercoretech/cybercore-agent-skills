@@ -561,7 +561,7 @@ function renderMatrix() {
     });
     const cmdCell = document.createElement('td');
     cmdCell.className = 'actions-cell';
-    cmdCell.innerHTML = '<button class="copy-btn" onclick="event.stopPropagation(); copySetup(\'' + skill.id + '\', this)">Install <span style="font-family:var(--cc-font-mono);font-size:11px;">all agents</span></button>';
+    cmdCell.innerHTML = '<button class="copy-btn" aria-label="Choose an agent to install ' + escapeHtml(skill.name) + '" onclick="event.stopPropagation(); openInstallPicker(\'' + skill.id + '\')">Install</button>';
     row.appendChild(cmdCell);
     tbody.appendChild(row);
   });
@@ -618,11 +618,21 @@ function renderSkillDetail(skill) {
   document.getElementById('detailTitle').textContent = skill.name;
   const main = document.getElementById('detailMain');
   const sidebar = document.getElementById('detailSidebar');
-  const agentsStr = agents.map(a => 'bash ~/Projects/ai/' + a.id + '/agent-project-setup/' + a.script).join('\n');
-  window.skillInstallCommand = agentsStr;
-  main.innerHTML = '<h3>Overview</h3><p>' + escapeHtml(skill.desc) + '</p><h3>Category</h3><p><span class="cat-chip" style="margin-right:8px;">' + skill.category + '</span></p><h3>Deployed To</h3><p>All 13 agents (OpenCode, Claude, Codex, Copilot, Crush, Gemini, Hermes, Kimi-Code, OpenClaw, Ollama, Pi, Ori, Qwen).</p><h3>Full Documentation</h3><pre>' + escapeMd(skill.full) + '</pre>';
-  sidebar.innerHTML = '<h4>Skill ID</h4><p>' + skill.id + '</p><h4>Category</h4><p>' + skill.category + '</p><h4>Version</h4><p>2</p><h4>Deploy Command</h4><button class="copy-btn" onclick="copyText(window.skillInstallCommand)">Copy Install Command</button><button class="copy-btn" style="margin-top:8px;" onclick="copyText(window.skillFullText)">Copy Full Documentation</button>';
-  // store full text on window for the copy button
+
+  main.innerHTML = '<h3>Overview</h3><p>' + escapeHtml(skill.desc) +
+    '</p><h3>Category</h3><p><span class="cat-chip" style="margin-right:8px;">' +
+    escapeHtml(skill.category) +
+    '</span></p><h3>Availability</h3><p>This skill is available for all 13 supported agents. Choose one agent to generate a single-skill install command.</p><h3>Full Documentation</h3><pre>' +
+    escapeMd(skill.full) + '</pre>';
+
+  sidebar.innerHTML =
+    '<h4>Skill ID</h4><p>' + escapeHtml(skill.id) +
+    '</p><h4>Category</h4><p>' + escapeHtml(skill.category) +
+    '</p><h4>Version</h4><p>2</p><h4>Install This Skill</h4>' +
+    '<button class="copy-btn" onclick="openInstallPicker(\'' + skill.id +
+    '\')">Choose Agent &amp; Copy Install Command</button>' +
+    '<button class="copy-btn" style="margin-top:8px;" onclick="copyText(window.skillFullText)">Copy Full Documentation</button>';
+
   window.skillFullText = skill.full;
 }
 
@@ -650,14 +660,114 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
-function copySetup(skillId, btn) {
-  const agentsStr = agents.map(a => 'bash ~/Projects/ai/' + a.id + '/agent-project-setup/' + a.script + '  # ' + skillId).join('\n');
-  navigator.clipboard.writeText(agentsStr).then(() => {
-    const original = btn.innerHTML;
-    btn.classList.add('copied');
-    btn.innerHTML = 'Copied!';
-    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1500);
+function openInstallPicker(skillId) {
+  const skill = skills.find(item => item.id === skillId);
+  if (!skill) {
+    showToast('Could not find that skill');
+    return;
+  }
+
+  const existing = document.getElementById('skillInstallPicker');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'skillInstallPicker';
+  overlay.setAttribute('role', 'presentation');
+  overlay.style.cssText =
+    'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;' +
+    'justify-content:center;padding:20px;background:rgba(0,0,0,.78);' +
+    'backdrop-filter:blur(5px);';
+
+  const agentButtons = agents.map(agent =>
+    '<button type="button" data-agent-id="' + escapeHtml(agent.id) + '"' +
+    ' style="display:flex;align-items:center;justify-content:space-between;' +
+    'width:100%;padding:12px 14px;border:1px solid var(--cc-border);' +
+    'border-radius:8px;background:var(--cc-card);color:var(--cc-fg);' +
+    'cursor:pointer;text-align:left;font:inherit;">' +
+    '<span>' + escapeHtml(agent.name) + '</span>' +
+    '<span style="color:var(--cc-neon-cyan);font-size:12px;">Select &amp; copy ↗</span>' +
+    '</button>'
+  ).join('');
+
+  overlay.innerHTML =
+    '<section role="dialog" aria-modal="true" aria-labelledby="skillPickerTitle"' +
+    ' style="width:min(440px,100%);max-height:85vh;overflow:auto;padding:22px;' +
+    'border:1px solid var(--cc-border);border-radius:12px;' +
+    'background:var(--cc-card);box-shadow:0 20px 70px rgba(0,0,0,.5);">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">' +
+    '<h3 id="skillPickerTitle" style="margin:0;">Choose an agent</h3>' +
+    '<button type="button" data-picker-close aria-label="Close"' +
+    ' style="border:0;background:transparent;color:var(--cc-fg);font-size:22px;cursor:pointer;">×</button>' +
+    '</div>' +
+    '<p style="margin:10px 0 16px;color:var(--cc-fg-muted);font-size:13px;">' +
+    'Choose one agent. The command will install only <strong>' +
+    escapeHtml(skill.name) + '</strong> for that agent.</p>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+    agentButtons +
+    '</div>' +
+    '<p style="margin:14px 0 0;color:var(--cc-fg-muted);font-size:11px;">' +
+    'Existing copies of this skill are backed up before replacement.</p>' +
+    '</section>';
+
+  const onKeyDown = event => {
+    if (event.key === 'Escape') closePicker();
+  };
+  function closePicker() {
+    document.removeEventListener('keydown', onKeyDown);
+    overlay.remove();
+  }
+
+  overlay.addEventListener('click', event => {
+    if (event.target === overlay || event.target.closest('[data-picker-close]')) {
+      closePicker();
+      return;
+    }
+
+    const choice = event.target.closest('[data-agent-id]');
+    if (!choice) return;
+
+    const agent = agents.find(item => item.id === choice.dataset.agentId);
+    if (!agent) return;
+
+    const command = buildSingleSkillInstallCommand(skill, agent);
+    navigator.clipboard.writeText(command).then(() => {
+      showToast('Copied ' + skill.name + ' install command for ' + agent.name);
+    }).catch(() => {
+      showToast('Clipboard access failed. Check browser permissions.');
+    });
+    closePicker();
   });
+
+  document.addEventListener('keydown', onKeyDown);
+  document.body.appendChild(overlay);
+}
+
+function buildSingleSkillInstallCommand(skill, agent) {
+  const skillDir = '.' + agent.id + '/skills/' + skill.id;
+  const target = skillDir + '/SKILL.md';
+  const sourceUrl =
+    'https://raw.githubusercontent.com/cybercoretech/cybercore-agent-skills/' +
+    'bcbe0fea4d9e0afb2f4d3ccafaff75cfb3023085/' +
+    agent.id + '/agent-project-setup/.' + agent.id +
+    '/skills/' + skill.id + '/SKILL.md';
+
+  return [
+    'set -eu',
+    'skill_dir=' + "'" + skillDir + "'",
+    'target="$skill_dir/SKILL.md"',
+    'mkdir -p "$skill_dir"',
+    'if [ -f "$target" ]; then',
+    '  backup="$target.bak.$(date +%Y%m%d-%H%M%S)"',
+    '  cp -p "$target" "$backup"',
+    '  printf "Backed up existing skill to %s\\n" "$backup"',
+    'fi',
+    'tmp="$target.tmp.$$"',
+    'trap \'rm -f "$tmp"\' EXIT',
+    'curl -fsSL ' + "'" + sourceUrl + "'" + ' -o "$tmp"',
+    'mv "$tmp" "$target"',
+    'trap - EXIT',
+    'printf "Installed ' + skill.id + ' for ' + agent.name + ' in %s\\n" "$target"'
+  ].join('\n');
 }
 
 function copyText(text) {
