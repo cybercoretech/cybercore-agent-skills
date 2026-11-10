@@ -702,6 +702,12 @@ function openInstallPicker(skillId) {
     '<p style="margin:10px 0 16px;color:var(--cc-fg-muted);font-size:13px;">' +
     'Choose one agent. The command will install only <strong>' +
     escapeHtml(skill.name) + '</strong> for that agent.</p>' +
+'<div style="margin:0 0 16px;padding:11px;border:1px solid var(--cc-border);' +
+    'border-radius:8px;color:var(--cc-fg);font-size:12px;line-height:1.5;">' +
+    '<strong>Important:</strong> Open your terminal in the root directory ' +
+    'of the project where you want the skill installed. Do not run the ' +
+    'command from the CyberCore skills repository or a project subdirectory.' +
+    '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
     agentButtons +
     '</div>' +
@@ -743,31 +749,71 @@ function openInstallPicker(skillId) {
 }
 
 function buildSingleSkillInstallCommand(skill, agent) {
-  const skillDir = '.' + agent.id + '/skills/' + skill.id;
-  const target = skillDir + '/SKILL.md';
+  const validId = value => /^[a-zA-Z0-9._-]+$/.test(String(value));
+  if (!validId(skill.id) || !validId(agent.id)) {
+    throw new Error("Invalid skill or agent ID.");
+  }
+
+  const shellQuote = value =>
+    "'" + String(value).replace(/'/g, "'\\''") + "'";
+
+  const skillDir = "." + agent.id + "/skills/" + skill.id;
+  const target = skillDir + "/SKILL.md";
   const sourceUrl =
-    'https://raw.githubusercontent.com/cybercoretech/cybercore-agent-skills/' +
-    'bcbe0fea4d9e0afb2f4d3ccafaff75cfb3023085/' +
-    agent.id + '/agent-project-setup/.' + agent.id +
-    '/skills/' + skill.id + '/SKILL.md';
+    "https://raw.githubusercontent.com/cybercoretech/cybercore-agent-skills/" +
+    "bcbe0fea4d9e0afb2f4d3ccafaff75cfb3023085/" +
+    agent.id + "/agent-project-setup/." + agent.id +
+    "/skills/" + skill.id + "/SKILL.md";
 
   return [
-    'set -eu',
-    'skill_dir=' + "'" + skillDir + "'",
-    'target="$skill_dir/SKILL.md"',
-    'mkdir -p "$skill_dir"',
-    'if [ -f "$target" ]; then',
-    '  backup="$target.bak.$(date +%Y%m%d-%H%M%S)"',
-    '  cp -p "$target" "$backup"',
-    '  printf "Backed up existing skill to %s\\n" "$backup"',
-    'fi',
-    'tmp="$target.tmp.$$"',
-    'trap \'rm -f "$tmp"\' EXIT',
-    'curl -fsSL ' + "'" + sourceUrl + "'" + ' -o "$tmp"',
-    'mv "$tmp" "$target"',
-    'trap - EXIT',
-    'printf "Installed ' + skill.id + ' for ' + agent.name + ' in %s\\n" "$target"'
-  ].join('\n');
+    "__cybercore_install_skill() {",
+    '  project_dir="$PWD"',
+    '  if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then',
+    '    project_root="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1',
+    '    if [ "$project_root" != "$project_dir" ]; then',
+    '      echo "ERROR: Run this command from the project root, not a subdirectory."',
+    '      echo "Project root: $project_root"',
+    "      return 1",
+    "    fi",
+    '    remote_url="$(git remote get-url origin 2>/dev/null || true)"',
+    '    case "$remote_url" in',
+    '      *cybercore-agent-skills*)',
+    '        echo "ERROR: Run this from the project where you want the skill installed."',
+    "        return 1",
+    "        ;;",
+    "    esac",
+    "  fi",
+    '  skill_dir=' + shellQuote(skillDir),
+    '  target="$skill_dir/SKILL.md"',
+    '  mkdir -p "$skill_dir" || return 1',
+    '  if [ -f "$target" ]; then',
+    '    backup="$target.bak.$(date +%Y%m%d-%H%M%S)"',
+    '    cp -p "$target" "$backup" || return 1',
+    '    printf "Backed up existing skill to %s\\n" "$backup"',
+    "  fi",
+    '  tmp="$target.tmp.$$"',
+    '  if curl -fL --progress-bar ' + shellQuote(sourceUrl) + ' -o "$tmp"; then',
+    '    if mv "$tmp" "$target"; then',
+    '      printf "Installed ' + skill.id + ' for ' + agent.name.replace(/[\r\n]/g, "") + ' in %s\\n" "$target"',
+    "    else",
+    '      rm -f "$tmp"',
+    '      echo "ERROR: Could not save the downloaded skill."',
+    "      return 1",
+    "    fi",
+    "  else",
+    '    rm -f "$tmp"',
+    '    echo "ERROR: Download failed. Existing installation was preserved."',
+    "    return 1",
+    "  fi",
+    "}",
+    "if __cybercore_install_skill; then",
+    "  :",
+    "else",
+    '  __cybercore_install_status=$?',
+    "fi",
+    "unset -f __cybercore_install_skill",
+    "unset __cybercore_install_status"
+  ].join("\n");
 }
 
 function copyText(text) {
