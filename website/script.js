@@ -549,7 +549,14 @@ function renderMatrix() {
     agents.forEach(agent => {
       const td = document.createElement('td');
       td.className = 'status-cell';
-      if (skillMatrix[skill.id][agent.id]) { td.className += ' status-cell'; td.textContent = '✓'; } else { td.textContent = '–'; }
+      if (skillMatrix[skill.id][agent.id]) {
+        td.className += ' is-installed';
+        td.setAttribute('aria-label', 'Installed');
+        td.innerHTML = '<span class="status-mark" aria-hidden="true">✓</span>';
+      } else {
+        td.textContent = '–';
+        td.setAttribute('aria-label', 'Not installed');
+      }
       row.appendChild(td);
     });
     const cmdCell = document.createElement('td');
