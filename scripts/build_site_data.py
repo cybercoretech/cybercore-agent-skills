@@ -57,7 +57,7 @@ def build() -> str:
             "category": meta["category"],
             "icon": meta["icon"],
             "desc": front["description"].strip(),
-            "version": front.get("version"),
+            "version": (front.get("metadata") or {}).get("version"),
             "full": body,
         })
     agents = []
