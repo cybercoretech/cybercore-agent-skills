@@ -66,6 +66,7 @@ def build() -> str:
             "id": aid,
             "name": spec["name"],
             "icon": spec.get("icon", ""),
+            "badge": spec["badge"],
             "instructions": spec["instructions"],
             "rulesDir": spec["rules_dir"],
             "skillsDir": spec.get("skills_dir") or "",

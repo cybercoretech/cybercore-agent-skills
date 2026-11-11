@@ -81,10 +81,12 @@ skills:
 #   root_files: extra template files copied to the project root every install
 #   keep_files: template files installed only when the target has none
 #   notes:      printed after install; {project} is replaced with the project path
+#   badge:      unique two-letter monogram for the website (icons repeat)
 agents:
   claude:
     name: Claude
     icon: "🤖"
+    badge: CL
     instructions: CLAUDE.md
     rules_dir: .claude/rules
     skills_dir: .claude/skills
@@ -94,6 +96,7 @@ agents:
   codex:
     name: Codex
     icon: "📓"
+    badge: CX
     instructions: AGENTS.md
     rules_dir: .codex/rules
     skills_dir: .agents/skills
@@ -104,6 +107,7 @@ agents:
   copilot:
     name: GitHub Copilot
     icon: "🤖"
+    badge: CP
     instructions: AGENTS.md
     rules_dir: .copilot/rules
     skills_dir: .github/skills
@@ -112,6 +116,7 @@ agents:
   crush:
     name: Crush
     icon: "💥"
+    badge: CR
     instructions: AGENTS.md
     rules_dir: .crush/rules
     skills_dir: .crush/skills
@@ -120,6 +125,7 @@ agents:
   gemini:
     name: Gemini CLI
     icon: "💎"
+    badge: GM
     instructions: AGENTS.md
     rules_dir: .gemini/rules
     skills_dir: .gemini/skills
@@ -130,6 +136,7 @@ agents:
   hermes:
     name: Hermes
     icon: "📬"
+    badge: HE
     instructions: AGENTS.md
     rules_dir: .hermes/rules
     skills_dir: .hermes/skills
@@ -140,6 +147,7 @@ agents:
   kimi-code:
     name: Kimi Code
     icon: "🤖"
+    badge: KI
     instructions: AGENTS.md
     rules_dir: .kimi-code/rules
     skills_dir: .kimi-code/skills
@@ -148,6 +156,7 @@ agents:
   ollama:
     name: Ollama
     icon: "🦙"
+    badge: OL
     instructions: AGENTS.md
     rules_dir: .ollama/rules
     skills_dir: null
@@ -158,6 +167,7 @@ agents:
   openclaw:
     name: OpenClaw
     icon: "🦷"
+    badge: OW
     instructions: AGENTS.md
     rules_dir: .openclaw/rules
     skills_dir: .openclaw/skills
@@ -168,6 +178,7 @@ agents:
   opencode:
     name: OpenCode
     icon: "🦾"
+    badge: OC
     instructions: AGENTS.md
     rules_dir: .opencode/rules
     skills_dir: .opencode/skills
@@ -177,6 +188,7 @@ agents:
   ori:
     name: Ori
     icon: "🦉"
+    badge: OR
     instructions: AGENTS.md
     rules_dir: .ori/rules
     skills_dir: .ori/skills
@@ -187,6 +199,7 @@ agents:
   pi:
     name: Pi
     icon: "🥧"
+    badge: PI
     instructions: AGENTS.md
     rules_dir: .pi/rules
     skills_dir: .pi/skills
@@ -195,6 +208,7 @@ agents:
   qwen:
     name: Qwen Code
     icon: "🤖"
+    badge: QW
     instructions: AGENTS.md
     rules_dir: .qwen/rules
     skills_dir: .qwen/skills

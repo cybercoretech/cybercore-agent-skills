@@ -19,7 +19,7 @@
 <a href="#content" class="skip-link">Skip to content</a>
 
   <header class="topbar">
-    <a href="#" class="brand" aria-label="Cybercore Agent Skills home">
+    <a href="./" class="brand" aria-label="Cybercore Agent Skills home">
       <span class="brand-mark" aria-hidden="true">CC</span>
       <span class="mark">CYBERCORE</span><span class="brand-divider">/</span> Agent Skills
     </a>
@@ -66,15 +66,15 @@
           </div>
           <div class="stat">
             <div class="stat-value" id="statSkills">0</div>
-            <div class="stat-label">default skills per agent</div>
+            <div class="stat-label">skills</div>
           </div>
           <div class="stat">
-            <div class="stat-value" id="statFiles">0</div>
-            <div class="stat-label">skill copies shipped</div>
+            <div class="stat-value" id="statDefault">0</div>
+            <div class="stat-label">installed by default</div>
           </div>
           <div class="stat">
-            <div class="stat-value" id="statFavs">0</div>
-            <div class="stat-label">favorited</div>
+            <div class="stat-value" id="statOptional">0</div>
+            <div class="stat-label">opt-in pack skills</div>
           </div>
         </div>
         <div class="controls">
@@ -125,8 +125,17 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">Deployment Center</p>
-            <h2>One command per agent</h2>
+            <h2>Clone once, then one command per agent</h2>
           </div>
+        </div>
+        <div class="deploy-steps card">
+          <ol>
+            <li>Clone the repository anywhere:
+              <pre>git clone https://github.com/cybercoretech/cybercore-agent-skills.git</pre></li>
+            <li>Open a terminal in the root of the project you want to configure.</li>
+            <li>Run your agent's installer below, replacing <code>/path/to/cybercore-agent-skills</code> with your clone.</li>
+          </ol>
+          <p class="deploy-options">Options: <code>--with omarchy</code> adds the opt-in Omarchy pack, <code>--list-packs</code> lists packs, <code>--help</code> shows usage. Existing files are backed up before they are replaced.</p>
         </div>
         <div class="grid" id="deployGrid"></div>
       </div>
@@ -152,31 +161,27 @@
             <h2>Source, license, contribution</h2>
           </div>
         </div>
-        <div class="grid" style="max-width: 560px;">
-          <div class="card">
-            <div class="card-header">
-              <span class="card-icon">↗</span>
-              <div><div class="card-name">Repository</div></div>
-            </div>
-            <pre style="margin:10px 0; font-size:12px;">https://github.com/cybercoretech/cybercore-agent-skills</pre>
-            <button class="btn btn--ghost btn--icon" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills')">Copy</button>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <span class="card-icon">📄</span>
-              <div><div class="card-name">License</div></div>
-            </div>
-            <pre style="margin:10px 0; font-size:12px;">MIT</pre>
-            <button class="btn btn--ghost btn--icon" onclick="copyText('MIT')">Copy</button>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <span class="card-icon">🐛</span>
-              <div><div class="card-name">Issues</div></div>
-            </div>
-            <pre style="margin:10px 0; font-size:12px;">https://github.com/cybercoretech/cybercore-agent-skills/issues</pre>
-            <button class="btn btn--ghost btn--icon" onclick="copyText('https://github.com/cybercoretech/cybercore-agent-skills/issues')">Copy</button>
-          </div>
+        <div class="grid repo-links">
+          <a class="card repo-link" href="https://github.com/cybercoretech/cybercore-agent-skills" target="_blank" rel="noopener">
+            <span class="card-icon" aria-hidden="true">↗</span>
+            <span><span class="card-name">Repository</span><span class="card-subtitle">Source on GitHub</span></span>
+          </a>
+          <a class="card repo-link" href="https://github.com/cybercoretech/cybercore-agent-skills#readme" target="_blank" rel="noopener">
+            <span class="card-icon" aria-hidden="true">📘</span>
+            <span><span class="card-name">README</span><span class="card-subtitle">Agents, skills, and layout</span></span>
+          </a>
+          <a class="card repo-link" href="https://github.com/cybercoretech/cybercore-agent-skills/blob/main/SETUP.md" target="_blank" rel="noopener">
+            <span class="card-icon" aria-hidden="true">🛠️</span>
+            <span><span class="card-name">Setup guide</span><span class="card-subtitle">Install paths and post-install steps</span></span>
+          </a>
+          <a class="card repo-link" href="https://github.com/cybercoretech/cybercore-agent-skills/blob/main/LICENSE" target="_blank" rel="noopener">
+            <span class="card-icon" aria-hidden="true">📄</span>
+            <span><span class="card-name">MIT License</span><span class="card-subtitle">Free to use and modify</span></span>
+          </a>
+          <a class="card repo-link" href="https://github.com/cybercoretech/cybercore-agent-skills/issues" target="_blank" rel="noopener">
+            <span class="card-icon" aria-hidden="true">🐛</span>
+            <span><span class="card-name">Issues</span><span class="card-subtitle">Report a problem or request a skill</span></span>
+          </a>
         </div>
       </div>
     </section>
