@@ -1854,3 +1854,29 @@ main.wrap {
     width: calc(100% - 24px) !important;
   }
 }
+
+/* Optional pack indicators (installed with --with <pack>) */
+#skills td.status-cell.is-optional {
+  position: relative;
+  color: var(--cc-neon-cyan);
+  font-weight: 700;
+}
+
+#skills td.status-cell.is-optional::before {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: auto;
+  border: 1px dashed rgba(0,229,255,.55);
+  border-radius: 7px;
+}
+
+#skills td.status-cell.is-optional .status-mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--cc-neon-cyan);
+  font-size: 14px;
+}

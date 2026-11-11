@@ -66,11 +66,11 @@
           </div>
           <div class="stat">
             <div class="stat-value" id="statSkills">0</div>
-            <div class="stat-label">skills per agent</div>
+            <div class="stat-label">default skills per agent</div>
           </div>
           <div class="stat">
             <div class="stat-value" id="statFiles">0</div>
-            <div class="stat-label">skill files total</div>
+            <div class="stat-label">skill copies shipped</div>
           </div>
           <div class="stat">
             <div class="stat-value" id="statFavs">0</div>
@@ -78,12 +78,8 @@
           </div>
         </div>
         <div class="controls">
-          <div class="filters">
+          <div class="filters" id="filterChips">
             <button class="chip chip--active filter-chip" aria-pressed="true" onclick="filterCategory('all', this)">All Skills</button>
-            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('web', this)">Web &amp; Frontend</button>
-            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('system', this)">System</button>
-            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('language', this)">Languages</button>
-            <button class="chip filter-chip" aria-pressed="false" onclick="filterCategory('devops', this)">DevOps</button>
             <button class="chip filter-chip favorites-filter" aria-pressed="false" onclick="filterCategory('favorites', this)">★ Favorites</button>
           </div>
         </div>
@@ -101,21 +97,8 @@
         <div class="matrix-wrap" role="region" aria-label="Skill availability across agents" tabindex="0">
           <table aria-label="Skills by supported AI agent">
             <thead>
-              <tr>
+              <tr id="matrixHead">
                 <th>Skill</th>
-                <th class="agent-col" data-agent="opencode">OpenCode</th>
-                <th class="agent-col" data-agent="claude">Claude</th>
-                <th class="agent-col" data-agent="codex">Codex</th>
-                <th class="agent-col" data-agent="copilot">Copilot</th>
-                <th class="agent-col" data-agent="crush">Crush</th>
-                <th class="agent-col" data-agent="gemini">Gemini</th>
-                <th class="agent-col" data-agent="hermes">Hermes</th>
-                <th class="agent-col" data-agent="kimi-code">Kimi-Code</th>
-                <th class="agent-col" data-agent="openclaw">OpenClaw</th>
-                <th class="agent-col" data-agent="ollama">Ollama</th>
-                <th class="agent-col" data-agent="pi">Pi</th>
-                <th class="agent-col" data-agent="ori">Ori</th>
-                <th class="agent-col" data-agent="qwen">Qwen</th>
                 <th class="actions-cell">Actions</th>
               </tr>
             </thead>
@@ -221,6 +204,7 @@
     <span class="chip chip--status chip--ok" style="pointer-events:none;">✓</span>
     <span id="toastText">Copied to clipboard</span>
   </div>
+<script src="data.js" defer></script>
 <script src="script.js" defer></script>
 </body>
 </html>
