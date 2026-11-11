@@ -129,6 +129,15 @@ for agent, spec in manifest["agents"].items():
 if (ROOT / "codex" / "agent-project-setup" / ".codex" / "rules" / "default.rules").is_file() is False:
     errors.append("codex: missing .codex/rules/default.rules")
 
+# Documentation must list every skill and the current counts.
+readme = (ROOT / "README.md").read_text(encoding="utf-8")
+for name in skills:
+    if f"`{name}`" not in readme:
+        errors.append(f"README.md: skill `{name}` is not listed")
+for badge in (f"agents-{len(manifest['agents'])}-", f"skills-{len(skills)}-"):
+    if badge not in readme:
+        errors.append(f"README.md: badge '{badge}' is missing or has a stale count")
+
 # Template copies must match the canonical sources exactly.
 report = sync_templates.sync(check=True)
 errors.extend(f"sync: {e}" for e in report.errors)
