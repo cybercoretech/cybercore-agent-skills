@@ -76,6 +76,126 @@ let favorites = readFavorites();
 let searchQuery = '';
 let activeDetail = null;
 
+// ----- Modal focus management: background goes inert, Tab stays inside, focus returns on close.
+const modalStack = [];
+
+function focusableIn(container) {
+  return [...container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])')]
+    .filter(el => el.getClientRects().length > 0);
+}
+
+function openModal(el, initialFocus) {
+  if (modalStack.some(m => m.el === el)) return;
+  const entry = { el, returnFocus: document.activeElement, inerted: [] };
+  [...document.body.children].forEach(child => {
+    if (child !== el && !child.contains(el) && child.tagName !== 'SCRIPT' && !child.inert) {
+      child.inert = true;
+      entry.inerted.push(child);
+    }
+  });
+  modalStack.push(entry);
+  const target = initialFocus || focusableIn(el)[0] || el;
+  if (target) target.focus();
+}
+
+function closeModal(el) {
+  const index = modalStack.findIndex(m => m.el === el);
+  if (index < 0) return;
+  const [entry] = modalStack.splice(index, 1);
+  entry.inerted.forEach(child => { child.inert = false; });
+  if (entry.returnFocus && document.contains(entry.returnFocus) && typeof entry.returnFocus.focus === 'function') {
+    entry.returnFocus.focus();
+  }
+}
+
+document.addEventListener('keydown', event => {
+  const top = modalStack[modalStack.length - 1];
+  if (!top || event.key !== 'Tab') return;
+  const items = focusableIn(top.el);
+  if (!items.length) { event.preventDefault(); return; }
+  const first = items[0], last = items[items.length - 1];
+  if (event.shiftKey && (document.activeElement === first || !top.el.contains(document.activeElement))) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && (document.activeElement === last || !top.el.contains(document.activeElement))) {
+    event.preventDefault(); first.focus();
+  }
+});
+
+// ----- Minimal Markdown renderer for SKILL.md bodies. Everything is escaped first,
+// so skill text can never inject markup. Supports headings, paragraphs, nested
+// lists, fenced code, tables, rules, bold, italic, and inline code.
+function renderInline(text) {
+  const codes = [];
+  let out = escapeHtml(text).replace(/`([^`]+)`/g, (_, code) => { codes.push(code); return '\u0000' + (codes.length - 1) + '\u0000'; });
+  out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[\s(])\*([^*\s][^*]*)\*(?=[\s).,:;!?]|$)/g, '$1<em>$2</em>')
+    .replace(/(^|[\s(])_([^_\s][^_]*)_(?=[\s).,:;!?]|$)/g, '$1<em>$2</em>');
+  return out.replace(/\u0000(\d+)\u0000/g, (_, i) => '<code>' + codes[Number(i)] + '</code>');
+}
+
+function renderMarkdown(md) {
+  const lines = md.replace(/\r\n?/g, '\n').split('\n');
+  const html = [];
+  let paragraph = [];
+  const listStack = [];
+  const flushParagraph = () => { if (paragraph.length) { html.push('<p>' + renderInline(paragraph.join(' ')) + '</p>'); paragraph = []; } };
+  const closeLists = (depth = 0) => {
+    while (listStack.length > depth) { html.push('</li></' + listStack.pop().type + '>'); }
+  };
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const fence = line.match(/^\s*```\s*([\w+-]*)\s*$/);
+    if (fence) {
+      flushParagraph(); closeLists();
+      const body = [];
+      while (++i < lines.length && !/^\s*```\s*$/.test(lines[i])) body.push(lines[i]);
+      html.push('<pre class="md-code"><code>' + escapeHtml(body.join('\n')) + '</code></pre>');
+      continue;
+    }
+    if (/^\s*\|.*\|\s*$/.test(line) && i + 1 < lines.length && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1])) {
+      flushParagraph(); closeLists();
+      const cells = row => row.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+      const head = cells(line);
+      i++;
+      const rows = [];
+      while (i + 1 < lines.length && /^\s*\|.*\|\s*$/.test(lines[i + 1])) rows.push(cells(lines[++i]));
+      html.push('<div class="md-table"><table><thead><tr>' + head.map(c => '<th>' + renderInline(c) + '</th>').join('') +
+        '</tr></thead><tbody>' + rows.map(r => '<tr>' + r.map(c => '<td>' + renderInline(c) + '</td>').join('') + '</tr>').join('') +
+        '</tbody></table></div>');
+      continue;
+    }
+    const heading = line.match(/^(#{1,6})\s+(.*)$/);
+    if (heading) {
+      flushParagraph(); closeLists();
+      const level = Math.min(heading[1].length + 2, 6); // page owns h1/h2; skill headings start at h3
+      html.push('<h' + level + '>' + renderInline(heading[2]) + '</h' + level + '>');
+      continue;
+    }
+    if (/^\s*(-{3,}|\*{3,})\s*$/.test(line)) { flushParagraph(); closeLists(); html.push('<hr>'); continue; }
+    const item = line.match(/^(\s*)([-*]|\d+\.)\s+(.*)$/);
+    if (item) {
+      flushParagraph();
+      const depth = Math.floor(item[1].replace(/\t/g, '  ').length / 2) + 1;
+      const type = /\d/.test(item[2]) ? 'ol' : 'ul';
+      if (depth > listStack.length) {
+        while (listStack.length < depth) { html.push('<' + type + '><li>'); listStack.push({ type }); }
+      } else {
+        closeLists(depth);
+        if (listStack[depth - 1].type !== type) { closeLists(depth - 1); html.push('<' + type + '><li>'); listStack.push({ type }); }
+        else html.push('</li><li>');
+      }
+      html.push(renderInline(item[3]));
+      continue;
+    }
+    if (!line.trim()) { flushParagraph(); closeLists(); continue; }
+    if (listStack.length && /^\s+\S/.test(line)) { html.push(' ' + renderInline(line.trim())); continue; }
+    closeLists();
+    paragraph.push(line.trim());
+  }
+  flushParagraph(); closeLists();
+  return html.join('');
+}
+
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
@@ -91,7 +211,7 @@ function renderMatrixHead() {
     th.className = 'agent-col';
     th.dataset.agent = agent.id;
     const info = statusInfo(agent);
-    th.textContent = agent.name;
+    th.innerHTML = '<span class="th-name">' + escapeHtml(agent.name) + '</span><span class="th-badge" aria-hidden="true">' + escapeHtml(agent.badge || agent.name.slice(0, 2)) + '</span>';
     if (info.flag) {
       th.title = agent.name + ': ' + info.label;
       th.insertAdjacentHTML('beforeend', '<span class="th-flag ' + info.cls + '" aria-hidden="true">' + info.flag + '</span><span class="sr-only"> (' + escapeHtml(info.label) + ')</span>');
@@ -163,9 +283,11 @@ function animateStats() {
     statDefault: defaultSkillCount,
     statOptional: skills.length - defaultSkillCount
   };
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   Object.entries(targets).forEach(([id, target]) => {
     const el = document.getElementById(id);
     if (!el) return;
+    if (reduceMotion) { el.textContent = target; return; }
     let current = 0;
     const steps = 20;
     const increment = target / steps;
@@ -193,17 +315,15 @@ function renderMatrix() {
     row.dataset.id = skill.id;
     row.dataset.category = skill.category;
     row.className = 'skill-row';
-    row.tabIndex = 0;
-    row.setAttribute('role', 'button');
-    row.setAttribute('aria-label', `Open ${skill.name} documentation`);
-    row.onclick = () => openDetail('skill', skill.id);
-    row.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openDetail('skill', skill.id); } };
+    // Mouse convenience only; keyboard and screen-reader users use the skill name button.
+    row.onclick = event => { if (!event.target.closest('button, a')) openDetail('skill', skill.id); };
     const isFavorite = favorites.has(skill.id);
-    const skillHtml = '<div class="skill-cell"><span class="skill-icon">' + skill.icon + '</span><div class="skill-info"><div class="skill-name">' + escapeHtml(skill.name) + '</div><div class="skill-desc">' + escapeHtml(skill.desc) + '</div><div class="skill-cats"><span class="cat-chip">' + escapeHtml((groupById[skill.group] || {}).title || skill.group) + '</span><span class="cat-chip">' + escapeHtml(skill.category) + '</span></div></div><button class="favorite-btn ' + (isFavorite ? 'favorited' : '') + '" type="button" aria-label="' + (isFavorite ? 'Remove from' : 'Add to') + ' favorites" aria-pressed="' + isFavorite + '" onclick="event.stopPropagation(); toggleFavorite(\'' + skill.id + '\')">' + (isFavorite ? '★' : '☆') + '</button></div>';
+    const skillHtml = '<div class="skill-cell"><span class="skill-icon">' + skill.icon + '</span><div class="skill-info"><button type="button" class="skill-name skill-link" onclick="openDetail(\'skill\', \'' + skill.id + '\')">' + escapeHtml(skill.name) + '</button><div class="skill-desc">' + escapeHtml(skill.desc) + '</div><div class="skill-cats"><span class="cat-chip">' + escapeHtml((groupById[skill.group] || {}).title || skill.group) + '</span><span class="cat-chip">' + escapeHtml(skill.category) + '</span></div></div><button class="favorite-btn ' + (isFavorite ? 'favorited' : '') + '" type="button" aria-label="' + (isFavorite ? 'Remove from' : 'Add to') + ' favorites" aria-pressed="' + isFavorite + '" onclick="event.stopPropagation(); toggleFavorite(\'' + skill.id + '\')">' + (isFavorite ? '★' : '☆') + '</button></div>';
     row.innerHTML = '<td>' + skillHtml + '</td>';
     agents.forEach(agent => {
       const td = document.createElement('td');
       td.className = 'status-cell';
+      td.dataset.badge = agent.badge || agent.name.slice(0, 2);
       const state = skillMatrix[skill.id][agent.id];
       if (state === 'default') {
         td.className += ' is-installed';
@@ -226,6 +346,8 @@ function renderMatrix() {
     row.appendChild(cmdCell);
     tbody.appendChild(row);
   });
+  const status = document.getElementById('matrixStatus');
+  if (status) status.textContent = rendered === skills.length ? 'Showing all ' + skills.length + ' skills.' : 'Showing ' + rendered + ' of ' + skills.length + ' skills.';
   const empty = document.getElementById('matrixEmpty');
   if (empty) empty.remove();
   if (rendered === 0) {
@@ -267,12 +389,15 @@ function openDetail(type, id) {
   const panel = document.getElementById('detailPanel');
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
-  panel.focus();
+  panel.querySelector('.detail-main').scrollTop = 0;
+  openModal(panel, panel.querySelector('.detail-close'));
 }
 
 function closeDetail() {
   const panel = document.getElementById('detailPanel'); if (!panel) return;
+  const wasOpen = panel.classList.contains('open');
   panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); activeDetail = null;
+  if (wasOpen) closeModal(panel);
   if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
 }
 
@@ -284,8 +409,8 @@ function renderSkillDetail(skill) {
   main.innerHTML = '<h3>Overview</h3><p>' + escapeHtml(skill.desc) +
     '</p><h3>Category</h3><p><span class="cat-chip" style="margin-right:8px;">' +
     escapeHtml(skill.category) +
-    '</span></p><h3>Availability</h3><p>' + escapeHtml(availabilityText(skill)) + '</p><h3>Full Documentation</h3><pre>' +
-    escapeMd(skill.full) + '</pre>';
+    '</span></p><h3>Availability</h3><p>' + escapeHtml(availabilityText(skill)) + '</p><h3>Full Documentation</h3><div class="md">' +
+    renderMarkdown(skill.full.replace(/^#\s+[^\n]*\n+/, '')) + '</div>';
 
   sidebar.innerHTML =
     '<h4>Skill ID</h4><p>' + escapeHtml(skill.id) +
@@ -392,6 +517,7 @@ function openInstallPicker(skillId) {
   };
   function closePicker() {
     document.removeEventListener('keydown', onKeyDown);
+    closeModal(overlay);
     overlay.remove();
   }
 
@@ -425,6 +551,7 @@ function openInstallPicker(skillId) {
 
   document.addEventListener('keydown', onKeyDown);
   document.body.appendChild(overlay);
+  openModal(overlay, overlay.querySelector('[data-agent-id]'));
 }
 
 function buildSingleSkillInstallCommand(skill, agent) {
