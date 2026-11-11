@@ -1,7 +1,8 @@
 ---
 name: omarchy-agent-operations
 description: Safe agent operations on Omarchy, the agent-first Arch/Hyprland OS. Use when an agent is changing system settings, desktop config, packages, themes, plugins, or diagnosing session issues on Omarchy.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Omarchy Agent Operations

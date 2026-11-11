@@ -1,7 +1,8 @@
 ---
 name: lua-development
 description: Lua language and module development standards for Cybercore and Omarchy-related work. Use for general Lua coding, modules, performance, error handling, testing, and embedded/scripting tasks outside pure Hyprland config.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Lua Development

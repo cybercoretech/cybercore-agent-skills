@@ -1,7 +1,8 @@
 ---
 name: prompt-engineering-for-agents
 description: How to write effective agent skills, rules, and system prompts for the Cybercore agent ecosystem. Covers progressive disclosure, activation descriptions, safety framing, and maintainable instruction design.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Prompt Engineering for Agents
@@ -38,7 +39,8 @@ You are a specialist in writing effective skills, rules, and prompts for Cyberco
 ---
 name: skill-name
 description: What it does and when to use it. Be specific about trigger conditions.
-version: N
+metadata:
+  version: "1"
 ---
 
 # Title
@@ -102,7 +104,7 @@ Weak descriptions:
 
 Before finishing skill or prompt work:
 
-- Frontmatter is valid (`name`, `description`, version)
+- Frontmatter is valid and uses only spec fields (`name`, `description`, optional `license`, `compatibility`, `allowed-tools`, and `metadata` for extras such as `version`)
 - Description clearly states when the skill should activate
 - Safety gates cover the high-risk actions relevant to the domain
 - Verification section is concrete and testable

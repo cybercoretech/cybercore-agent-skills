@@ -1,7 +1,8 @@
 ---
 name: system-administration
 description: Linux system administration for Arch Linux, Omarchy, and Cybercore environments. Covers systemd, package management, user services, dotfiles, and server maintenance.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # System Administration

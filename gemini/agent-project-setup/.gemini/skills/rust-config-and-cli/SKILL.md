@@ -1,7 +1,8 @@
 ---
 name: rust-config-and-cli
 description: CLI and configuration layering for Cybercore Rust apps. Use for clap, subcommands, config files, environment variables, XDG paths, and dry-run on mutating commands.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust Config and CLI

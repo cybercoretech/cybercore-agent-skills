@@ -1,7 +1,8 @@
 ---
 name: python-development
 description: Modern Python development standards for Cybercore repositories. Covers packaging, typing, async, error handling, testing, tooling, and safe practices.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Python Development

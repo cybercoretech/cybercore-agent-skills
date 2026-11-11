@@ -1,7 +1,8 @@
 ---
 name: documentation-and-adrs
 description: Documentation, README quality, Architecture Decision Records (ADRs), and knowledge capture standards for Cybercore repositories.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Documentation and ADRs

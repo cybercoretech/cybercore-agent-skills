@@ -2,7 +2,7 @@
 """Validate the canonical skills, the manifest, and every agent template.
 
 Checks:
-  - canonical skills/<name>/SKILL.md frontmatter (name matches folder, valid
+  - canonical skills/<name>/SKILL.md frontmatter (spec fields only, name matches folder, valid
     name format, non-empty description within 1024 characters)
   - templates/skill-skeleton is a valid template and never ships to an agent
   - skill cross-references point at real skills, and default skills never
@@ -24,6 +24,8 @@ import sync_templates  # noqa: E402
 
 ROOT = sync_templates.ROOT
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+# Top-level frontmatter fields allowed by the Agent Skills specification (agentskills.io).
+SPEC_FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 errors: list[str] = []
 
 
@@ -61,6 +63,14 @@ def check_skill(path: Path, expected_name: str | None) -> None:
             errors.append(f"{rel}: name {name!r} does not match folder {expected_name!r}")
         if not NAME_RE.match(name) or len(name) > 64:
             errors.append(f"{rel}: name {name!r} must be lowercase words joined by hyphens, max 64 chars")
+    unknown = sorted(set(meta) - SPEC_FIELDS)
+    if unknown:
+        errors.append(f"{rel}: frontmatter fields {unknown} are not in the Agent Skills spec "
+                      f"(allowed: {sorted(SPEC_FIELDS)}); put extra data under metadata:")
+    extra = meta.get("metadata")
+    if extra is not None and (not isinstance(extra, dict)
+                              or not all(isinstance(k, str) and isinstance(v, str) for k, v in extra.items())):
+        errors.append(f"{rel}: metadata must map string keys to string values (quote numbers)")
     desc = meta.get("description")
     if not isinstance(desc, str) or not desc.strip():
         errors.append(f"{rel}: missing non-empty description")

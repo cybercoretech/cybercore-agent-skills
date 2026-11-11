@@ -1,7 +1,8 @@
 ---
 name: rust-persistence
 description: File and SQLite persistence for Cybercore Rust apps. Use for atomic writes, data directories, SQLite setup, and ordered migrations. Do not invent a second database without approval.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust Persistence

@@ -1,7 +1,8 @@
 ---
 name: typescript-nodejs
 description: TypeScript and Node.js development standards for Cybercore repositories. Covers strict typing, modern module systems, tooling, API patterns, testing, and safe practices.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # TypeScript & Node.js Development

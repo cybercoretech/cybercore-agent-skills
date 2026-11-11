@@ -1,7 +1,8 @@
 ---
 name: rust-app-architecture
 description: Rust application layout for Cybercore apps. Use when structuring a binary, splitting a library from main, layering CLI/config/domain, or deciding crate boundaries. Publishing and MSRV stay in rust-development.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust App Architecture

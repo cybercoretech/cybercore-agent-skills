@@ -1,7 +1,8 @@
 ---
 name: incident-response-basics
 description: Lightweight incident response and on-call practices for Cybercore services. Covers detection, triage, communication, mitigation, rollback, and blameless follow-up.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Incident Response Basics

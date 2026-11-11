@@ -1,7 +1,8 @@
 ---
 name: database-and-sql
 description: Database design, SQL, migrations, and data-access patterns for Cybercore repositories. Covers schema design, query safety, migrations, ORMs, and operational hygiene.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Database and SQL

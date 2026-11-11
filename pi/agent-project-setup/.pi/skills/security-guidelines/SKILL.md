@@ -1,7 +1,8 @@
 ---
 name: security-guidelines
 description: Security guidelines for handling secrets, credentials, and sensitive data. Covers .env protection, SSH/GPG keys, token management, and secure IPC.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Security Guidelines

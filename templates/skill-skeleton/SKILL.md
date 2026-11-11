@@ -1,7 +1,8 @@
 ---
 name: skill-name
 description: What this skill does and when an agent should use it. Be specific about trigger conditions and technologies.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Skill Title

@@ -1,7 +1,8 @@
 ---
 name: omarchy-plugin-theme
 description: Omarchy plugin and theme development for Quickshell/Omarchy desktop extension points. Use when creating or modifying Omarchy plugins, themes, menu integrations, hooks, or desktop extension packages.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Omarchy Plugin & Theme Development

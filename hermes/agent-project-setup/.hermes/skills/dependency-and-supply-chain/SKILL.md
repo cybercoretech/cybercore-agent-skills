@@ -1,7 +1,8 @@
 ---
 name: dependency-and-supply-chain
 description: Dependency management, lockfiles, vulnerability awareness, SBOM basics, and supply-chain hygiene for Cybercore repositories.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Dependency and Supply Chain

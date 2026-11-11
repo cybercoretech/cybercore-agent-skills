@@ -1,7 +1,8 @@
 ---
 name: web-design-and-frontend-craft
 description: Build polished, distinctive, responsive websites and web apps. Covers UI/UX direction, CSS custom properties, neon/cyber aesthetics, component systems, cards and hero sections, motion, accessibility, performance, and complete visual asset packs including SVG, PNG, icons, and optimized images.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Web Design & Frontend Craft

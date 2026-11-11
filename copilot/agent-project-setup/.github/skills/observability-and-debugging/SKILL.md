@@ -1,7 +1,8 @@
 ---
 name: observability-and-debugging
 description: Observability, logging, metrics, tracing, and systematic debugging practices for Cybercore repositories. Covers structured logging, failure diagnosis, profiling, and post-incident hygiene.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Observability and Debugging

@@ -1,7 +1,8 @@
 ---
 name: code-review-and-refactoring
 description: Code review standards, constructive feedback, safe refactoring practices, and PR hygiene for Cybercore repositories.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Code Review and Refactoring

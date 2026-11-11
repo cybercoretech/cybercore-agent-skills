@@ -1,7 +1,8 @@
 ---
 name: omarchy-lua-config
 description: Omarchy Lua configuration for Hyprland, bindings, look-and-feel, bootstrap modules, and safe desktop customization. Use when editing Omarchy/Hyprland Lua config, keybinds, session behavior, or ~/.config/hypr and related Omarchy config modules.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Omarchy Lua Config

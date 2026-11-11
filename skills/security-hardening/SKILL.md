@@ -1,7 +1,8 @@
 ---
 name: security-hardening
 description: Security hardening practices that extend Cybercore security guidelines. Covers threat modeling, least privilege, secure defaults, authn/z, secrets, input handling, and dependency risk.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Security Hardening

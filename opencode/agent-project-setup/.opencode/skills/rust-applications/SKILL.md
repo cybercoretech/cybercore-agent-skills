@@ -1,7 +1,8 @@
 ---
 name: rust-applications
 description: Index for building Rust applications (binaries, CLIs, TUIs, desktop apps). Use when starting or reshaping a Rust app and you need to pick the right focused skill for architecture, async, config/CLI, observability, persistence, testing, UI, or release builds. Library publishing, MSRV, and library error policy stay in rust-development.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Rust Applications (Index)

@@ -1,7 +1,8 @@
 ---
 name: i18n-and-localization
 description: Internationalization (i18n) and localization (l10n) practices for Cybercore repositories. Covers string extraction, locale handling, formatting, RTL awareness, and safe translation workflows.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Internationalization and Localization

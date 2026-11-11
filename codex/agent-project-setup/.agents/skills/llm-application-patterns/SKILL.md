@@ -1,7 +1,8 @@
 ---
 name: llm-application-patterns
 description: Practical patterns for building LLM-powered features and agentic applications in Cybercore repositories. Covers prompting structure, tool use, evaluation, safety boundaries, and operational hygiene.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # LLM Application Patterns

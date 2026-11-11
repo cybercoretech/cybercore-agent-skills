@@ -1,7 +1,8 @@
 ---
 name: rust-release-and-cross-compile
 description: Release profiles, feature flags, and cross-compilation for Cybercore Rust apps. Use for cargo build --release, strip/LTO settings, targets, and lockfiles. Publishing and MSRV policy stay in rust-development.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust Release and Cross-Compile

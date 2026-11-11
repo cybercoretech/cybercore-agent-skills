@@ -1,7 +1,8 @@
 ---
 name: accessibility-a11y
 description: Accessibility (a11y) standards and practical implementation guidance for Cybercore web and UI work. Covers semantic HTML, keyboard support, ARIA, contrast, testing, and inclusive defaults.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Accessibility (a11y)

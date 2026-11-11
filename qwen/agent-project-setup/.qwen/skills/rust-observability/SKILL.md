@@ -1,7 +1,8 @@
 ---
 name: rust-observability
 description: Tracing and operational logging for Cybercore Rust applications. Use when adding logs, spans, EnvFilter, redaction, or command-level diagnostics. Do not use println for operational output.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust Observability

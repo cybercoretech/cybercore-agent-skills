@@ -1,7 +1,8 @@
 ---
 name: api-backend
 description: API backend development with REST design, JSON schemas, error handling, and HTTP service patterns.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # API Backend Development

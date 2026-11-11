@@ -1,7 +1,8 @@
 ---
 name: rust-ui
 description: Choosing and building Rust user interfaces for Cybercore and Omarchy apps. Use when deciding CLI vs ratatui vs a native GUI, or when adding a TUI. Do not add a GUI toolkit the repo does not already use without approval.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust UI

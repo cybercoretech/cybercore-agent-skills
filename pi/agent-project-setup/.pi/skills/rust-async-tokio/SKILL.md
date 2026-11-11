@@ -1,7 +1,8 @@
 ---
 name: rust-async-tokio
 description: Tokio async patterns for Cybercore Rust applications. Use for runtimes, spawn, spawn_blocking, cancellation, graceful shutdown, timeouts, and bounded concurrency. Library error and MSRV rules stay in rust-development.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust Async (Tokio)

@@ -1,7 +1,8 @@
 ---
 name: ci-cd-pipelines
 description: CI/CD pipeline design and hygiene for Cybercore repositories. Covers GitHub Actions, reusable workflows, caching, matrix builds, secrets handling, and safe deployment practices.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # CI/CD Pipelines

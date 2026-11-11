@@ -1,7 +1,8 @@
 ---
 name: mobile-cross-platform
 description: Cross-platform mobile development standards for Cybercore repositories. Covers Flutter, React Native, and Kotlin Multiplatform patterns, navigation, platform APIs, release hygiene, and safe mobile practices.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Mobile Cross-Platform Development

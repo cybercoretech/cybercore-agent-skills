@@ -1,7 +1,8 @@
 ---
 name: performance-optimization
 description: Performance analysis and optimization practices for Cybercore repositories. Covers measurement, algorithmic complexity, caching, frontend and backend hot paths, and safe optimization workflows.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Performance Optimization

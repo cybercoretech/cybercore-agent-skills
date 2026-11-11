@@ -1,7 +1,8 @@
 ---
 name: rust-development
 description: Rust development standards for Cargo workspaces, crates.io publishing, MSRV compliance, and error handling patterns.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Rust Development Standards

@@ -1,7 +1,8 @@
 ---
 name: rust-testing
 description: Testing beyond cargo test for Cybercore Rust apps. Use for unit tests, integration tests, tokio tests, temp dirs, and proptest. Do not weaken tests to make a change pass.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust Testing

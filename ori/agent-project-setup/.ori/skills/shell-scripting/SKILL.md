@@ -1,7 +1,8 @@
 ---
 name: shell-scripting
 description: Zsh and shell scripting for dotfiles, automation, and agent integration. Covers preexec/precmd hooks, keybindings, ZLE widgets, and safe command execution.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Shell Scripting

@@ -1,7 +1,8 @@
 ---
 name: rust-omarchy-tooling
 description: Rust development for Omarchy-related tooling, CLIs, system utilities, and desktop-adjacent apps. Use when building or modifying Rust tools intended to run on Omarchy/Arch, integrate with agent workflows, or accelerate user-space utilities.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Rust Omarchy Tooling

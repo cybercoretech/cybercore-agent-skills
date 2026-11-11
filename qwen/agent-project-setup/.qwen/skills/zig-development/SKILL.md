@@ -1,7 +1,8 @@
 ---
 name: zig-development
 description: Zig development standards for Cybercore repositories and systems tooling. Use for Zig projects, build.zig, allocators, C interop, testing, and explicit systems-level code.
-version: 1
+metadata:
+  version: "1"
 ---
 
 # Zig Development

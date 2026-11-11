@@ -147,7 +147,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 
 ## ✍️ Contributing a skill
 
-1. Copy `templates/skill-skeleton/` to `skills/<your-skill>/` and set `name:` to the folder name.
+1. Copy `templates/skill-skeleton/` to `skills/<your-skill>/` and set `name:` to the folder name. Use only [Agent Skills spec](https://agentskills.io/specification) frontmatter fields; extras such as `version` go under `metadata:`.
 2. Add the skill to `manifest.yaml` with a group, category, and icon.
 3. Add it to the matching table in this README.
 4. Run `python3 scripts/sync_templates.py`, then the validation commands below.
