@@ -1,9 +1,15 @@
-# Public Release Candidate Scope
+# Public Release Scope
 
-This package is the sanitized **agent-template distribution** for `cybercoretech/cybercore-agent-skills`.
+This repository is the sanitized public **agent-template distribution** for `cybercoretech/cybercore-agent-skills`.
 
-It includes the 13 agent templates, 11 shared skills per agent, rule files, project-level installers, validation scripts, CI workflow, README, setup guide, and MIT license.
+It includes:
 
-It intentionally excludes the repository's separate `mockup-spa.html` marketing/demo page and its visual assets. When applying this package to the existing public repository, merge/overlay these files and retain those site files unless they are separately reviewed. This archive is not intended as a wholesale replacement for the entire public repository.
+- 13 project-level agent templates (`<agent>/agent-project-setup/`)
+- 42 canonical skills in `skills/` (38 default, 4 in the opt-in Omarchy pack) and 4 canonical rules in `rules/`
+- `manifest.yaml`, the installer template, and the skill skeleton in `templates/`
+- sync, validation, and sanitization scripts, the installer smoke test, and the CI workflow
+- README, setup guide, and MIT license
 
-All 13 public installers are project-level. The private Blackbox build's OpenCode global installer is intentionally not carried into this public package.
+Every installer is project-level. Private builds may include machine-specific or global installers; those are intentionally not part of this distribution.
+
+`scripts/check_public_sanitization.py` must pass before anything is published. It blocks private account names, local paths, and other machine-specific references.

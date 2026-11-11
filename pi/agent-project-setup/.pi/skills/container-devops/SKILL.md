@@ -1,7 +1,8 @@
 ---
 name: container-devops
 description: Container development and DevOps practices with Docker, GitHub Actions, and CI/CD pipelines.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Container & DevOps

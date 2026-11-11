@@ -16,7 +16,7 @@
     "edit": {
       "*": "ask",
       "src/**": "ask",
-      "tests/**": "allow",
+      "tests/**": "ask",
       "AGENTS.md": "deny",
       "opencode.json": "deny"
     },

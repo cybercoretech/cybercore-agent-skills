@@ -1,7 +1,8 @@
 ---
 name: qt-cpp-desktop
 description: Qt6/C++ desktop application development with qmake6, Quickshell/Omarchy plugins, and QML.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Qt6/C++ Desktop Development

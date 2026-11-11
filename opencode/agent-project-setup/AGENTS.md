@@ -1,3 +1,4 @@
+<!-- cybercore-agent-skills: opencode -->
 # Strict Agent Guardrails & Execution Policy
 
 ## 1. Golden Rules of Operation
@@ -35,3 +36,7 @@
   1. Output the exact error message and exit code.
   2. State your hypothesis for why it failed in 1–2 sentences.
   3. Wait for instructions. **DO NOT auto-apply a secondary fix.**
+
+## 5. Project Rules & Skills
+- Read every rule file in `.opencode/rules/` before starting work and follow it together with this file.
+- Reusable skills live in `.opencode/skills/<skill>/SKILL.md`. Load a skill when the task matches its description, and follow its safety rules.

@@ -1,7 +1,8 @@
 ---
 name: testing-qa
 description: Testing and QA standards for Rust, shell scripts, and desktop applications. Covers unit tests, integration tests, CI/CD, and verification procedures.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Testing & QA

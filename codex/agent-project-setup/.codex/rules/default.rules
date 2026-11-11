@@ -1,0 +1,45 @@
+# Codex execution policy for this project (Starlark).
+# Codex loads project rules from .codex/rules/*.rules only when the project's
+# .codex/ layer is trusted. Test a command with:
+#   codex execpolicy check --pretty --rules .codex/rules/default.rules -- git status
+# When several rules match, the most restrictive decision wins
+# (forbidden > prompt > allow). Prose guidance lives in the *.md files here.
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Destroys uncommitted work; ask the user to run it.",
+)
+prefix_rule(
+    pattern = ["git", "clean", ["-fd", "-df", "-fdx", "-xdf"]],
+    decision = "forbidden",
+    justification = "Deletes untracked files; ask the user to run it.",
+)
+prefix_rule(
+    pattern = ["git", "push", ["--force", "-f"]],
+    decision = "forbidden",
+    justification = "Rewrites remote history; ask the user to run it.",
+)
+prefix_rule(
+    pattern = ["rm", ["-rf", "-fr"]],
+    decision = "forbidden",
+    justification = "Mass deletion is not allowed without explicit approval.",
+)
+prefix_rule(
+    pattern = ["sudo"],
+    decision = "forbidden",
+    justification = "Root-level changes need the user.",
+)
+prefix_rule(
+    pattern = ["pacman", "-S"],
+    decision = "prompt",
+    justification = "System package installs need approval.",
+)
+prefix_rule(
+    pattern = ["cargo", "install"],
+    decision = "prompt",
+    justification = "Global installs need approval.",
+)
+
+prefix_rule(pattern = ["git", ["status", "log", "diff"]], decision = "allow")
+prefix_rule(pattern = ["cargo", ["check", "test", "clippy", "fmt"]], decision = "allow")

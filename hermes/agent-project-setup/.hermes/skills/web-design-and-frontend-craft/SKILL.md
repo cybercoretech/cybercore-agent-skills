@@ -1,7 +1,8 @@
 ---
 name: web-design-and-frontend-craft
 description: Build polished, distinctive, responsive websites and web apps. Covers UI/UX direction, CSS custom properties, neon/cyber aesthetics, component systems, cards and hero sections, motion, accessibility, performance, and complete visual asset packs including SVG, PNG, icons, and optimized images.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Web Design & Frontend Craft
@@ -106,14 +107,14 @@ Create a short design brief before implementation. Establish:
 - **Purpose:** What does this page/app help someone do?
 - **Audience:** Who is using it, and what do they already know?
 - **Primary action:** What should be easiest to find and complete?
-- **Brand character:** e.g. technical, warm, editorial, playful, premium, industrial, minimal, futuristic, cyber, retro-wrestling.
+- **Brand character:** e.g. technical, warm, editorial, playful, premium, industrial, minimal, futuristic, cyber, retro.
 - **Visual language:** Color, typography, geometry, imagery, icon family, borders, shadows, and motion.
 - **Content hierarchy:** What must be seen immediately, what supports the decision, and what can be secondary?
 - **Constraints:** Framework, browser support, deployment, accessibility, performance, and existing assets.
 
 **Cyber / futuristic:** deep surfaces, controlled neon accents, subtle grids, terminal motifs, purposeful animation. Avoid turning every element into glowing neon.
 
-**Retro-wrestling:** bold display type (Anton), gold/red/blue accents, rope-gradient motifs, VHS scanlines on vault pages, "pyro" mode for 5-star content.
+**Retro / vintage:** bold condensed display type, a limited palette of strong accent colors, print or VHS texture used sparingly, and one signature effect reserved for hero content.
 
 Do not mix unrelated visual styles. One page should feel like one designed product.
 

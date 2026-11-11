@@ -1,7 +1,8 @@
 ---
 name: security-guidelines
 description: Security guidelines for handling secrets, credentials, and sensitive data. Covers .env protection, SSH/GPG keys, token management, and secure IPC.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Security Guidelines
@@ -24,7 +25,7 @@ You are a security specialist focused on protecting secrets, credentials, and se
 - Run `bash -x`, `set -x`, or `set -o xtrace` on scripts that source secrets
 - Store secrets in world-readable files or public locations
 - Do not introduce a platform-specific keyring dependency without evaluating portability, threat model, and user consent
-- Never install to the user's phone without asking
+- Install, sideload, or deploy builds to a user's physical devices without asking
 
 ## File Permissions
 

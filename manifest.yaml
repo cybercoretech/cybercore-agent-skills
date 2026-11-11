@@ -1,0 +1,202 @@
+# Single source of truth for cybercore-agent-skills.
+#
+# Canonical content lives in skills/<name>/ and rules/<rule>.md.
+# scripts/sync_templates.py copies it into every <agent>/agent-project-setup/
+# template and renders each installer from templates/setup.sh.in.
+# Run `python3 scripts/sync_templates.py` after editing anything here,
+# in skills/, in rules/, or in templates/setup.sh.in.
+
+rules: [safety, workflow, rust, gleam]
+
+# Skill groups. Default groups are installed by every skills-capable agent.
+# Pack groups ship in <template>/packs/<pack>/ and install only with
+# `setup-*.sh --with <pack>`.
+groups:
+  core:
+    title: Core
+    default: true
+  general:
+    title: General engineering
+    default: true
+  rust:
+    title: Rust applications
+    default: true
+  omarchy:
+    title: Omarchy pack
+    default: false
+    pack: omarchy
+
+# category and icon are display metadata for the website and README.
+skills:
+  # core
+  android-development:           {group: core, category: mobile, icon: "📱"}
+  api-backend:                   {group: core, category: backend, icon: "🔌"}
+  container-devops:              {group: core, category: devops, icon: "☁️"}
+  git-workflow:                  {group: core, category: workflow, icon: "🔀"}
+  qt-cpp-desktop:                {group: core, category: language, icon: "🖥️"}
+  rust-development:              {group: core, category: language, icon: "🦀"}
+  security-guidelines:           {group: core, category: security, icon: "🔒"}
+  shell-scripting:               {group: core, category: system, icon: "🐚"}
+  system-administration:         {group: core, category: system, icon: "🐧"}
+  testing-qa:                    {group: core, category: quality, icon: "🧪"}
+  web-design-and-frontend-craft: {group: core, category: web, icon: "🎨"}
+  # general
+  accessibility-a11y:            {group: general, category: web, icon: "♿"}
+  ci-cd-pipelines:               {group: general, category: devops, icon: "🔁"}
+  code-review-and-refactoring:   {group: general, category: quality, icon: "🔍"}
+  database-and-sql:              {group: general, category: backend, icon: "🗄️"}
+  dependency-and-supply-chain:   {group: general, category: security, icon: "📦"}
+  documentation-and-adrs:        {group: general, category: workflow, icon: "📝"}
+  i18n-and-localization:         {group: general, category: web, icon: "🌐"}
+  incident-response-basics:      {group: general, category: devops, icon: "🚨"}
+  llm-application-patterns:      {group: general, category: ai, icon: "🤖"}
+  lua-development:               {group: general, category: language, icon: "🌙"}
+  mobile-cross-platform:         {group: general, category: mobile, icon: "📲"}
+  observability-and-debugging:   {group: general, category: devops, icon: "🔭"}
+  performance-optimization:      {group: general, category: quality, icon: "⚡"}
+  prompt-engineering-for-agents: {group: general, category: ai, icon: "🧠"}
+  python-development:            {group: general, category: language, icon: "🐍"}
+  security-hardening:            {group: general, category: security, icon: "🛡️"}
+  typescript-nodejs:             {group: general, category: language, icon: "🟦"}
+  zig-development:               {group: general, category: language, icon: "⚙️"}
+  # rust
+  rust-applications:             {group: rust, category: rust, icon: "🧭"}
+  rust-app-architecture:         {group: rust, category: rust, icon: "🏗️"}
+  rust-async-tokio:              {group: rust, category: rust, icon: "⏱️"}
+  rust-config-and-cli:           {group: rust, category: rust, icon: "🎛️"}
+  rust-observability:            {group: rust, category: rust, icon: "📈"}
+  rust-persistence:              {group: rust, category: rust, icon: "💾"}
+  rust-release-and-cross-compile: {group: rust, category: rust, icon: "🚀"}
+  rust-testing:                  {group: rust, category: rust, icon: "✅"}
+  rust-ui:                       {group: rust, category: rust, icon: "🪟"}
+  # omarchy pack (opt-in)
+  omarchy-agent-operations:      {group: omarchy, category: omarchy, icon: "🛠️"}
+  omarchy-lua-config:            {group: omarchy, category: omarchy, icon: "🎚️"}
+  omarchy-plugin-theme:          {group: omarchy, category: omarchy, icon: "🧩"}
+  rust-omarchy-tooling:          {group: omarchy, category: omarchy, icon: "🔧"}
+
+# Per-agent install layout (paths are relative to the target project).
+#   skills_dir: null       -> rules-only template (no skills, no packs)
+#   status:     verified | needs-setup | unverified | rules-only
+#   root_files: extra template files copied to the project root every install
+#   keep_files: template files installed only when the target has none
+#   notes:      printed after install; {project} is replaced with the project path
+agents:
+  claude:
+    name: Claude
+    icon: "🤖"
+    instructions: CLAUDE.md
+    rules_dir: .claude/rules
+    skills_dir: .claude/skills
+    script: setup-claude.sh
+    status: verified
+    keep_files: [.claude/settings.json]
+  codex:
+    name: Codex
+    icon: "📓"
+    instructions: AGENTS.md
+    rules_dir: .codex/rules
+    skills_dir: .agents/skills
+    script: setup-codex.sh
+    status: verified
+    notes:
+      - "Codex loads .codex/rules/default.rules only after you trust this project in Codex."
+  copilot:
+    name: GitHub Copilot
+    icon: "🤖"
+    instructions: AGENTS.md
+    rules_dir: .copilot/rules
+    skills_dir: .github/skills
+    script: setup-copilot.sh
+    status: verified
+  crush:
+    name: Crush
+    icon: "💥"
+    instructions: AGENTS.md
+    rules_dir: .crush/rules
+    skills_dir: .crush/skills
+    script: setup-crush.sh
+    status: verified
+  gemini:
+    name: Gemini CLI
+    icon: "💎"
+    instructions: AGENTS.md
+    rules_dir: .gemini/rules
+    skills_dir: .gemini/skills
+    script: setup-gemini.sh
+    status: verified
+    notes:
+      - "Agent Skills are experimental in some Gemini CLI versions; enable them in settings if /skills list is empty."
+  hermes:
+    name: Hermes
+    icon: "📬"
+    instructions: AGENTS.md
+    rules_dir: .hermes/rules
+    skills_dir: .hermes/skills
+    script: setup-hermes.sh
+    status: needs-setup
+    notes:
+      - "Hermes loads project skills only from trusted projects. Run once: hermes skills trust {project}"
+  kimi-code:
+    name: Kimi Code
+    icon: "🤖"
+    instructions: AGENTS.md
+    rules_dir: .kimi-code/rules
+    skills_dir: .kimi-code/skills
+    script: setup-kimi-code.sh
+    status: verified
+  ollama:
+    name: Ollama
+    icon: "🦙"
+    instructions: AGENTS.md
+    rules_dir: .ollama/rules
+    skills_dir: null
+    script: setup-ollama.sh
+    status: rules-only
+    notes:
+      - "Ollama has no skills system, so this template installs AGENTS.md and rules only."
+  openclaw:
+    name: OpenClaw
+    icon: "🦷"
+    instructions: AGENTS.md
+    rules_dir: .openclaw/rules
+    skills_dir: .openclaw/skills
+    script: setup-openclaw.sh
+    status: needs-setup
+    notes:
+      - "OpenClaw does not scan project folders by default. Add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: {project}/.openclaw/skills"
+  opencode:
+    name: OpenCode
+    icon: "🦾"
+    instructions: AGENTS.md
+    rules_dir: .opencode/rules
+    skills_dir: .opencode/skills
+    script: setup-agent.sh
+    status: verified
+    root_files: [opencode.json]
+  ori:
+    name: Ori
+    icon: "🦉"
+    instructions: AGENTS.md
+    rules_dir: .ori/rules
+    skills_dir: .ori/skills
+    script: setup-ori.sh
+    status: unverified
+    notes:
+      - "Experimental: Ori's project skill discovery is unverified. Check that Ori lists these skills before relying on them."
+  pi:
+    name: Pi
+    icon: "🥧"
+    instructions: AGENTS.md
+    rules_dir: .pi/rules
+    skills_dir: .pi/skills
+    script: setup-pi.sh
+    status: verified
+  qwen:
+    name: Qwen Code
+    icon: "🤖"
+    instructions: AGENTS.md
+    rules_dir: .qwen/rules
+    skills_dir: .qwen/skills
+    script: setup-qwen.sh
+    status: verified

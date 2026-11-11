@@ -1,7 +1,8 @@
 ---
 name: android-development
 description: Android development with Gradle, APK signing, and Android CLI tooling.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Android Development

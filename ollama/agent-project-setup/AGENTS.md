@@ -1,3 +1,4 @@
+<!-- cybercore-agent-skills: ollama -->
 # Strict Agent Guardrails & Execution Policy
 
 ## 1. Golden Rules of Operation
@@ -39,3 +40,7 @@
 - **Read:** `*` = ask; `*.md`, `src/**`, `tests/**` = allow; `.env*`, `**/*.pem` = deny
 - **Edit:** `*` = ask; `src/**`, `tests/**` = ask; `AGENTS.md`, `opencode.json`, `settings.json` = deny
 - **Bash:** `*` = ask; `git status*`, `git log*`, `git diff*`, `cargo check*`, `cargo test*` = allow
+
+## 7. Project Rules & Skills
+- Read every rule file in `.ollama/rules/` before starting work and follow it together with this file.
+- This template is rules-only; no skills are installed.

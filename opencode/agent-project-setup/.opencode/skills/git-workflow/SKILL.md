@@ -1,7 +1,8 @@
 ---
 name: git-workflow
 description: Git workflow standards for Cybercore repositories. Covers commit conventions, branch strategies, PR hygiene, and safe Git operations.
-version: 2
+metadata:
+  version: "2"
 ---
 
 # Git Workflow
