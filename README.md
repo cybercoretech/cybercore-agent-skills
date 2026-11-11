@@ -5,6 +5,9 @@ Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-cap
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
 [![42 skills](https://img.shields.io/badge/skills-42-green)](#-included-skills)
+[![Skills Explorer](https://img.shields.io/badge/explorer-live-7df9ff)](https://cybercoretech.github.io/cybercore-agent-skills/)
+
+🌐 **Browse the skills in the [Skills Explorer](https://cybercoretech.github.io/cybercore-agent-skills/)**: search the catalog, read each skill, compare agents, and copy a one-skill install command.
 
 ## 🤖 Supported agents
 
@@ -132,9 +135,11 @@ cybercore-agent-skills/
 │   └── skill-skeleton/        # starting point for new skills
 ├── scripts/
 │   ├── sync_templates.py      # copies skills/rules into templates, renders installers
+│   ├── build_site_data.py     # generates website/data.js and website/docs.js
 │   ├── validate_templates.py
 │   └── check_public_sanitization.py
 ├── tests/smoke_installers.sh
+├── website/                   # Skills Explorer (GitHub Pages); data.js and docs.js are generated
 └── <agent>/agent-project-setup/   # generated per-agent templates (13)
     ├── AGENTS.md | CLAUDE.md
     ├── setup-<agent>.sh
@@ -150,7 +155,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 1. Copy `templates/skill-skeleton/` to `skills/<your-skill>/` and set `name:` to the folder name. Use only [Agent Skills spec](https://agentskills.io/specification) frontmatter fields; extras such as `version` go under `metadata:`.
 2. Add the skill to `manifest.yaml` with a group, category, and icon.
 3. Add it to the matching table in this README.
-4. Run `python3 scripts/sync_templates.py`, then the validation commands below.
+4. Run `python3 scripts/sync_templates.py` and `python3 scripts/build_site_data.py`, then the validation commands below.
 
 ## 🧪 Validation
 
