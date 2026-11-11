@@ -30,6 +30,38 @@ function agentLocation(agent) {
   return agent.skillsDir ? agent.skillsDir + '/' : agent.rulesDir + '/ (rules only)';
 }
 
+const STATUS = {
+  'verified': { label: 'Verified', cls: 'status-ok', flag: '' },
+  'needs-setup': { label: 'Setup needed', cls: 'status-warn', flag: '⚙' },
+  'unverified': { label: 'Unverified', cls: 'status-warn', flag: '?' },
+  'rules-only': { label: 'Rules only', cls: 'status-muted', flag: '–' }
+};
+
+function statusInfo(agent) {
+  return STATUS[agent.status] || { label: agent.status, cls: 'status-muted', flag: '' };
+}
+
+function statusChip(agent) {
+  const info = statusInfo(agent);
+  return '<span class="status-chip ' + info.cls + '">' + escapeHtml(info.label) + '</span>';
+}
+
+function skillCountText(agent) {
+  if (!agent.skillsDir) return 'Rules only';
+  const optional = skills.length - defaultSkillCount;
+  return defaultSkillCount + ' skills' + (optional ? ' + ' + optional + ' opt-in' : '');
+}
+
+function copyToClipboard(text, message) {
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    showToast('Clipboard is not available here. Copy the text manually.');
+    return Promise.resolve(false);
+  }
+  return navigator.clipboard.writeText(text)
+    .then(() => { showToast(message || 'Copied to clipboard'); return true; })
+    .catch(() => { showToast('Clipboard access failed. Check browser permissions.'); return false; });
+}
+
 function readFavorites() {
   try {
     const parsed = JSON.parse(localStorage.getItem('cc-favs') || '[]');
@@ -58,8 +90,12 @@ function renderMatrixHead() {
     const th = document.createElement('th');
     th.className = 'agent-col';
     th.dataset.agent = agent.id;
+    const info = statusInfo(agent);
     th.textContent = agent.name;
-    if (!agent.skillsDir) th.title = 'Rules only';
+    if (info.flag) {
+      th.title = agent.name + ': ' + info.label;
+      th.insertAdjacentHTML('beforeend', '<span class="th-flag ' + info.cls + '" aria-hidden="true">' + info.flag + '</span><span class="sr-only"> (' + escapeHtml(info.label) + ')</span>');
+    }
     head.insertBefore(th, actions);
   });
 }
@@ -93,7 +129,11 @@ function init() {
   window.addEventListener('resize', () => {
     if (window.innerWidth > 900) {
       const nav = document.getElementById('mobileNav');
-      if (nav) nav.style.display = 'none';
+      const button = document.getElementById('mobileMenuBtn');
+      if (nav && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        if (button) button.setAttribute('aria-expanded', 'false');
+      }
     }
   });
   document.addEventListener('cc:theme', e => {
@@ -119,9 +159,9 @@ function init() {
 function animateStats() {
   const targets = {
     statAgents: agents.length,
-    statSkills: defaultSkillCount,
-    statFiles: skillAgents.length * skills.length,
-    statFavs: favorites.size
+    statSkills: skills.length,
+    statDefault: defaultSkillCount,
+    statOptional: skills.length - defaultSkillCount
   };
   Object.entries(targets).forEach(([id, target]) => {
     const el = document.getElementById(id);
@@ -207,12 +247,13 @@ function setupSearch() {
   input.addEventListener('input', (e) => { searchQuery = e.target.value.trim().toLowerCase(); renderMatrix(); renderAgents(); renderDeploy(); });
   document.addEventListener('keydown', (e) => {
     if (e.key === '/' && !e.target.matches('input, textarea, [contenteditable=true]')) { e.preventDefault(); wrap.classList.add('open'); input.focus(); }
-    if (e.key === 'Escape') { if (document.getElementById('detailPanel').classList.contains('open')) closeDetail(); else { input.value = ''; searchQuery = ''; renderMatrix(); renderAgents(); renderDeploy(); } }
+    if (e.key === 'Escape') { if (document.getElementById('skillInstallPicker')) return; if (document.getElementById('detailPanel').classList.contains('open')) closeDetail(); else { input.value = ''; searchQuery = ''; renderMatrix(); renderAgents(); renderDeploy(); } }
   });
 }
 
 function setupDeepLink() {
   const hash = window.location.hash;
+  if (activeDetail && hash === '#' + activeDetail.replace(':', '/')) return;
   if (hash.startsWith('#skill/')) { const skillId = hash.slice(7); openDetail('skill', skillId); }
   else if (hash.startsWith('#agent/')) { const agentId = hash.slice(7); openDetail('agent', agentId); }
   else if (hash === '') { closeDetail(); }
@@ -264,11 +305,11 @@ function renderAgentDetail(agent) {
   const sidebar = document.getElementById('detailSidebar');
   const deployedSkills = skills.filter(s => skillMatrix[s.id][agent.id]);
   const notes = agent.notes.length ? '<h3>Setup Notes</h3><ul>' + agent.notes.map(n => '<li>' + escapeHtml(n) + '</li>').join('') + '</ul>' : '';
-  main.innerHTML = '<h3>Overview</h3><p>' + escapeHtml(agent.statusText) + '</p>' + notes +
+  main.innerHTML = '<h3>Overview</h3><p>' + statusChip(agent) + ' ' + escapeHtml(agent.statusText) + '</p>' + notes +
     '<h3>Installs</h3><p><code>' + escapeHtml(agent.instructions) + '</code>, <code>' + escapeHtml(agent.rulesDir) + '/</code>' +
     (agent.skillsDir ? ', <code>' + escapeHtml(agent.skillsDir) + '/</code>' : '') + '</p>' +
     '<h3>Setup Script</h3><p><code>' + escapeHtml(agent.script) + '</code></p>' +
-    '<h3>Skills (' + deployedSkills.length + ')</h3><div style="display:flex;flex-wrap:wrap;gap:6px;">' +
+    '<h3>Skills (' + escapeHtml(skillCountText(agent)) + ')</h3><div style="display:flex;flex-wrap:wrap;gap:6px;">' +
     deployedSkills.map(s => '<span class="skill-tag">' + escapeHtml(s.name) + (skillMatrix[s.id][agent.id] === 'pack' ? ' (opt-in)' : '') + '</span>').join('') + '</div>';
   sidebar.innerHTML = '<h4>Agent ID</h4><p>' + escapeHtml(agent.id) + '</p><h4>Skills Directory</h4><p>' + escapeHtml(agentLocation(agent)) +
     '</p><h4>Setup Script</h4><button class="copy-btn" onclick="copyAgentCommand(\'' + agent.id + '\')">Copy Setup Command</button>' +
@@ -279,7 +320,6 @@ function toggleFavorite(skillId) {
   if (favorites.has(skillId)) favorites.delete(skillId); else favorites.add(skillId);
   try { localStorage.setItem('cc-favs', JSON.stringify([...favorites])); } catch (error) { console.warn('Favorites could not be saved in this browser.', error); }
   showToast(favorites.has(skillId) ? 'Added to favorites' : 'Removed from favorites'); renderMatrix();
-  const stat = document.getElementById('statFavs'); if (stat) stat.textContent = favorites.size;
 }
 
 function showToast(msg) {
@@ -315,7 +355,9 @@ function openInstallPicker(skillId) {
     'border-radius:8px;background:var(--cc-card);color:var(--cc-fg);' +
     'cursor:pointer;text-align:left;font:inherit;">' +
     '<span>' + escapeHtml(agent.name) + '</span>' +
-    '<span style="color:var(--cc-neon-cyan);font-size:12px;">Select &amp; copy ↗</span>' +
+    (agent.status === 'verified'
+      ? '<span style="color:var(--cc-neon-cyan);font-size:12px;">Copy ↗</span>'
+      : statusChip(agent)) +
     '</button>'
   ).join('');
 
@@ -366,12 +408,19 @@ function openInstallPicker(skillId) {
     if (!agent) return;
 
     const command = buildSingleSkillInstallCommand(skill, agent);
-    navigator.clipboard.writeText(command).then(() => {
-      showToast('Copied ' + skill.name + ' install command for ' + agent.name);
-    }).catch(() => {
-      showToast('Clipboard access failed. Check browser permissions.');
+    copyToClipboard(command, 'Copied ' + skill.name + ' install command for ' + agent.name).then(copied => {
+      if (!copied || !agent.notes.length) { closePicker(); return; }
+      // Agents that need a setup step (or are unverified) explain it before closing.
+      const section = overlay.querySelector('section');
+      section.innerHTML =
+        '<h3 id="skillPickerTitle" style="margin:0 0 10px;">Copied for ' + escapeHtml(agent.name) + '</h3>' +
+        '<p style="margin:0 0 10px;">' + statusChip(agent) + '</p>' +
+        '<ul style="margin:0 0 16px;padding-left:18px;line-height:1.6;">' +
+        agent.notes.map(n => '<li>' + escapeHtml(n) + '</li>').join('') + '</ul>' +
+        '<button type="button" class="btn btn--primary" data-picker-close style="width:100%;">Done</button>';
+      const done = section.querySelector('[data-picker-close]');
+      if (done) done.focus();
     });
-    closePicker();
   });
 
   document.addEventListener('keydown', onKeyDown);
@@ -441,23 +490,20 @@ function buildSingleSkillInstallCommand(skill, agent) {
     "    return 1",
     "  fi",
     "}",
-    "if __cybercore_install_skill; then",
-    "  :",
-    "else",
-    '  __cybercore_install_status=$?',
-    "fi",
+    "__cybercore_install_skill && __cybercore_install_status=0 || __cybercore_install_status=$?",
     "unset -f __cybercore_install_skill",
-    "unset __cybercore_install_status"
+    // Expand the status before unsetting it so the command's exit code is the real result.
+    'eval "unset __cybercore_install_status; (exit $__cybercore_install_status)"'
   ].join("\n");
 }
 
 function copyText(text) {
-  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
+  return copyToClipboard(text);
 }
 
 function copyAgentCommand(agentId) {
   const agent = agents.find(a => a.id === agentId);
-  if (agent) copyText(setupCommand(agent));
+  if (agent) copyToClipboard(setupCommand(agent), 'Copied ' + agent.name + ' setup command');
 }
 
 function availabilityText(skill) {
@@ -468,15 +514,17 @@ function availabilityText(skill) {
   return 'Part of the optional "' + group.pack + '" pack: run the agent installer with --with ' + group.pack + ', or choose one agent to install just this skill.';
 }
 
+function agentBadge(agent) {
+  return '<span class="card-icon agent-badge" title="' + escapeHtml(agent.name) + '" aria-hidden="true">' + escapeHtml(agent.badge || agent.name.slice(0, 2)) + '</span>';
+}
+
 function renderAgents() {
   const grid = document.getElementById('agentGrid'); grid.innerHTML = '';
   agents.filter(agent => !searchQuery || `${agent.name} ${agentLocation(agent)} ${agent.script}`.toLowerCase().includes(searchQuery)).forEach(agent => {
-    const deployed = skills.filter(s => skillMatrix[s.id][agent.id]);
     const card = document.createElement('div');
     card.className = 'card';
     card.onclick = (e) => { if (!e.target.closest('.copy-btn')) openDetail('agent', agent.id); };
-    const initial = agent.name.charAt(0).toUpperCase();
-    card.innerHTML = '<div class="card-header"><span class="card-icon">' + initial + '</span><div><div class="card-name">' + escapeHtml(agent.name) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><div class="card-stats"><div class="stat-item"><span class="value">' + deployed.length + '</span> skills</div><div class="stat-item"><span class="value">' + agent.script + '</span> script</div></div><div style="margin-top:auto;"><button class="btn btn--ghost btn--icon" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button></div>';
+    card.innerHTML = '<div class="card-header">' + agentBadge(agent) + '<div><div class="card-name">' + escapeHtml(agent.name) + ' ' + statusChip(agent) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><div class="card-stats"><div class="stat-item"><span class="value">' + escapeHtml(skillCountText(agent)) + '</span></div><div class="stat-item"><span class="value">' + escapeHtml(agent.script) + '</span></div></div><div style="margin-top:auto;"><button class="btn btn--ghost btn--icon" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button></div>';
     grid.appendChild(card);
   });
 }
@@ -486,8 +534,8 @@ function renderDeploy() {
   agents.filter(agent => !searchQuery || `${agent.name} ${agentLocation(agent)} ${agent.script}`.toLowerCase().includes(searchQuery)).forEach(agent => {
     const card = document.createElement('div');
     card.className = 'card';
-    const initial = agent.name.charAt(0).toUpperCase();
-    card.innerHTML = '<div class="card-header"><span class="card-icon">' + initial + '</span><div><div class="card-name">' + escapeHtml(agent.name) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><pre style="margin:12px 0; font-size:12px;">' + escapeHtml(setupCommand(agent)) + '</pre><button class="btn btn--primary" style="width:100%;" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button>';
+    const notes = agent.notes.length ? '<ul class="deploy-notes">' + agent.notes.map(n => '<li>' + escapeHtml(n) + '</li>').join('') + '</ul>' : '';
+    card.innerHTML = '<div class="card-header">' + agentBadge(agent) + '<div><div class="card-name">' + escapeHtml(agent.name) + ' ' + statusChip(agent) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><pre style="margin:12px 0; font-size:12px;">' + escapeHtml(setupCommand(agent)) + '</pre>' + notes + '<button class="btn btn--primary" style="width:100%;" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button>';
     grid.appendChild(card);
   });
 }
