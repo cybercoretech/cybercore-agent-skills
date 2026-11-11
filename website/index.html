@@ -4,8 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0a0a0d">
-  <meta name="description" content="Explore the CyberCore Agent Skills catalog: reusable skills, supported AI agents, deployment commands, and shared guardrails.">
+  <meta name="description" content="Reusable skills and shared guardrails for AI coding agents. Browse the catalog, compare agents, and copy install commands.">
   <title>CyberCore Agent Skills — Explorer</title>
+  <link rel="canonical" href="https://cybercoretech.github.io/cybercore-agent-skills/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CyberCore">
+  <meta property="og:title" content="CyberCore Agent Skills Explorer">
+  <meta property="og:description" content="Reusable skills and shared guardrails for AI coding agents. Browse the catalog, compare agents, and copy install commands.">
+  <meta property="og:url" content="https://cybercoretech.github.io/cybercore-agent-skills/">
+  <meta property="og:image" content="https://cybercoretech.github.io/cybercore-agent-skills/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CyberCore Agent Skills: reusable skills and guardrails for AI coding agents">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CyberCore Agent Skills Explorer">
+  <meta name="twitter:description" content="Reusable skills and shared guardrails for AI coding agents. Browse the catalog, compare agents, and copy install commands.">
+  <meta name="twitter:image" content="https://cybercoretech.github.io/cybercore-agent-skills/og.png">
   <link rel="stylesheet" href="https://cybercoretech.github.io/kit/chooser.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +51,7 @@
       <div class="search-wrap" id="searchWrap">
         <input type="search" id="skillSearch" placeholder="Search skills, agents, or documentation…" aria-label="Search skills and agents" autocomplete="off">
       </div>
-      <cybercore-theme-chooser default="cybercore-tech" adopt id="themeChooser" style="margin-left:16px;"></cybercore-theme-chooser>
+      <cybercore-theme-chooser default="cybercore-tech" adopt id="themeChooser"></cybercore-theme-chooser>
     </div>
   </header>
 
@@ -50,12 +65,14 @@
   </nav>
 
   <main class="wrap" id="content">
+    <noscript>
+      <p class="noscript">This explorer needs JavaScript. You can browse the skills and installers directly in the <a href="https://github.com/cybercoretech/cybercore-agent-skills">GitHub repository</a>.</p>
+    </noscript>
 
     <section class="hero">
       <div class="hero-inner">
         <div class="section-head">
-          <span class="section-num">01 /</span>
-          <span class="section-title">Agent Skill Catalog</span>
+          <p class="eyebrow">Agent Skill Catalog</p>
         </div>
         <h1>Agent × Skill Matrix</h1>
         <p class="lead-text">A field guide to the reusable skills and guardrails shipped across the CyberCore agent ecosystem. Explore the catalog, inspect full documentation, and copy deployment commands.</p>
@@ -150,6 +167,7 @@
             <h2>Non-negotiable guardrails</h2>
           </div>
         </div>
+        <p class="section-lead">Every template installs these four rule files into <code>.&lt;agent&gt;/rules/</code>, next to the agent's root instruction file.</p>
         <div class="grid" id="rulesGrid"></div>
       </div>
     </section>
@@ -190,7 +208,7 @@
   </main>
 
   <footer>
-    <cybercore-contact repo="agent-skills"></cybercore-contact>
+    <cybercore-contact repo="cybercore-agent-skills"></cybercore-contact>
   </footer>
 
   <div class="detail-panel" id="detailPanel" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
@@ -207,7 +225,7 @@
   </div>
 
   <div id="toast">
-    <span class="chip chip--status chip--ok" style="pointer-events:none;">✓</span>
+    <span class="chip chip--status chip--ok">✓</span>
     <span id="toastText">Copied to clipboard</span>
   </div>
 <script src="data.js" defer></script>

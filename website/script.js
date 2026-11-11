@@ -62,6 +62,32 @@ function copyToClipboard(text, message) {
     .catch(() => { showToast('Clipboard access failed. Check browser permissions.'); return false; });
 }
 
+// Skill documentation lives in docs.js and is loaded on first need
+// (opening a skill, searching, or copying its documentation).
+let docsPromise = null;
+function loadDocs() {
+  if (window.CC_DOCS) return Promise.resolve(window.CC_DOCS);
+  if (!docsPromise) {
+    docsPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'docs.js';
+      script.async = true;
+      script.onload = () => (window.CC_DOCS ? resolve(window.CC_DOCS) : reject(new Error('docs.js has no data')));
+      script.onerror = () => { docsPromise = null; script.remove(); reject(new Error('Could not load docs.js')); };
+      document.head.appendChild(script);
+    });
+  }
+  return docsPromise;
+}
+
+function skillDoc(id) {
+  return (window.CC_DOCS && window.CC_DOCS[id]) || '';
+}
+
+function skillSourceUrl(skill) {
+  return 'https://github.com/' + DATA.repo + '/blob/' + DATA.ref + '/skills/' + encodeURIComponent(skill.id) + '/SKILL.md';
+}
+
 function readFavorites() {
   try {
     const parsed = JSON.parse(localStorage.getItem('cc-favs') || '[]');
@@ -308,7 +334,7 @@ function renderMatrix() {
   skills.forEach(skill => {
     if (activeFilter !== 'all' && activeFilter !== 'favorites' && skill.group !== activeFilter) return;
     if (activeFilter === 'favorites' && !favorites.has(skill.id)) return;
-    const haystack = `${skill.id} ${skill.name} ${skill.desc} ${skill.category} ${skill.full}`.toLowerCase();
+    const haystack = `${skill.id} ${skill.name} ${skill.desc} ${skill.category} ${skillDoc(skill.id)}`.toLowerCase();
     if (searchQuery && !haystack.includes(searchQuery)) return;
     rendered++;
     const row = document.createElement('tr');
@@ -366,7 +392,12 @@ function filterCategory(category, btn) {
 function setupSearch() {
   const input = document.getElementById('skillSearch');
   const wrap = document.getElementById('searchWrap');
-  input.addEventListener('input', (e) => { searchQuery = e.target.value.trim().toLowerCase(); renderMatrix(); renderAgents(); renderDeploy(); });
+  input.addEventListener('input', (e) => {
+    searchQuery = e.target.value.trim().toLowerCase();
+    renderMatrix(); renderAgents(); renderDeploy();
+    // Search starts on names and descriptions, then widens to full documentation once loaded.
+    if (searchQuery && !window.CC_DOCS) loadDocs().then(() => { if (searchQuery) renderMatrix(); }).catch(() => {});
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === '/' && !e.target.matches('input, textarea, [contenteditable=true]')) { e.preventDefault(); wrap.classList.add('open'); input.focus(); }
     if (e.key === 'Escape') { if (document.getElementById('skillInstallPicker')) return; if (document.getElementById('detailPanel').classList.contains('open')) closeDetail(); else { input.value = ''; searchQuery = ''; renderMatrix(); renderAgents(); renderDeploy(); } }
@@ -407,10 +438,10 @@ function renderSkillDetail(skill) {
   const sidebar = document.getElementById('detailSidebar');
 
   main.innerHTML = '<h3>Overview</h3><p>' + escapeHtml(skill.desc) +
-    '</p><h3>Category</h3><p><span class="cat-chip" style="margin-right:8px;">' +
+    '</p><h3>Category</h3><p><span class="cat-chip">' +
     escapeHtml(skill.category) +
-    '</span></p><h3>Availability</h3><p>' + escapeHtml(availabilityText(skill)) + '</p><h3>Full Documentation</h3><div class="md">' +
-    renderMarkdown(skill.full.replace(/^#\s+[^\n]*\n+/, '')) + '</div>';
+    '</span></p><h3>Availability</h3><p>' + escapeHtml(availabilityText(skill)) + '</p><h3>Full Documentation</h3><div class="md" id="skillDoc">' +
+    (window.CC_DOCS ? renderSkillDoc(skill) : '<p class="doc-status">Loading documentation…</p>') + '</div>';
 
   sidebar.innerHTML =
     '<h4>Skill ID</h4><p>' + escapeHtml(skill.id) +
@@ -419,9 +450,30 @@ function renderSkillDetail(skill) {
     '</p><h4>Version</h4><p>' + escapeHtml(String(skill.version || '1')) + '</p><h4>Install This Skill</h4>' +
     '<button class="copy-btn" onclick="openInstallPicker(\'' + skill.id +
     '\')">Choose Agent &amp; Copy Install Command</button>' +
-    '<button class="copy-btn" style="margin-top:8px;" onclick="copyText(window.skillFullText)">Copy Full Documentation</button>';
+    '<button class="copy-btn" onclick="copySkillDoc(\'' + skill.id + '\')">Copy Full Documentation</button>' +
+    '<a class="copy-btn sidebar-link" href="' + escapeHtml(skillSourceUrl(skill)) + '" target="_blank" rel="noopener">View on GitHub ↗</a>';
 
-  window.skillFullText = skill.full;
+  if (!window.CC_DOCS) {
+    loadDocs().then(() => {
+      const target = document.getElementById('skillDoc');
+      if (target && activeDetail === 'skill:' + skill.id) target.innerHTML = renderSkillDoc(skill);
+    }).catch(() => {
+      const target = document.getElementById('skillDoc');
+      if (target && activeDetail === 'skill:' + skill.id) {
+        target.innerHTML = '<p class="doc-status">Documentation could not be loaded. <a href="' + escapeHtml(skillSourceUrl(skill)) + '" target="_blank" rel="noopener">Read it on GitHub ↗</a></p>';
+      }
+    });
+  }
+}
+
+function renderSkillDoc(skill) {
+  return renderMarkdown(skillDoc(skill.id).replace(/^#\s+[^\n]*\n+/, ''));
+}
+
+function copySkillDoc(skillId) {
+  loadDocs()
+    .then(() => copyToClipboard(skillDoc(skillId), 'Copied documentation'))
+    .catch(() => showToast('Documentation could not be loaded.'));
 }
 
 function renderAgentDetail(agent) {
@@ -434,11 +486,11 @@ function renderAgentDetail(agent) {
     '<h3>Installs</h3><p><code>' + escapeHtml(agent.instructions) + '</code>, <code>' + escapeHtml(agent.rulesDir) + '/</code>' +
     (agent.skillsDir ? ', <code>' + escapeHtml(agent.skillsDir) + '/</code>' : '') + '</p>' +
     '<h3>Setup Script</h3><p><code>' + escapeHtml(agent.script) + '</code></p>' +
-    '<h3>Skills (' + escapeHtml(skillCountText(agent)) + ')</h3><div style="display:flex;flex-wrap:wrap;gap:6px;">' +
+    '<h3>Skills (' + escapeHtml(skillCountText(agent)) + ')</h3><div class="tag-list">' +
     deployedSkills.map(s => '<span class="skill-tag">' + escapeHtml(s.name) + (skillMatrix[s.id][agent.id] === 'pack' ? ' (opt-in)' : '') + '</span>').join('') + '</div>';
   sidebar.innerHTML = '<h4>Agent ID</h4><p>' + escapeHtml(agent.id) + '</p><h4>Skills Directory</h4><p>' + escapeHtml(agentLocation(agent)) +
     '</p><h4>Setup Script</h4><button class="copy-btn" onclick="copyAgentCommand(\'' + agent.id + '\')">Copy Setup Command</button>' +
-    '<p style="margin-top:8px;font-size:12px;">Run it from your project root. Replace /path/to/cybercore-agent-skills with your clone.</p>';
+    '<p class="sidebar-note">Run it from your project root. Replace /path/to/cybercore-agent-skills with your clone.</p>';
 }
 
 function toggleFavorite(skillId) {
@@ -467,48 +519,36 @@ function openInstallPicker(skillId) {
 
   const overlay = document.createElement('div');
   overlay.id = 'skillInstallPicker';
+  overlay.className = 'picker-overlay';
   overlay.setAttribute('role', 'presentation');
-  overlay.style.cssText =
-    'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;' +
-    'justify-content:center;padding:20px;background:rgba(0,0,0,.78);' +
-    'backdrop-filter:blur(5px);';
 
   const agentButtons = skillAgents.map(agent =>
-    '<button type="button" data-agent-id="' + escapeHtml(agent.id) + '"' +
-    ' style="display:flex;align-items:center;justify-content:space-between;' +
-    'width:100%;padding:12px 14px;border:1px solid var(--cc-border);' +
-    'border-radius:8px;background:var(--cc-card);color:var(--cc-fg);' +
-    'cursor:pointer;text-align:left;font:inherit;">' +
+    '<button type="button" class="picker-agent" data-agent-id="' + escapeHtml(agent.id) + '">' +
     '<span>' + escapeHtml(agent.name) + '</span>' +
     (agent.status === 'verified'
-      ? '<span style="color:var(--cc-neon-cyan);font-size:12px;">Copy ↗</span>'
+      ? '<span class="picker-copy">Copy ↗</span>'
       : statusChip(agent)) +
     '</button>'
   ).join('');
 
   overlay.innerHTML =
-    '<section role="dialog" aria-modal="true" aria-labelledby="skillPickerTitle"' +
-    ' style="width:min(440px,100%);max-height:85vh;overflow:auto;padding:22px;' +
-    'border:1px solid var(--cc-border);border-radius:12px;' +
-    'background:var(--cc-card);box-shadow:0 20px 70px rgba(0,0,0,.5);">' +
-    '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">' +
-    '<h3 id="skillPickerTitle" style="margin:0;">Choose an agent</h3>' +
-    '<button type="button" data-picker-close aria-label="Close"' +
-    ' style="border:0;background:transparent;color:var(--cc-fg);font-size:22px;cursor:pointer;">×</button>' +
+    '<section class="picker" role="dialog" aria-modal="true" aria-labelledby="skillPickerTitle">' +
+    '<div class="picker-head">' +
+    '<h3 id="skillPickerTitle" class="picker-title">Choose an agent</h3>' +
+    '<button type="button" class="picker-close" data-picker-close aria-label="Close">×</button>' +
     '</div>' +
-    '<p style="margin:10px 0 16px;color:var(--cc-fg-muted);font-size:13px;">' +
+    '<p class="picker-intro">' +
     'Choose one agent. The command will install only <strong>' +
     escapeHtml(skill.name) + '</strong> for that agent.</p>' +
-'<div style="margin:0 0 16px;padding:11px;border:1px solid var(--cc-border);' +
-    'border-radius:8px;color:var(--cc-fg);font-size:12px;line-height:1.5;">' +
+'<div class="picker-warning">' +
     '<strong>Important:</strong> Open your terminal in the root directory ' +
     'of the project where you want the skill installed. Do not run the ' +
     'command from the CyberCore skills repository or a project subdirectory.' +
     '</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+    '<div class="picker-grid">' +
     agentButtons +
     '</div>' +
-    '<p style="margin:14px 0 0;color:var(--cc-fg-muted);font-size:11px;">' +
+    '<p class="picker-foot">' +
     'Existing copies of this skill are backed up before replacement.</p>' +
     '</section>';
 
@@ -539,11 +579,11 @@ function openInstallPicker(skillId) {
       // Agents that need a setup step (or are unverified) explain it before closing.
       const section = overlay.querySelector('section');
       section.innerHTML =
-        '<h3 id="skillPickerTitle" style="margin:0 0 10px;">Copied for ' + escapeHtml(agent.name) + '</h3>' +
-        '<p style="margin:0 0 10px;">' + statusChip(agent) + '</p>' +
-        '<ul style="margin:0 0 16px;padding-left:18px;line-height:1.6;">' +
+        '<h3 id="skillPickerTitle" class="picker-title picker-title--done">Copied for ' + escapeHtml(agent.name) + '</h3>' +
+        '<p class="picker-status">' + statusChip(agent) + '</p>' +
+        '<ul class="picker-notes">' +
         agent.notes.map(n => '<li>' + escapeHtml(n) + '</li>').join('') + '</ul>' +
-        '<button type="button" class="btn btn--primary" data-picker-close style="width:100%;">Done</button>';
+        '<button type="button" class="btn btn--primary btn--block" data-picker-close>Done</button>';
       const done = section.querySelector('[data-picker-close]');
       if (done) done.focus();
     });
@@ -557,7 +597,8 @@ function openInstallPicker(skillId) {
 function buildSingleSkillInstallCommand(skill, agent) {
   const validId = value => /^[a-zA-Z0-9._-]+$/.test(String(value));
   const validPath = value => /^[a-zA-Z0-9._-]+(\/[a-zA-Z0-9._-]+)*$/.test(String(value)) && !String(value).split("/").includes("..");
-  if (!validId(skill.id) || !validId(agent.id) || !validPath(agent.skillsDir) || !validId(DATA.ref)) {
+  const files = skill.files && skill.files.length ? skill.files : ["SKILL.md"];
+  if (!validId(skill.id) || !validId(agent.id) || !validPath(agent.skillsDir) || !validId(DATA.ref) || !files.every(validPath)) {
     throw new Error("Invalid skill, agent, or path.");
   }
 
@@ -571,14 +612,14 @@ function buildSingleSkillInstallCommand(skill, agent) {
     throw new Error("Invalid skill source path.");
   }
   const skillDir = agent.skillsDir + "/" + skill.id;
-  const target = skillDir + "/SKILL.md";
-  const sourceUrl =
+  const baseUrl =
     "https://raw.githubusercontent.com/" + DATA.repo + "/" + DATA.ref + "/" +
-    agent.id + "/agent-project-setup/" + sourceDir + "/" + skill.id + "/SKILL.md";
+    agent.id + "/agent-project-setup/" + sourceDir + "/" + skill.id;
+  const label = skill.id + " for " + agent.name.replace(/[\r\n'"\\$`%]/g, "");
 
   return [
     "__cybercore_install_skill() {",
-    '  project_dir="$PWD"',
+    '  project_dir="$(pwd -P)"',
     '  if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then',
     '    project_root="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1',
     '    if [ "$project_root" != "$project_dir" ]; then',
@@ -594,28 +635,36 @@ function buildSingleSkillInstallCommand(skill, agent) {
     "        ;;",
     "    esac",
     "  fi",
-    '  skill_dir=' + shellQuote(skillDir),
-    '  target="$skill_dir/SKILL.md"',
-    '  mkdir -p "$skill_dir" || return 1',
-    '  if [ -f "$target" ]; then',
-    '    backup="$target.bak.$(date +%Y%m%d-%H%M%S)"',
-    '    cp -p "$target" "$backup" || return 1',
-    '    printf "Backed up existing skill to %s\\n" "$backup"',
-    "  fi",
-    '  tmp="$target.tmp.$$"',
-    '  if curl -fL --progress-bar ' + shellQuote(sourceUrl) + ' -o "$tmp"; then',
-    '    if mv "$tmp" "$target"; then',
-    '      printf "Installed ' + skill.id + ' for ' + agent.name.replace(/[\r\n]/g, "") + ' in %s\\n" "$target"',
-    "    else",
-    '      rm -f "$tmp"',
-    '      echo "ERROR: Could not save the downloaded skill."',
+    "  skill_dir=" + shellQuote(skillDir),
+    "  base_url=" + shellQuote(baseUrl),
+    // Same backup location as the agent installers, outside the project.
+    '  backup_root="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${project_dir##*/}-$(printf \'%s\' "$project_dir" | cksum | awk \'{print $1}\')/' + agent.id + '"',
+    '  staging="$(mktemp -d "${TMPDIR:-/tmp}/cybercore-skill.XXXXXX")" || return 1',
+    '  package="$staging/skill"',
+    "  for file in " + files.map(shellQuote).join(" ") + "; do",
+    '    mkdir -p "$package/$(dirname "$file")" || { rm -rf -- "$staging"; return 1; }',
+    '    if ! curl -fsSL "$base_url/$file" -o "$package/$file"; then',
+    '      echo "ERROR: Could not download $file. Nothing was changed."',
+    '      rm -rf -- "$staging"',
     "      return 1",
     "    fi",
-    "  else",
-    '    rm -f "$tmp"',
-    '    echo "ERROR: Download failed. Existing installation was preserved."',
+    "  done",
+    '  if [ -d "$skill_dir" ]; then',
+    '    backup_dir="$backup_root/$(date +%Y%m%d-%H%M%S)-$$/$skill_dir"',
+    '    if ! { mkdir -p "$backup_dir" && cp -a "$skill_dir/." "$backup_dir/"; }; then',
+    '      echo "ERROR: Could not back up $skill_dir. Nothing was changed."',
+    '      rm -rf -- "$staging"',
+    "      return 1",
+    "    fi",
+    '    printf "BACKUP: Existing skill saved to %s\\n" "$backup_dir"',
+    "  fi",
+    '  if ! { mkdir -p "$skill_dir" && cp -a "$package/." "$skill_dir/"; }; then',
+    '    echo "ERROR: Could not write $skill_dir."',
+    '    rm -rf -- "$staging"',
     "    return 1",
     "  fi",
+    '  rm -rf -- "$staging"',
+    '  printf "Installed ' + label + ' in %s\\n" "$skill_dir"',
     "}",
     "__cybercore_install_skill && __cybercore_install_status=0 || __cybercore_install_status=$?",
     "unset -f __cybercore_install_skill",
@@ -651,7 +700,7 @@ function renderAgents() {
     const card = document.createElement('div');
     card.className = 'card';
     card.onclick = (e) => { if (!e.target.closest('.copy-btn')) openDetail('agent', agent.id); };
-    card.innerHTML = '<div class="card-header">' + agentBadge(agent) + '<div><div class="card-name">' + escapeHtml(agent.name) + ' ' + statusChip(agent) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><div class="card-stats"><div class="stat-item"><span class="value">' + escapeHtml(skillCountText(agent)) + '</span></div><div class="stat-item"><span class="value">' + escapeHtml(agent.script) + '</span></div></div><div style="margin-top:auto;"><button class="btn btn--ghost btn--icon" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button></div>';
+    card.innerHTML = '<div class="card-header">' + agentBadge(agent) + '<div><div class="card-name">' + escapeHtml(agent.name) + ' ' + statusChip(agent) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><div class="card-stats"><div class="stat-item"><span class="value">' + escapeHtml(skillCountText(agent)) + '</span></div><div class="stat-item"><span class="value">' + escapeHtml(agent.script) + '</span></div></div><div class="card-actions"><button class="btn btn--ghost btn--icon" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button></div>';
     grid.appendChild(card);
   });
 }
@@ -662,7 +711,7 @@ function renderDeploy() {
     const card = document.createElement('div');
     card.className = 'card';
     const notes = agent.notes.length ? '<ul class="deploy-notes">' + agent.notes.map(n => '<li>' + escapeHtml(n) + '</li>').join('') + '</ul>' : '';
-    card.innerHTML = '<div class="card-header">' + agentBadge(agent) + '<div><div class="card-name">' + escapeHtml(agent.name) + ' ' + statusChip(agent) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><pre style="margin:12px 0; font-size:12px;">' + escapeHtml(setupCommand(agent)) + '</pre>' + notes + '<button class="btn btn--primary" style="width:100%;" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button>';
+    card.innerHTML = '<div class="card-header">' + agentBadge(agent) + '<div><div class="card-name">' + escapeHtml(agent.name) + ' ' + statusChip(agent) + '</div><div class="card-subtitle">' + escapeHtml(agentLocation(agent)) + '</div></div></div><pre class="card-command">' + escapeHtml(setupCommand(agent)) + '</pre>' + notes + '<button class="btn btn--primary btn--block" onclick="event.stopPropagation(); copyAgentCommand(\'' + agent.id + '\')">Copy Command</button>';
     grid.appendChild(card);
   });
 }
@@ -670,43 +719,17 @@ function renderDeploy() {
 function renderRules() {
   const grid = document.getElementById('rulesGrid');
   grid.innerHTML = '';
-  const rules = [
-    {
-      title: 'Zero Unapproved Actions',
-      items: [
-        'Never edit code, overwrite files, or run state-modifying commands without presenting a plan and obtaining explicit user confirmation.',
-        'Always show the diff and intent before editing any file.',
-        'Never make changes silently or "just to try something."'
-      ]
-    },
-    {
-      title: 'No Rogue Bug-Fixing Loops',
-      items: [
-        'If a build fails or a test errors out, STOP immediately.',
-        'Explain the error directly to the user.',
-        'Do not attempt recursive auto-fix attempts without permission.'
-      ]
-    },
-    {
-      title: 'Preserve Existing Architecture',
-      items: [
-        'Do not rewrite whole functions or refactor files unless explicitly instructed.',
-        'Do not change library dependencies or public API signatures without request.',
-        'Make the minimal change required to fulfill the user\'s explicit request.'
-      ]
-    }
-  ];
-  rules.forEach(rule => {
+  (DATA.rules || []).forEach(rule => {
     const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = '<h3 style="font-family:var(--cc-font-mono);font-size:15px;color:var(--cc-neon-purple);margin-bottom:8px;">' + escapeHtml(rule.title) + '</h3><ul style="color:var(--cc-fg-muted);font-size:13px;line-height:1.7;padding-left:18px;">' + rule.items.map(i => '<li>' + escapeHtml(i) + '</li>').join('') + '</ul>';
+    card.className = 'card rule-card';
+    card.innerHTML = '<h3 class="rule-title">' + escapeHtml(rule.title) + '</h3>' +
+      '<div class="md rule-body">' + renderMarkdown(rule.body) + '</div>' +
+      '<p class="rule-file"><code>rules/' + escapeHtml(rule.file) + '</code></p>';
     grid.appendChild(card);
   });
 }
 
 window.escapeHtml = escapeHtml;
-function escapeMd(text) { return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-window.escapeMd = escapeMd;
 
 function toggleMobileNav() {
   const nav = document.getElementById('mobileNav'), button = document.getElementById('mobileMenuBtn');
