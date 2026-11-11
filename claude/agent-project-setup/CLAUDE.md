@@ -1,3 +1,4 @@
+<!-- cybercore-agent-skills: claude -->
 # Strict Agent Guardrails & Execution Policy
 
 ## 1. Golden Rules of Operation
@@ -35,7 +36,11 @@
   `Project contributor`
 - Match commit messages to conventional standards (`feat:`, `fix:`, `docs:`, `refactor:`) matching the exact intent of the edit.
 
-## 6. Permission Scopes
-- **Read:** `*` = ask; `*.md`, `src/**`, `tests/**` = allow; `.env*`, `**/*.pem` = deny
-- **Edit:** `*` = ask; `src/**`, `tests/**` = ask; `AGENTS.md`, `CLAUDE.md`, `opencode.json`, `settings.json` = deny
-- **Bash:** `*` = ask; `git status*`, `git log*`, `git diff*`, `cargo check*`, `cargo test*` = allow
+## 6. Permission Scopes (enforced by `.claude/settings.json`)
+- **Read:** `*` = ask; `.env`, `.env.*`, `**/*.pem` = deny
+- **Edit:** `*` = ask; `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json` = deny
+- **Bash:** `*` = ask; `git status`, `git log`, `git diff`, `cargo check`, `cargo test`, `cargo clippy` = allow; `git reset --hard`, `git clean -fd`, `git push --force`, `rm -rf`, `sudo` = deny
+
+## 7. Project Rules & Skills
+- Read every rule file in `.claude/rules/` before starting work and follow it together with this file.
+- Reusable skills live in `.claude/skills/<skill>/SKILL.md`. Load a skill when the task matches its description, and follow its safety rules.

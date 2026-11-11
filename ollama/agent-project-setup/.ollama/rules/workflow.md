@@ -13,8 +13,3 @@
 - When creating Git commit messages, apply the standard developer credit line format:
   `Project contributor`
 - Match commit messages to conventional standards (`feat:`, `fix:`, `docs:`, `refactor:`) matching the exact intent of the edit.
-
-## 4. Permission Scopes
-- **Read:** `*` = ask; `*.md`, `src/**`, `tests/**` = allow; `.env*`, `**/*.pem` = deny
-- **Edit:** `*` = ask; `src/**`, `tests/**` = ask; `AGENTS.md`, `opencode.json`, `settings.json` = deny
-- **Bash:** `*` = ask; `git status*`, `git log*`, `git diff*`, `cargo check*`, `cargo test*` = allow

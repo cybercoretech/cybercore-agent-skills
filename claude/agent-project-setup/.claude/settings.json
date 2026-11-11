@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(cargo check *)",
+      "Bash(cargo test *)",
+      "Bash(cargo clippy *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/*.pem)",
+      "Edit(./CLAUDE.md)",
+      "Edit(./AGENTS.md)",
+      "Edit(./.claude/settings.json)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean -fd *)",
+      "Bash(git push --force *)",
+      "Bash(rm -rf *)",
+      "Bash(sudo *)"
+    ]
+  }
+}

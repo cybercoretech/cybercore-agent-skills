@@ -1,9 +1,16 @@
-# Strict Safety & System Constraints - Codex rules
+# Strict Safety & System Constraints
 
-prefix_rule(pattern=["git", "reset", "--hard"], decision="deny")
-prefix_rule(pattern=["git", "clean", "-fd"], decision="deny")
-prefix_rule(pattern=["git", "push", "--force"], decision="deny")
-prefix_rule(pattern=["rm", "-rf"], decision="deny")
-prefix_rule(pattern=["sudo"], decision="deny")
-prefix_rule(pattern=["pacman", "-S"], decision="deny")
-prefix_rule(pattern=["cargo", "install", "--global"], decision="deny")
+## 1. Absolute Negative Constraints
+- **NEVER** run destructive Git operations (`git reset --hard`, `git clean -fd`, `git push --force`, or unverified branch deletion).
+- **NEVER** execute destructive system commands (`rm -rf`, `find -delete`, or mass file truncations).
+- **NEVER** modify root system configurations or install global packages (`sudo`, `pacman -S`, `aur`, `cargo install --global`) without explicit user command.
+- **NEVER** read, output, or expose secret files (`.env`, private keys, GPG/SSH keys, token files).
+
+## 2. Command Execution Safety
+- **State Modifications:** Any command that creates, updates, or deletes files or directories must be explicitly confirmed.
+- **Background Processes:** Do not start persistent background processes or system daemons without prior permission.
+- **Failure Halting:** If a command returns a non-zero exit code or fails a build check, **STOP immediately**. State the error clearly and wait for instructions. Do not attempt automated fix loops.
+
+## 3. Environment Protection
+- Operate strictly within the current workspace root directory.
+- Respect `.gitignore` rules and local configuration locks.
