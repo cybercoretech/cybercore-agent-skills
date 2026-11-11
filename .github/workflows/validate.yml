@@ -28,6 +28,9 @@ jobs:
       - name: Validate manifest, skills, templates, and sync state
         run: python scripts/validate_templates.py
 
+      - name: Check website data is generated from the manifest
+        run: python scripts/build_site_data.py --check
+
       - name: Check for private machine and account references
         run: python scripts/check_public_sanitization.py
 
