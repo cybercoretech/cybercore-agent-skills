@@ -23,11 +23,11 @@ const defaultSkillCount = skills.filter(s => (groupById[s.group] || {}).default)
 const skillAgents = agents.filter(a => a.skillsDir);
 
 function setupCommand(agent) {
-  return 'bash /path/to/cybercore-agent-skills/' + agent.id + '/agent-project-setup/' + agent.script;
+  return 'bash ~/cybercore-agent-skills/' + agent.id + '/agent-project-setup/' + agent.script;
 }
 
 function agentLocation(agent) {
-  return agent.skillsDir ? agent.skillsDir + '/' : agent.rulesDir + '/ (rules only)';
+  return agent.skillsDir ? '~/' + agent.skillsDir + '/' : '~/' + agent.rulesDir + '/ (rules only)';
 }
 
 const STATUS = {
@@ -483,14 +483,14 @@ function renderAgentDetail(agent) {
   const deployedSkills = skills.filter(s => skillMatrix[s.id][agent.id]);
   const notes = agent.notes.length ? '<h3>Setup Notes</h3><ul>' + agent.notes.map(n => '<li>' + escapeHtml(n) + '</li>').join('') + '</ul>' : '';
   main.innerHTML = '<h3>Overview</h3><p>' + statusChip(agent) + ' ' + escapeHtml(agent.statusText) + '</p>' + notes +
-    '<h3>Installs</h3><p><code>' + escapeHtml(agent.instructions) + '</code>, <code>' + escapeHtml(agent.rulesDir) + '/</code>' +
-    (agent.skillsDir ? ', <code>' + escapeHtml(agent.skillsDir) + '/</code>' : '') + '</p>' +
+    '<h3>Installs</h3><p><code>~/' + escapeHtml(agent.instructions) + '</code>, <code>~/' + escapeHtml(agent.rulesDir) + '/</code>' +
+    (agent.skillsDir ? ', <code>~/' + escapeHtml(agent.skillsDir) + '/</code>' : '') + '</p>' +
     '<h3>Setup Script</h3><p><code>' + escapeHtml(agent.script) + '</code></p>' +
     '<h3>Skills (' + escapeHtml(skillCountText(agent)) + ')</h3><div class="tag-list">' +
     deployedSkills.map(s => '<span class="skill-tag">' + escapeHtml(s.name) + (skillMatrix[s.id][agent.id] === 'pack' ? ' (opt-in)' : '') + '</span>').join('') + '</div>';
   sidebar.innerHTML = '<h4>Agent ID</h4><p>' + escapeHtml(agent.id) + '</p><h4>Skills Directory</h4><p>' + escapeHtml(agentLocation(agent)) +
     '</p><h4>Setup Script</h4><button class="copy-btn" onclick="copyAgentCommand(\'' + agent.id + '\')">Copy Setup Command</button>' +
-    '<p class="sidebar-note">Run it from your project root. Replace /path/to/cybercore-agent-skills with your clone.</p>';
+    '<p class="sidebar-note">Run it from any directory; it installs into your home directory. If your clone is not at ~/cybercore-agent-skills, adjust the path.</p>';
 }
 
 function toggleFavorite(skillId) {
@@ -541,9 +541,9 @@ function openInstallPicker(skillId) {
     'Choose one agent. The command will install only <strong>' +
     escapeHtml(skill.name) + '</strong> for that agent.</p>' +
 '<div class="picker-warning">' +
-    '<strong>Important:</strong> Open your terminal in the root directory ' +
-    'of the project where you want the skill installed. Do not run the ' +
-    'command from the CyberCore skills repository or a project subdirectory.' +
+    '<strong>Installs to your home directory:</strong> the skill goes into ' +
+    'the agent\'s skills folder under ~, so it is available in every ' +
+    'project. You can run the command from any directory.' +
     '</div>' +
     '<div class="picker-grid">' +
     agentButtons +
@@ -619,26 +619,13 @@ function buildSingleSkillInstallCommand(skill, agent) {
 
   return [
     "__cybercore_install_skill() {",
-    '  project_dir="$(pwd -P)"',
-    '  if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then',
-    '    project_root="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1',
-    '    if [ "$project_root" != "$project_dir" ]; then',
-    '      echo "ERROR: Run this command from the project root, not a subdirectory."',
-    '      echo "Project root: $project_root"',
-    "      return 1",
-    "    fi",
-    '    remote_url="$(git remote get-url origin 2>/dev/null || true)"',
-    '    case "$remote_url" in',
-    '      *cybercore-agent-skills*)',
-    '        echo "ERROR: Run this from the project where you want the skill installed."',
-    "        return 1",
-    "        ;;",
-    "    esac",
-    "  fi",
-    "  skill_dir=" + shellQuote(skillDir),
+    // Same target as the agent installers: the home directory, whatever the working directory is.
+    '  target_dir="$HOME"',
+    "  skill_rel=" + shellQuote(skillDir),
+    '  skill_dir="$target_dir/$skill_rel"',
     "  base_url=" + shellQuote(baseUrl),
-    // Same backup location as the agent installers, outside the project.
-    '  backup_root="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${project_dir##*/}-$(printf \'%s\' "$project_dir" | cksum | awk \'{print $1}\')/' + agent.id + '"',
+    // Same backup location as the agent installers.
+    '  backup_root="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${target_dir##*/}-$(printf \'%s\' "$target_dir" | cksum | awk \'{print $1}\')/' + agent.id + '"',
     '  staging="$(mktemp -d "${TMPDIR:-/tmp}/cybercore-skill.XXXXXX")" || return 1',
     '  package="$staging/skill"',
     "  for file in " + files.map(shellQuote).join(" ") + "; do",
@@ -650,7 +637,7 @@ function buildSingleSkillInstallCommand(skill, agent) {
     "    fi",
     "  done",
     '  if [ -d "$skill_dir" ]; then',
-    '    backup_dir="$backup_root/$(date +%Y%m%d-%H%M%S)-$$/$skill_dir"',
+    '    backup_dir="$backup_root/$(date +%Y%m%d-%H%M%S)-$$/$skill_rel"',
     '    if ! { mkdir -p "$backup_dir" && cp -a "$skill_dir/." "$backup_dir/"; }; then',
     '      echo "ERROR: Could not back up $skill_dir. Nothing was changed."',
     '      rm -rf -- "$staging"',
