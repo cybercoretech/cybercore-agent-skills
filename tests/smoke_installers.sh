@@ -92,4 +92,25 @@ warn="$(bash "$ROOT/gemini/agent-project-setup/setup-gemini.sh" 2>&1 >/dev/null)
 grep -q "installed by the 'codex' template" <<<"$warn" || fail "no warning when replacing another agent's AGENTS.md"
 echo "PASS: AGENTS.md ownership warning"
 
+# Single-skill installer: one skill, nothing else, into a fresh home.
+export HOME="$TMP/home-single"
+mkdir -p "$HOME"
+single="$ROOT/scripts/install-skill.sh"
+bash "$single" --help >/dev/null || fail "install-skill: --help failed"
+bash "$single" claude rust-testing >/dev/null || fail "install-skill: default skill failed"
+cmp -s "$HOME/.claude/skills/rust-testing/SKILL.md" "$ROOT/skills/rust-testing/SKILL.md" || fail "install-skill: default skill content differs"
+[[ "$(find "$HOME" -name SKILL.md | wc -l)" -eq 1 ]] || fail "install-skill: installed more than one skill"
+[[ ! -e "$HOME/CLAUDE.md" && ! -e "$HOME/.claude/rules" ]] || fail "install-skill: installed rules or instructions"
+bash "$single" opencode "$PACK_SAMPLE" >/dev/null || fail "install-skill: pack skill failed"
+[[ -f "$HOME/.opencode/skills/$PACK_SAMPLE/SKILL.md" ]] || fail "install-skill: pack skill missing"
+printf 'user edit\n' > "$HOME/.claude/skills/rust-testing/SKILL.md"
+bash "$single" claude rust-testing >/dev/null || fail "install-skill: re-run failed"
+grep -Rqs 'user edit' "$XDG_STATE_HOME/cybercore-agent-skills/backups" || fail "install-skill: existing skill not backed up"
+if bash "$single" claude no-such-skill >/dev/null 2>&1; then fail "install-skill: unknown skill accepted"; fi
+if bash "$single" no-such-agent rust-testing >/dev/null 2>&1; then fail "install-skill: unknown agent accepted"; fi
+if bash "$single" ollama rust-testing >/dev/null 2>&1; then fail "install-skill: rules-only agent accepted"; fi
+if bash "$single" claude ../rules >/dev/null 2>&1; then fail "install-skill: path traversal accepted"; fi
+if bash "$single" claude >/dev/null 2>&1; then fail "install-skill: missing argument accepted"; fi
+echo "PASS: single-skill installer"
+
 echo 'All installer smoke tests passed.'
