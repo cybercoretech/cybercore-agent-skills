@@ -77,6 +77,14 @@ Add `--with omarchy` to any command above, for example:
 bash ~/cybercore-agent-skills/opencode/agent-project-setup/setup-agent.sh --with omarchy
 ```
 
+### Install a single skill
+
+To install one skill without the rest of the template, give the agent and the skill name:
+
+```bash
+bash ~/cybercore-agent-skills/scripts/install-skill.sh claude rust-testing
+```
+
 Installers merge rules and skills, keep unrelated files, and back up every file they are about to replace to `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/<project>-<id>/<agent>/<timestamp>/`. Review the generated files and the backup before you commit them.
 
 > ⚠️ Codex, Copilot, Gemini, and most other agents share one root `AGENTS.md`. If you install two of these agents, the second installer replaces the first agent's `AGENTS.md` and prints a warning. The previous file is kept in the backup.

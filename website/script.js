@@ -543,7 +543,8 @@ function openInstallPicker(skillId) {
 '<div class="picker-warning">' +
     '<strong>Installs to your home directory:</strong> the skill goes into ' +
     'the agent\'s skills folder under ~, so it is available in every ' +
-    'project. You can run the command from any directory.' +
+    'project. The command runs from your clone at ~/cybercore-agent-skills ' +
+    '(see Deployment Center); run <code>git pull</code> there first for the latest version.' +
     '</div>' +
     '<div class="picker-grid">' +
     agentButtons +
@@ -595,69 +596,12 @@ function openInstallPicker(skillId) {
 }
 
 function buildSingleSkillInstallCommand(skill, agent) {
-  const validId = value => /^[a-zA-Z0-9._-]+$/.test(String(value));
-  const validPath = value => /^[a-zA-Z0-9._-]+(\/[a-zA-Z0-9._-]+)*$/.test(String(value)) && !String(value).split("/").includes("..");
-  const files = skill.files && skill.files.length ? skill.files : ["SKILL.md"];
-  if (!validId(skill.id) || !validId(agent.id) || !validPath(agent.skillsDir) || !validId(DATA.ref) || !files.every(validPath)) {
-    throw new Error("Invalid skill, agent, or path.");
+  const validId = value => /^[a-z0-9][a-z0-9-]*$/.test(String(value));
+  if (!validId(skill.id) || !validId(agent.id)) {
+    throw new Error("Invalid skill or agent.");
   }
-
-  const shellQuote = value =>
-    "'" + String(value).replace(/'/g, "'\\''") + "'";
-
-  // Default skills live in the agent's skills dir; pack skills in packs/<pack>/.
-  const group = groupById[skill.group] || {};
-  const sourceDir = group.default ? agent.skillsDir : "packs/" + group.pack;
-  if (!validPath(sourceDir)) {
-    throw new Error("Invalid skill source path.");
-  }
-  const skillDir = agent.skillsDir + "/" + skill.id;
-  const baseUrl =
-    "https://raw.githubusercontent.com/" + DATA.repo + "/" + DATA.ref + "/" +
-    agent.id + "/agent-project-setup/" + sourceDir + "/" + skill.id;
-  const label = skill.id + " for " + agent.name.replace(/[\r\n'"\\$`%]/g, "");
-
-  return [
-    "__cybercore_install_skill() {",
-    // Same target as the agent installers: the home directory, whatever the working directory is.
-    '  target_dir="$HOME"',
-    "  skill_rel=" + shellQuote(skillDir),
-    '  skill_dir="$target_dir/$skill_rel"',
-    "  base_url=" + shellQuote(baseUrl),
-    // Same backup location as the agent installers.
-    '  backup_root="${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/${target_dir##*/}-$(printf \'%s\' "$target_dir" | cksum | awk \'{print $1}\')/' + agent.id + '"',
-    '  staging="$(mktemp -d "${TMPDIR:-/tmp}/cybercore-skill.XXXXXX")" || return 1',
-    '  package="$staging/skill"',
-    "  for file in " + files.map(shellQuote).join(" ") + "; do",
-    '    mkdir -p "$package/$(dirname "$file")" || { rm -rf -- "$staging"; return 1; }',
-    '    if ! curl -fsSL "$base_url/$file" -o "$package/$file"; then',
-    '      echo "ERROR: Could not download $file. Nothing was changed."',
-    '      rm -rf -- "$staging"',
-    "      return 1",
-    "    fi",
-    "  done",
-    '  if [ -d "$skill_dir" ]; then',
-    '    backup_dir="$backup_root/$(date +%Y%m%d-%H%M%S)-$$/$skill_rel"',
-    '    if ! { mkdir -p "$backup_dir" && cp -a "$skill_dir/." "$backup_dir/"; }; then',
-    '      echo "ERROR: Could not back up $skill_dir. Nothing was changed."',
-    '      rm -rf -- "$staging"',
-    "      return 1",
-    "    fi",
-    '    printf "BACKUP: Existing skill saved to %s\\n" "$backup_dir"',
-    "  fi",
-    '  if ! { mkdir -p "$skill_dir" && cp -a "$package/." "$skill_dir/"; }; then',
-    '    echo "ERROR: Could not write $skill_dir."',
-    '    rm -rf -- "$staging"',
-    "    return 1",
-    "  fi",
-    '  rm -rf -- "$staging"',
-    '  printf "Installed ' + label + ' in %s\\n" "$skill_dir"',
-    "}",
-    "__cybercore_install_skill && __cybercore_install_status=0 || __cybercore_install_status=$?",
-    "unset -f __cybercore_install_skill",
-    // Expand the status before unsetting it so the command's exit code is the real result.
-    'eval "unset __cybercore_install_status; (exit $__cybercore_install_status)"'
-  ].join("\n");
+  // scripts/install-skill.sh in the clone copies the one skill into the home directory.
+  return 'bash ~/cybercore-agent-skills/scripts/install-skill.sh ' + agent.id + ' ' + skill.id;
 }
 
 function copyText(text) {
