@@ -159,5 +159,5 @@ for file in ${KEEP_FILES[@]+"${KEEP_FILES[@]}"}; do
 done
 
 printf "\nSUCCESS: %s guardrails installed in %s\n" "$AGENT_NAME" "$TARGET_DIR"
-printf 'NOTE: Hermes loads project skills only from trusted projects. Run once: hermes skills trust %s\n' "$TARGET_DIR"
+printf 'NOTE: If Hermes does not list these skills, trust the directory once: hermes skills trust %s\n' "$TARGET_DIR"
 printf "Restart your agent session to load the new rules and skills.\n"

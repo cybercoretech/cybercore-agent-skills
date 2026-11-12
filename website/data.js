@@ -561,7 +561,7 @@ window.CC_DATA = {
    "status": "verified",
    "statusText": "Skill discovery confirmed against the agent's documentation.",
    "notes": [
-    "Codex loads .codex/rules/default.rules only after you trust this project in Codex."
+    "If Codex does not apply ~/.codex/rules/default.rules, mark your home directory as trusted in Codex."
    ]
   },
   {
@@ -617,7 +617,7 @@ window.CC_DATA = {
    "status": "needs-setup",
    "statusText": "Needs a one-time setup step before skills load.",
    "notes": [
-    "Hermes loads project skills only from trusted projects. Run once: hermes skills trust ~"
+    "If Hermes does not list these skills, trust the directory once: hermes skills trust ~"
    ]
   },
   {
@@ -660,7 +660,7 @@ window.CC_DATA = {
    "status": "needs-setup",
    "statusText": "Needs a one-time setup step before skills load.",
    "notes": [
-    "OpenClaw does not scan project folders by default. Add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: ~/.openclaw/skills"
+    "If OpenClaw does not list these skills, add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: ~/.openclaw/skills"
    ]
   },
   {
@@ -688,7 +688,7 @@ window.CC_DATA = {
    "status": "unverified",
    "statusText": "Experimental: skill discovery is unverified.",
    "notes": [
-    "Experimental: Ori's project skill discovery is unverified. Check that Ori lists these skills before relying on them."
+    "Experimental: Ori's skill discovery is unverified. Check that Ori lists these skills before relying on them."
    ]
   },
   {

@@ -159,5 +159,5 @@ for file in ${KEEP_FILES[@]+"${KEEP_FILES[@]}"}; do
 done
 
 printf "\nSUCCESS: %s guardrails installed in %s\n" "$AGENT_NAME" "$TARGET_DIR"
-printf 'NOTE: OpenClaw does not scan project folders by default. Add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: %s/.openclaw/skills\n' "$TARGET_DIR"
+printf 'NOTE: If OpenClaw does not list these skills, add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: %s/.openclaw/skills\n' "$TARGET_DIR"
 printf "Restart your agent session to load the new rules and skills.\n"

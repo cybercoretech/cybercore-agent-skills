@@ -11,6 +11,6 @@ It includes:
 - the Skills Explorer website (`website/`, published to GitHub Pages)
 - README, setup guide, and MIT license
 
-Every installer is project-level. Private builds may include machine-specific or global installers; those are intentionally not part of this distribution.
+Every installer deploys into the user's home directory. Private builds may include machine-specific installers; those are intentionally not part of this distribution.
 
 `scripts/check_public_sanitization.py` must pass before anything is published. It blocks private account names, local paths, and other machine-specific references.
