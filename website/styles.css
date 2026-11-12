@@ -877,7 +877,10 @@ h1::after {
 .matrix-wrap {
   width: 100%;
   max-width: 100%;
-  overflow: hidden;
+  /* The catalog scrolls inside its own box; the sticky table header stays in view. */
+  max-height: min(70vh, 720px);
+  overflow-x: hidden;
+  overflow-y: auto;
   border: 1px solid var(--cc-border);
   border-radius: 4px;
   background: var(--cc-card);
@@ -1751,7 +1754,8 @@ footer > cybercore-contact {
   }
 
   #skills .matrix-wrap {
-    overflow: visible;
+    max-height: 75vh;
+    padding-right: 6px;
     border: 0;
     background: none;
   }
