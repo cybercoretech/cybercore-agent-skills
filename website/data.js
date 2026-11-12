@@ -615,9 +615,9 @@ window.CC_DATA = {
    "skillsDir": ".hermes/skills",
    "script": "setup-hermes.sh",
    "status": "needs-setup",
-   "statusText": "Needs a one-time setup step before project skills load.",
+   "statusText": "Needs a one-time setup step before skills load.",
    "notes": [
-    "Hermes loads project skills only from trusted projects. Run once: hermes skills trust /path/to/project"
+    "Hermes loads project skills only from trusted projects. Run once: hermes skills trust ~"
    ]
   },
   {
@@ -658,9 +658,9 @@ window.CC_DATA = {
    "skillsDir": ".openclaw/skills",
    "script": "setup-openclaw.sh",
    "status": "needs-setup",
-   "statusText": "Needs a one-time setup step before project skills load.",
+   "statusText": "Needs a one-time setup step before skills load.",
    "notes": [
-    "OpenClaw does not scan project folders by default. Add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: /path/to/project/.openclaw/skills"
+    "OpenClaw does not scan project folders by default. Add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: ~/.openclaw/skills"
    ]
   },
   {
@@ -686,7 +686,7 @@ window.CC_DATA = {
    "skillsDir": ".ori/skills",
    "script": "setup-ori.sh",
    "status": "unverified",
-   "statusText": "Experimental: project skill discovery is unverified.",
+   "statusText": "Experimental: skill discovery is unverified.",
    "notes": [
     "Experimental: Ori's project skill discovery is unverified. Check that Ori lists these skills before relying on them."
    ]

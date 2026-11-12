@@ -148,10 +148,10 @@
         </div>
         <div class="deploy-steps card">
           <ol>
-            <li>Clone the repository anywhere:
-              <pre>git clone https://github.com/cybercoretech/cybercore-agent-skills.git</pre></li>
-            <li>Open a terminal in the root of the project you want to configure.</li>
-            <li>Run your agent's installer below, replacing <code>/path/to/cybercore-agent-skills</code> with your clone.</li>
+            <li>Clone the repository once:
+              <pre>git clone https://github.com/cybercoretech/cybercore-agent-skills.git ~/cybercore-agent-skills</pre></li>
+            <li>Run your agent's installer below from any directory. It installs into your home directory (<code>~/.&lt;agent&gt;/</code>), so the rules and skills apply in every project.</li>
+            <li>If you cloned somewhere else, replace <code>~/cybercore-agent-skills</code> with your clone.</li>
           </ol>
           <p class="deploy-options">Options: <code>--with omarchy</code> adds the opt-in Omarchy pack, <code>--list-packs</code> lists packs, <code>--help</code> shows usage. Existing files are backed up before they are replaced.</p>
         </div>
@@ -167,7 +167,7 @@
             <h2>Non-negotiable guardrails</h2>
           </div>
         </div>
-        <p class="section-lead">Every template installs these four rule files into <code>.&lt;agent&gt;/rules/</code>, next to the agent's root instruction file.</p>
+        <p class="section-lead">Every template installs these four rule files into <code>~/.&lt;agent&gt;/rules/</code>, next to the agent's root instruction file.</p>
         <div class="grid" id="rulesGrid"></div>
       </div>
     </section>
