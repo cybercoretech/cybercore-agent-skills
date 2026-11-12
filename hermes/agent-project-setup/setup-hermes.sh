@@ -16,13 +16,13 @@ MARKER_PREFIX="<!-- cybercore-agent-skills:"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 TEMPLATE_DIR="$SCRIPT_DIR"
-TARGET_DIR="$(pwd -P)"
+TARGET_DIR="$HOME"
 
 usage() {
   cat <<EOF
 Usage: $(basename -- "$0") [--with PACK]... [--list-packs] [--help]
 
-Install the $AGENT_NAME rules and skills into the current directory (your project).
+Install the $AGENT_NAME rules and skills into your home directory ($HOME).
 
   --with PACK    Also install an optional skill pack (repeatable), e.g. --with omarchy
   --list-packs   List the optional skill packs available for $AGENT_NAME
@@ -71,7 +71,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ "$TARGET_DIR" == "$TEMPLATE_DIR" ]]; then
-  printf "ERROR: Run this script from the project you want to configure.\n" >&2
+  printf "ERROR: Clone directory cannot be your home directory.\n" >&2
   exit 1
 fi
 

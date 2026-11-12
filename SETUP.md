@@ -5,13 +5,10 @@ This distribution contains 13 agent templates. Twelve install 38 default skills 
 ## Install
 
 1. Clone or download this repository.
-2. Change to the project you want to configure.
-3. Run the matching setup script, for example:
-
-```bash
-cd /path/to/your/project
-bash /path/to/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh
-```
+2. Run your agent's setup script from anywhere:
+   ```bash
+   bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh
+   ```
 
 Options (every installer):
 
@@ -29,19 +26,19 @@ Before replacing existing managed files, the installer backs them up outside the
 
 | Agent | Root file | Rules | Skills | Extra |
 |---|---|---|---|---|
-| Claude | `CLAUDE.md` | `.claude/rules/` | `.claude/skills/` | `.claude/settings.json` (only if absent) |
-| Codex | `AGENTS.md` | `.codex/rules/` | `.agents/skills/` | `.codex/rules/default.rules` |
-| GitHub Copilot | `AGENTS.md` | `.copilot/rules/` | `.github/skills/` | |
-| Crush | `AGENTS.md` | `.crush/rules/` | `.crush/skills/` | |
-| Gemini CLI | `AGENTS.md` | `.gemini/rules/` | `.gemini/skills/` | |
-| Hermes | `AGENTS.md` | `.hermes/rules/` | `.hermes/skills/` | |
-| Kimi Code | `AGENTS.md` | `.kimi-code/rules/` | `.kimi-code/skills/` | |
-| Ollama | `AGENTS.md` | `.ollama/rules/` | — | |
-| OpenClaw | `AGENTS.md` | `.openclaw/rules/` | `.openclaw/skills/` | |
-| OpenCode | `AGENTS.md` | `.opencode/rules/` | `.opencode/skills/` | `opencode.json` |
-| Ori | `AGENTS.md` | `.ori/rules/` | `.ori/skills/` | |
-| Pi | `AGENTS.md` | `.pi/rules/` | `.pi/skills/` | |
-| Qwen Code | `AGENTS.md` | `.qwen/rules/` | `.qwen/skills/` | |
+| Claude | `CLAUDE.md` | `~/.claude/rules/` | `~/.claude/skills/` | `.claude/settings.json` (only if absent) |
+| Codex | `AGENTS.md` | `~/.codex/rules/` | `~/.agents/skills/` | `.codex/rules/default.rules` |
+| GitHub Copilot | `AGENTS.md` | `~/.copilot/rules/` | `~/.github/skills/` | |
+| Crush | `AGENTS.md` | `~/.crush/rules/` | `~/.crush/skills/` | |
+| Gemini CLI | `AGENTS.md` | `~/.gemini/rules/` | `~/.gemini/skills/` | |
+| Hermes | `AGENTS.md` | `~/.hermes/rules/` | `~/.hermes/skills/` | |
+| Kimi Code | `AGENTS.md` | `~/.kimi-code/rules/` | `~/.kimi-code/skills/` | |
+| Ollama | `AGENTS.md` | `~/.ollama/rules/` | — | |
+| OpenClaw | `AGENTS.md` | `~/.openclaw/rules/` | `~/.openclaw/skills/` | |
+| OpenCode | `AGENTS.md` | `~/.opencode/rules/` | `~/.opencode/skills/` | `opencode.json` |
+| Ori | `AGENTS.md` | `~/.ori/rules/` | `~/.ori/skills/` | |
+| Pi | `AGENTS.md` | `~/.pi/rules/` | `~/.pi/skills/` | |
+| Qwen Code | `AGENTS.md` | `~/.qwen/rules/` | `~/.qwen/skills/` | |
 
 The rules are `safety`, `workflow`, `rust`, and `gleam`. See the README for the full skill list.
 
@@ -51,8 +48,8 @@ Some agents need a one-time step before they load project skills. The installer 
 
 - **Codex:** trust the project in Codex so `.codex/rules/default.rules` loads.
 - **Gemini CLI:** if `/skills list` is empty, enable Agent Skills in your settings.
-- **Hermes:** `hermes skills trust /path/to/project`
-- **OpenClaw:** add `/path/to/project/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
+- **Hermes:** `hermes skills trust ~`
+- **OpenClaw:** add `~/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
 - **Ori:** skill discovery is unverified; confirm Ori lists the skills.
 
 Restart your agent session afterwards.

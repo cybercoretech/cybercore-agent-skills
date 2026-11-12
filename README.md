@@ -11,51 +11,75 @@ Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-cap
 
 ## 🤖 Supported agents
 
-Each template lives at `<agent>/agent-project-setup/` and installs into the project you run it from.
+Each template lives at `<agent>/agent-project-setup/` and installs into your home agent folders (`~/.<agent>/skills/`) so they work in any project.
 
 | Agent | Installer | Skills install to | Status |
 |---|---|---|---|
-| 🤖 Claude | `claude/agent-project-setup/setup-claude.sh` | `.claude/skills/` | ✅ Verified |
-| 📓 Codex | `codex/agent-project-setup/setup-codex.sh` | `.agents/skills/` | ✅ Verified |
-| 🤖 GitHub Copilot | `copilot/agent-project-setup/setup-copilot.sh` | `.github/skills/` | ✅ Verified |
-| 💥 Crush | `crush/agent-project-setup/setup-crush.sh` | `.crush/skills/` | ✅ Verified |
-| 💎 Gemini CLI | `gemini/agent-project-setup/setup-gemini.sh` | `.gemini/skills/` | ✅ Verified ¹ |
-| 📬 Hermes | `hermes/agent-project-setup/setup-hermes.sh` | `.hermes/skills/` | ⚙️ One-time setup ² |
-| 🤖 Kimi Code | `kimi-code/agent-project-setup/setup-kimi-code.sh` | `.kimi-code/skills/` | ✅ Verified |
-| 🦙 Ollama | `ollama/agent-project-setup/setup-ollama.sh` | — | 📄 Rules only ³ |
-| 🦷 OpenClaw | `openclaw/agent-project-setup/setup-openclaw.sh` | `.openclaw/skills/` | ⚙️ One-time setup ⁴ |
-| 🦾 OpenCode | `opencode/agent-project-setup/setup-agent.sh` | `.opencode/skills/` | ✅ Verified |
-| 🦉 Ori | `ori/agent-project-setup/setup-ori.sh` | `.ori/skills/` | 🧪 Unverified ⁵ |
-| 🥧 Pi | `pi/agent-project-setup/setup-pi.sh` | `.pi/skills/` | ✅ Verified |
-| 🤖 Qwen Code | `qwen/agent-project-setup/setup-qwen.sh` | `.qwen/skills/` | ✅ Verified |
+| 🤖 Claude | `claude/agent-project-setup/setup-claude.sh` | `~/.claude/skills/` | ✅ Verified |
+| 📓 Codex | `codex/agent-project-setup/setup-codex.sh` | `~/.agents/skills/` | ✅ Verified |
+| 🤖 GitHub Copilot | `copilot/agent-project-setup/setup-copilot.sh` | `~/.github/skills/` | ✅ Verified |
+| 💥 Crush | `crush/agent-project-setup/setup-crush.sh` | `~/.crush/skills/` | ✅ Verified |
+| 💎 Gemini CLI | `gemini/agent-project-setup/setup-gemini.sh` | `~/.gemini/skills/` | ✅ Verified ¹ |
+| 📬 Hermes | `hermes/agent-project-setup/setup-hermes.sh` | `~/.hermes/skills/` | ⚙️ One-time setup ² |
+| 🤖 Kimi Code | `kimi-code/agent-project-setup/setup-kimi-code.sh` | `~/.kimi-code/skills/` | ✅ Verified |
+| 🦙 Ollama | `ollama/agent-project-setup/setup-ollama.sh` | `~/.ollama/rules/` | 📄 Rules only ³ |
+| 🦷 OpenClaw | `openclaw/agent-project-setup/setup-openclaw.sh` | `~/.openclaw/skills/` | ⚙️ One-time setup ⁴ |
+| 🦾 OpenCode | `opencode/agent-project-setup/setup-agent.sh` | `~/.opencode/skills/` | ✅ Verified |
+| 🦉 Ori | `ori/agent-project-setup/setup-ori.sh` | `~/.ori/skills/` | 🧪 Unverified ⁵ |
+| 🥧 Pi | `pi/agent-project-setup/setup-pi.sh` | `~/.pi/skills/` | ✅ Verified |
+| 🤖 Qwen Code | `qwen/agent-project-setup/setup-qwen.sh` | `~/.qwen/skills/` | ✅ Verified |
 
 1. Agent Skills are experimental in some Gemini CLI versions. If `/skills list` is empty, enable them in your Gemini settings.
-2. Hermes loads project skills only from trusted projects. Run `hermes skills trust /path/to/project` once.
+2. Hermes loads project skills only from trusted projects. Run `hermes skills trust ~` once.
 3. Ollama has no skills system, so this template installs `AGENTS.md` and the rules only.
-4. OpenClaw does not scan project folders by default. Add `/path/to/project/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
+4. OpenClaw does not scan home folders by default. Add `~/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
 5. Ori's project skill discovery could not be confirmed from its documentation. Check that Ori lists the skills before you rely on them.
 
-Rules install to `.<agent>/rules/`, and the root instruction file (`CLAUDE.md` for Claude, `AGENTS.md` for everyone else) tells the agent to read them. Codex also gets `.codex/rules/default.rules`, a command policy that Codex loads once you trust the project. Claude gets `.claude/settings.json` with matching allow and deny rules; it is installed only when the project has none.
+Rules install to `~/.<agent>/rules/`, and the root instruction file (`CLAUDE.md` for Claude, `AGENTS.md` for everyone else) tells the agent to read them. Codex also gets `.codex/rules/default.rules`, a command policy that Codex loads once you trust the project. Claude gets `.claude/settings.json` with matching allow and deny rules; it is installed only when the project has none.
 
 ## 🚀 Quick start
 
+Skills install to your home agent folders (`~/.claude/skills/`, `~/.opencode/skills/`, etc.) so they work in any project.
+
 ```bash
-git clone https://github.com/cybercoretech/cybercore-agent-skills.git
-cd /path/to/your/project
-bash /path/to/cybercore-agent-skills/codex/agent-project-setup/setup-codex.sh
+# 1. Clone the repository once
+git clone https://github.com/cybercoretech/cybercore-agent-skills.git ~/cybercore-agent-skills
+
+# 2. Run your agent's installer from anywhere (pick your agent below)
+bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh
 ```
 
-Replace `codex` with your agent's directory and script name from the table above. The installer finds its source files relative to itself, so the repository can live anywhere.
+### One command per agent
+
+| Agent | Command |
+|-------|---------|
+| 🤖 Claude | `bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh` |
+| 📓 Codex | `bash ~/cybercore-agent-skills/codex/agent-project-setup/setup-codex.sh` |
+| 🤖 GitHub Copilot | `bash ~/cybercore-agent-skills/copilot/agent-project-setup/setup-copilot.sh` |
+| 💥 Crush | `bash ~/cybercore-agent-skills/crush/agent-project-setup/setup-crush.sh` |
+| 💎 Gemini CLI | `bash ~/cybercore-agent-skills/gemini/agent-project-setup/setup-gemini.sh` |
+| 📬 Hermes | `bash ~/cybercore-agent-skills/hermes/agent-project-setup/setup-hermes.sh` |
+| 🤖 Kimi Code | `bash ~/cybercore-agent-skills/kimi-code/agent-project-setup/setup-kimi-code.sh` |
+| 🦙 Ollama | `bash ~/cybercore-agent-skills/ollama/agent-project-setup/setup-ollama.sh` |
+| 🦷 OpenClaw | `bash ~/cybercore-agent-skills/openclaw/agent-project-setup/setup-openclaw.sh` |
+| 🦾 OpenCode | `bash ~/cybercore-agent-skills/opencode/agent-project-setup/setup-agent.sh` |
+| 🦉 Ori | `bash ~/cybercore-agent-skills/ori/agent-project-setup/setup-ori.sh` |
+| 🥧 Pi | `bash ~/cybercore-agent-skills/pi/agent-project-setup/setup-pi.sh` |
+| 🤖 Qwen Code | `bash ~/cybercore-agent-skills/qwen/agent-project-setup/setup-qwen.sh` |
+
+> **OpenCode:** The installer script is `setup-agent.sh`, not `setup-opencode.sh`.
+
+### Optional Omarchy pack
+
+Add `--with omarchy` to any command above, for example:
 
 ```bash
-setup-codex.sh --with omarchy   # also install the opt-in Omarchy pack
-setup-codex.sh --list-packs     # list optional packs
-setup-codex.sh --help
+bash ~/cybercore-agent-skills/opencode/agent-project-setup/setup-agent.sh --with omarchy
 ```
 
 Installers merge rules and skills, keep unrelated files, and back up every file they are about to replace to `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/<project>-<id>/<agent>/<timestamp>/`. Review the generated files and the backup before you commit them.
 
-> ⚠️ Codex, Copilot, Gemini, and most other agents share one root `AGENTS.md`. If you install two of these agents into the same project, the second installer replaces the first agent's `AGENTS.md` and prints a warning. The previous file is kept in the backup.
+> ⚠️ Codex, Copilot, Gemini, and most other agents share one root `AGENTS.md`. If you install two of these agents, the second installer replaces the first agent's `AGENTS.md` and prints a warning. The previous file is kept in the backup.
 
 ## 🧩 Included skills
 
