@@ -159,5 +159,5 @@ for file in ${KEEP_FILES[@]+"${KEEP_FILES[@]}"}; do
 done
 
 printf "\nSUCCESS: %s guardrails installed in %s\n" "$AGENT_NAME" "$TARGET_DIR"
-printf 'NOTE: Experimental: Ori'"'"'s project skill discovery is unverified. Check that Ori lists these skills before relying on them.\n'
+printf 'NOTE: Experimental: Ori'"'"'s skill discovery is unverified. Check that Ori lists these skills before relying on them.\n'
 printf "Restart your agent session to load the new rules and skills.\n"

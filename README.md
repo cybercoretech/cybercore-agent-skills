@@ -30,12 +30,12 @@ Each template lives at `<agent>/agent-project-setup/` and installs into your hom
 | 🤖 Qwen Code | `qwen/agent-project-setup/setup-qwen.sh` | `~/.qwen/skills/` | ✅ Verified |
 
 1. Agent Skills are experimental in some Gemini CLI versions. If `/skills list` is empty, enable them in your Gemini settings.
-2. Hermes loads project skills only from trusted projects. Run `hermes skills trust ~` once.
+2. If Hermes does not list the skills, trust the directory once: `hermes skills trust ~`.
 3. Ollama has no skills system, so this template installs `AGENTS.md` and the rules only.
-4. OpenClaw does not scan home folders by default. Add `~/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
-5. Ori's project skill discovery could not be confirmed from its documentation. Check that Ori lists the skills before you rely on them.
+4. If OpenClaw does not list the skills, add `~/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
+5. Ori's skill discovery could not be confirmed from its documentation. Check that Ori lists the skills before you rely on them.
 
-Rules install to `~/.<agent>/rules/`, and the root instruction file (`CLAUDE.md` for Claude, `AGENTS.md` for everyone else) tells the agent to read them. Codex also gets `.codex/rules/default.rules`, a command policy that Codex loads once you trust the project. Claude gets `.claude/settings.json` with matching allow and deny rules; it is installed only when the project has none.
+Rules install to `~/.<agent>/rules/`, and the root instruction file (`CLAUDE.md` for Claude, `AGENTS.md` for everyone else) tells the agent to read them. Codex also gets `~/.codex/rules/default.rules`, a command policy; if Codex does not apply it, mark your home directory as trusted in Codex. Claude gets `~/.claude/settings.json` with matching allow and deny rules; it is installed only when you have none.
 
 ## 🚀 Quick start
 
@@ -85,7 +85,7 @@ To install one skill without the rest of the template, give the agent and the sk
 bash ~/cybercore-agent-skills/scripts/install-skill.sh claude rust-testing
 ```
 
-Installers merge rules and skills, keep unrelated files, and back up every file they are about to replace to `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/<project>-<id>/<agent>/<timestamp>/`. Review the generated files and the backup before you commit them.
+Installers merge rules and skills, keep unrelated files, and back up every file they are about to replace to `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/<home folder name>-<id>/<agent>/<timestamp>/`. Review the generated files and the backup.
 
 > ⚠️ Codex, Copilot, Gemini, and most other agents share one root `AGENTS.md`. If you install two of these agents, the second installer replaces the first agent's `AGENTS.md` and prints a warning. The previous file is kept in the backup.
 
@@ -191,7 +191,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 
 ## 🧪 Validation
 
-GitHub Actions validates the manifest and all 42 canonical skills, checks that every template copy matches its source, lints and syntax-checks every installer, and smoke-tests each installer in a temporary project.
+GitHub Actions validates the manifest and all 42 canonical skills, checks that every template copy matches its source, lints and syntax-checks every installer, and smoke-tests each installer in a temporary home directory.
 
 ```bash
 python3 -m pip install PyYAML

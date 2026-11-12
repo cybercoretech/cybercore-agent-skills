@@ -103,7 +103,7 @@ agents:
     script: setup-codex.sh
     status: verified
     notes:
-      - "Codex loads .codex/rules/default.rules only after you trust this project in Codex."
+      - "If Codex does not apply {project}/.codex/rules/default.rules, mark your home directory as trusted in Codex."
   copilot:
     name: GitHub Copilot
     icon: "🤖"
@@ -143,7 +143,7 @@ agents:
     script: setup-hermes.sh
     status: needs-setup
     notes:
-      - "Hermes loads project skills only from trusted projects. Run once: hermes skills trust {project}"
+      - "If Hermes does not list these skills, trust the directory once: hermes skills trust {project}"
   kimi-code:
     name: Kimi Code
     icon: "🤖"
@@ -174,7 +174,7 @@ agents:
     script: setup-openclaw.sh
     status: needs-setup
     notes:
-      - "OpenClaw does not scan project folders by default. Add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: {project}/.openclaw/skills"
+      - "If OpenClaw does not list these skills, add this to skills.load.extraDirs in ~/.openclaw/openclaw.json: {project}/.openclaw/skills"
   opencode:
     name: OpenCode
     icon: "🦾"
@@ -195,7 +195,7 @@ agents:
     script: setup-ori.sh
     status: unverified
     notes:
-      - "Experimental: Ori's project skill discovery is unverified. Check that Ori lists these skills before relying on them."
+      - "Experimental: Ori's skill discovery is unverified. Check that Ori lists these skills before relying on them."
   pi:
     name: Pi
     icon: "🥧"

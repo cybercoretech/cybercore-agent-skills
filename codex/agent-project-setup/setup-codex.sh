@@ -159,5 +159,5 @@ for file in ${KEEP_FILES[@]+"${KEEP_FILES[@]}"}; do
 done
 
 printf "\nSUCCESS: %s guardrails installed in %s\n" "$AGENT_NAME" "$TARGET_DIR"
-printf 'NOTE: Codex loads .codex/rules/default.rules only after you trust this project in Codex.\n'
+printf 'NOTE: If Codex does not apply %s/.codex/rules/default.rules, mark your home directory as trusted in Codex.\n' "$TARGET_DIR"
 printf "Restart your agent session to load the new rules and skills.\n"

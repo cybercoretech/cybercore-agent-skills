@@ -18,9 +18,9 @@ Options (every installer):
 | `--list-packs` | List optional packs for this agent |
 | `-h`, `--help` | Show usage |
 
-All installers deploy project-level configuration and locate their template files relative to the script, so the repository can be stored anywhere. OpenCode's installer is `setup-agent.sh`; the others are `setup-<agent>.sh`.
+All installers deploy into your home directory and locate their template files relative to the script, so the repository can be stored anywhere. OpenCode's installer is `setup-agent.sh`; the others are `setup-<agent>.sh`.
 
-Before replacing existing managed files, the installer backs them up outside the project under `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/`, organized by project path, agent, and timestamp. It merges rules and skills and does not delete unrelated files. Review the resulting files before committing them.
+Before replacing existing managed files, the installer backs them up under `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/`, organized by home folder, agent, and timestamp. It merges rules and skills and does not delete unrelated files. Review the resulting files.
 
 ## What gets installed
 
@@ -44,12 +44,12 @@ The rules are `safety`, `workflow`, `rust`, and `gleam`. See the README for the 
 
 ## After installing
 
-Some agents need a one-time step before they load project skills. The installer prints it:
+Some agents may need a one-time step before they load the rules or skills. The installer prints it:
 
-- **Codex:** trust the project in Codex so `.codex/rules/default.rules` loads.
+- **Codex:** if `~/.codex/rules/default.rules` is not applied, mark your home directory as trusted in Codex.
 - **Gemini CLI:** if `/skills list` is empty, enable Agent Skills in your settings.
-- **Hermes:** `hermes skills trust ~`
-- **OpenClaw:** add `~/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
+- **Hermes:** if the skills are not listed, run `hermes skills trust ~`.
+- **OpenClaw:** if the skills are not listed, add `~/.openclaw/skills` to `skills.load.extraDirs` in `~/.openclaw/openclaw.json`.
 - **Ori:** skill discovery is unverified; confirm Ori lists the skills.
 
 Restart your agent session afterwards.
