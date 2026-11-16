@@ -211,6 +211,18 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "deep-investigation",
+   "name": "Deep Investigation",
+   "group": "general",
+   "category": "quality",
+   "icon": "🔎",
+   "desc": "Persistent, evidence-driven investigation for technical and non-technical problems. Use when asked to scan, inspect, review, audit, investigate, troubleshoot, diagnose, determine why something happens, examine a suspected cause, look deeper, or verify a conclusion or fix.",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
    "id": "dependency-and-supply-chain",
    "name": "Dependency and Supply Chain",
    "group": "general",
