@@ -175,6 +175,27 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "agent-evaluation-and-benchmarking",
+   "name": "AI Agent Evaluation & Benchmarking",
+   "group": "general",
+   "category": "quality",
+   "icon": "📊",
+   "desc": "Design, audit, run, compare, and improve AI agent evaluations. Use when measuring agent capability or reliability, selecting or building benchmarks, evaluating prompts or skills, comparing models/harnesses/tools, analyzing execution traces, investigating failures, attributing systemic causes, validating repairs, or deciding whether an agent is ready for a defined workload.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/benchmark-integrity.md",
+    "references/cross-run-reliability.md",
+    "references/evaluation-design.md",
+    "references/evidence-and-data-contracts.md",
+    "references/examples.md",
+    "references/failure-attribution.md",
+    "references/skill-impact.md",
+    "references/statistical-methods.md",
+    "references/workbench-integration.md"
+   ]
+  },
+  {
    "id": "ci-cd-pipelines",
    "name": "CI/CD Pipelines",
    "group": "general",
@@ -232,6 +253,24 @@ window.CC_DATA = {
    "version": "1",
    "files": [
     "SKILL.md"
+   ]
+  },
+  {
+   "id": "engineering-planning",
+   "name": "Engineering Planning & Task Decomposition",
+   "group": "general",
+   "category": "workflow",
+   "icon": "📐",
+   "desc": "Turn engineering objectives into evidence-grounded technical plans, executable task contracts, dependency models, and coordinated implementation work. Use when planning features, refactors, migrations, architecture changes, multi-step engineering work, or agent delegation; also use to validate, persist, or reconcile existing plans.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/dependency-model.md",
+    "references/examples.md",
+    "references/multi-agent-orchestration.md",
+    "references/plan-validation.md",
+    "references/planning-artifacts.md",
+    "references/task-contract.md"
    ]
   },
   {
