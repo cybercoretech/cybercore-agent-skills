@@ -46,6 +46,7 @@ skills:
   code-review-and-refactoring:   {group: general, category: quality, icon: "🔍"}
   database-and-sql:              {group: general, category: backend, icon: "🗄️"}
   deep-investigation:            {group: general, category: quality, icon: "🔎"}
+  codebase-intelligence:            {group: general, category: quality, icon: "🧭"}
   dependency-and-supply-chain:   {group: general, category: security, icon: "📦"}
   documentation-and-adrs:        {group: general, category: workflow, icon: "📝"}
   i18n-and-localization:         {group: general, category: web, icon: "🌐"}

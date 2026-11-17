@@ -4,7 +4,7 @@ Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-cap
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
-[![43 skills](https://img.shields.io/badge/skills-43-green)](#-included-skills)
+[![44 skills](https://img.shields.io/badge/skills-44-green)](#-included-skills)
 [![Skills Explorer](https://img.shields.io/badge/explorer-live-7df9ff)](https://cybercoretech.github.io/cybercore-agent-skills/)
 
 🌐 **Browse the skills in the [Skills Explorer](https://cybercoretech.github.io/cybercore-agent-skills/)**: search the catalog, read each skill, compare agents, and copy a one-skill install command.
@@ -114,6 +114,7 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 | ♿ `accessibility-a11y` | Semantic HTML, keyboard support, ARIA, contrast, and a11y testing |
 | 🔁 `ci-cd-pipelines` | GitHub Actions, reusable workflows, caching, matrices, and secrets |
 | 🔍 `code-review-and-refactoring` | Review standards, constructive feedback, and safe refactoring |
+| 🧭 `codebase-intelligence` | Repository structure, architecture, execution paths, dependencies, and integration points |
 | 🗄️ `database-and-sql` | Schema design, query safety, migrations, and data access |
 | 🔎 `deep-investigation` | Persistent investigation, evidence-driven troubleshooting, and root-cause analysis |
 | 📦 `dependency-and-supply-chain` | Lockfiles, vulnerability awareness, SBOMs, and supply-chain hygiene |

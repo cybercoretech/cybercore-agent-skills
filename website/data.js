@@ -223,6 +223,18 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "codebase-intelligence",
+   "name": "Codebase Intelligence",
+   "group": "general",
+   "category": "quality",
+   "icon": "🧭",
+   "desc": "Systematic, evidence-backed understanding of software repositories, architecture, execution paths, dependencies, conventions, and integration points. Use when exploring an unfamiliar codebase, understanding how a project works, mapping architecture, tracing implementation or data flow, locating where functionality belongs, or establishing project context before making changes.",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
    "id": "dependency-and-supply-chain",
    "name": "Dependency and Supply Chain",
    "group": "general",
