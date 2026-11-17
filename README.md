@@ -1,10 +1,10 @@
 # 🔒 CyberCore Agent Skills
 
-Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 40 default skills, an opt-in 4-skill Omarchy pack, and four shared rule files, adapted to the configuration layout that agent actually reads.
+Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 41 default skills, an opt-in 4-skill Omarchy pack, and four shared rule files, adapted to the configuration layout that agent actually reads.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
-[![44 skills](https://img.shields.io/badge/skills-44-green)](#-included-skills)
+[![45 skills](https://img.shields.io/badge/skills-45-green)](#-included-skills)
 [![Skills Explorer](https://img.shields.io/badge/explorer-live-7df9ff)](https://cybercoretech.github.io/cybercore-agent-skills/)
 
 🌐 **Browse the skills in the [Skills Explorer](https://cybercoretech.github.io/cybercore-agent-skills/)**: search the catalog, read each skill, compare agents, and copy a one-skill install command.
@@ -119,6 +119,7 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 | 🔎 `deep-investigation` | Persistent investigation, evidence-driven troubleshooting, and root-cause analysis |
 | 📦 `dependency-and-supply-chain` | Lockfiles, vulnerability awareness, SBOMs, and supply-chain hygiene |
 | 📝 `documentation-and-adrs` | READMEs, Architecture Decision Records, and knowledge capture |
+| 📐 `engineering-planning` | Technical design, task decomposition, dependencies, delegation, and verification-ready plans |
 | 🌐 `i18n-and-localization` | String extraction, locales, formatting, and RTL awareness |
 | 🚨 `incident-response-basics` | Detection, triage, communication, rollback, and blameless follow-up |
 | 🤖 `llm-application-patterns` | Prompt structure, tool use, evaluation, and safety for LLM features |
