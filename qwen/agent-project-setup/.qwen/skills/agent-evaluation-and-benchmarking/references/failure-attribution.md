@@ -1,6 +1,6 @@
 # Failure Attribution and Intervention Validation
 
-This reference defines the Failure Attribution Engine's conceptual method. It is useful with manual trace review, custom scripts, existing observability platforms, or the planned CyberCore Agent Evaluation Workbench.
+This reference defines the Failure Attribution Engine's conceptual method. It is useful with manual trace review, custom scripts, existing observability platforms, or the in-development CyberCore Agent Evaluation Workbench.
 
 ## 1. Attribution objectives
 

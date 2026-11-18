@@ -1,6 +1,6 @@
 # Evidence, Data Contracts, and Agent Capability Passports
 
-This reference defines the logical records needed for portable evaluation and causal analysis. It is a conceptual contract, not a claim that the future Workbench API or final JSON Schemas already exist.
+This reference defines the logical records needed for portable evaluation and causal analysis. It is a conceptual contract, not a claim that the Workbench API exists or that its schemas are final. The Workbench's concrete v0 schemas live in its repository under `contracts/schemas/v0` (for example `common/record-envelope.schema.json` and `evaluation/run.schema.json`); prefer them over the illustrative shapes below when integrating with the Workbench.
 
 ## 1. Contract principles
 
@@ -37,7 +37,7 @@ provenance:
     digest: "example-digest-not-a-real-hash"
 ```
 
-The URL and values are illustrative. A production schema should use a real organization-controlled schema namespace and validate timestamps, identifiers, and digests. Do not use `.invalid` as a deployed schema host.
+The URL and values are illustrative and intentionally do not match the Workbench v0 contracts (which use, for example, `record_type: run` and nest `source` inside `provenance`). A production schema should use a real organization-controlled schema namespace and validate timestamps, identifiers, and digests. Do not use `.invalid` as a deployed schema host.
 
 ## 3. Core logical records
 

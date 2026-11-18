@@ -1,6 +1,8 @@
 # CyberCore Agent Evaluation Workbench Integration
 
-The CyberCore Agent Evaluation Workbench is a planned companion application. This reference captures the approved architectural direction so the skill can interact with it when it exists. It does not imply that the application, API, endpoint, CLI command, MCP tool, or hosted service is currently available.
+The [CyberCore Agent Evaluation Workbench](https://github.com/cybercoretech/cybercore-agent-evaluation) is a companion application in development. This reference captures its architectural direction so the skill can interact with it as capabilities land. It does not imply that any API, endpoint, CLI command, MCP tool, or hosted service is currently available.
+
+**Current state:** the repository provides canonical v0 JSON Schema Draft 2020-12 contracts (`contracts/schemas/v0`) validated identically by Python, TypeScript, and Rust; a Rust evaluation core (domain invariants, run state machine, runner port, in-memory trial orchestration); and a Linux Bubblewrap local process runner prototype that is not hostile-code isolation. Persistence, scheduling, verification, API, CLI, MCP, and hosting are not implemented. Re-check the repository README before relying on this summary.
 
 ## 1. Product boundary
 
@@ -10,7 +12,7 @@ The skill must remain useful without the Workbench. Do not invent service availa
 
 ## 2. Approved contract and protocol direction
 
-- Public HTTP API: REST described initially with OpenAPI 3.1.1.
+- Public HTTP API: REST described with OpenAPI. The version is not frozen: Workbench ADR 0004 compares 3.2.1 with 3.1.2 against the real toolchain before any `openapi.yaml` is written, falling back to the current 3.1.x patch line if 3.2 support is incomplete.
 - Canonical data payloads: JSON Schema Draft 2020-12.
 - Asynchronous channel/message contracts: AsyncAPI 3.1.
 - Event envelope: CloudEvents 1.0 where suitable.
