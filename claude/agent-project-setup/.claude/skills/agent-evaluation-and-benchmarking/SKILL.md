@@ -361,11 +361,11 @@ See `references/evidence-and-data-contracts.md` and `references/examples.md`.
 
 ## 17. Optional Workbench integration
 
-The companion CyberCore Agent Evaluation Workbench is a planned, optional implementation of parts of this methodology. Do not assume it is deployed, available, or that any endpoint exists unless the user or repository evidence confirms it.
+The companion [CyberCore Agent Evaluation Workbench](https://github.com/cybercoretech/cybercore-agent-evaluation) is an optional, in-development implementation of parts of this methodology. Its repository currently provides v0 JSON Schema contracts with cross-language conformance and a Rust evaluation core with a local process runner prototype; it has no API, CLI, MCP tools, persistence, or hosted service yet. Do not assume any endpoint or feature exists unless the user or the repository's current README confirms it.
 
-The approved architectural direction is:
+The architectural direction is:
 
-- Public HTTP API: REST described by OpenAPI 3.1.1 initially.
+- Public HTTP API: REST described by OpenAPI; the exact version (3.2.x vs 3.1.x) is pending a toolchain compatibility spike (Workbench ADR 0004).
 - Canonical payload contracts: JSON Schema Draft 2020-12.
 - Asynchronous message contracts: AsyncAPI 3.1.
 - Event envelope: CloudEvents 1.0.
