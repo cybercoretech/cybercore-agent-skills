@@ -111,6 +111,13 @@ When reporting summaries and comparisons:
   - Never declare or edit a plan after seeing results to make a comparison confirmatory; the workbench detects late declarations and keeps them exploratory.
 - If the comparison is `not_comparable`, do not compare the pass rates by hand: the evaluations ran different task revisions.
 - To compare agents fairly, run the same task revisions with the same verifier for each agent, and use enough distinct tasks (at least 5 for an interval, ideally many more): repeating a few tasks does not add independent evidence.
+- Summaries also report speed and cost (`speed_and_cost` in `--json`). Wall time is measured by the runner. Tokens are **self-reported**: an agent may write `/workspace/output/cybercore-usage.json` (`{"format": "cybercore-usage/v0", "models": [{"model_id", "input_tokens", "output_tokens"}], "tool_calls"}`, with `collect_outputs: true`), and cost comes from the evaluation file's declared `pricing` (prices per million tokens per model). When reporting:
+  - always say token and cost figures are agent-reported and unverified, and that cost is an estimate from declared prices, not a bill;
+  - report missing, invalid or unpriced reports instead of averaging over the trials that happened to report; a `descriptive_only` result does not support a cost claim;
+  - never compare costs computed under different price tables (the workbench marks them `not_comparable`);
+  - speed and cost comparisons are always exploratory, and lower is better;
+  - present quality, speed and cost together (for example "same pass rate, 60% faster, 67% cheaper on matched tasks") rather than a single winner;
+  - do not rely on self-reported tokens to audit an agent that may under-report.
 
 Respect the runners' documented limits: both share the host kernel, output is unredacted unless credentials were granted, and secrets must never go in task inputs or evaluation files. The container runner never pulls images and refuses to run if the cgroup limits are not enforced; report that to the user rather than switching to a weaker runner silently. A run stopped by a resource limit is an execution error (`not_scored`), not a task failure. Set `store_output_evidence` only for non-sensitive tasks. Treat failed or inconclusive outcomes as results to analyse, not as tool errors.
 
