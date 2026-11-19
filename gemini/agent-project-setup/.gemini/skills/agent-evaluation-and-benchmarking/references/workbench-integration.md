@@ -2,7 +2,16 @@
 
 The [CyberCore Agent Evaluation Workbench](https://github.com/cybercoretech/cybercore-agent-evaluation) is a companion application in development. This reference captures its architectural direction so the skill can interact with it as capabilities land. It does not imply that any API, endpoint, CLI command, MCP tool, or hosted service is currently available.
 
-**Current state:** the repository provides canonical v0 JSON Schema Draft 2020-12 contracts (`contracts/schemas/v0`) validated identically by Python, TypeScript, and Rust; a Rust evaluation core (domain invariants, run state machine, runner port, in-memory trial orchestration); and a Linux Bubblewrap local process runner prototype that is not hostile-code isolation. Persistence, scheduling, verification, API, CLI, MCP, and hosting are not implemented. Re-check the repository README before relying on this summary.
+**Current state:** the repository provides canonical v0 JSON Schema Draft 2020-12 contracts (`contracts/schemas/v0`) validated identically by Python, TypeScript, and Rust; a Rust evaluation core (domain invariants, run state machine, runner port, in-memory trial orchestration); and a Linux Bubblewrap local process runner prototype that is not hostile-code isolation. It also provides, locally:
+
+- append-only, contract-validated persistence (SQLite records plus a content-addressed evidence store);
+- crash-safe scheduling with a fenced write-ahead journal and concurrent attempts;
+- `run`, `run_event` and `verification_result` records, where pass/fail comes only from an independent verifier;
+- outcome rules taken from stored `task_revision` acceptance criteria;
+- opt-in collection of files a task writes to `/workspace/output`;
+- the local `workbench` CLI.
+
+The API, MCP tools, hosted persistence (D1/R2) and the hosted service are not implemented. Re-check the repository README before relying on this summary.
 
 ## 1. Product boundary
 
@@ -82,7 +91,18 @@ Assume imported traces and agent-generated code may be sensitive or hostile. Req
 
 A cloud sandbox is not permission to run any arbitrary workload. Validate provider isolation guarantees and limits before deployment.
 
-## 7. Future integration workflow
+## 7. Local workflow with the `workbench` CLI
+
+When the user has the Workbench checked out and the CLI built, it can run and inspect local evaluations without any service:
+
+1. Write an evaluation file (`cybercore-workbench-evaluation/v0`) with the frozen schedule, a `local_bubblewrap` runner allowlist, a verifier (`stdout_equals` or `checks`), and optionally `task_revisions` whose acceptance criteria set outcome rules. Keep expected outputs in the verifier section, never in a trial's `task_input`.
+2. `workbench run <file> --dry-run` validates everything and writes nothing. Fix the field it names before running.
+3. `workbench run <file>` runs or resumes the evaluation. Repeating it is safe: finished trials are not re-run, and interrupted attempts follow the schedule's retry policy.
+4. `workbench status <evaluation-id> --json` is read-only and reports each trial's runs, verification state and outcome.
+
+Respect the runner's documented limits: it is prototype isolation, output is unredacted, and secrets must not go in task inputs. Set `store_output_evidence` only for non-sensitive tasks. Treat failed or inconclusive outcomes as results to analyse, not as tool errors.
+
+## 8. Future integration workflow
 
 When the Workbench becomes available:
 
