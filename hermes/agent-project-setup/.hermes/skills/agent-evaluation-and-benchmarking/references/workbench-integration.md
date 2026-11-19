@@ -99,6 +99,14 @@ When the user has the Workbench checked out and the CLI built, it can run and in
 2. `workbench run <file> --dry-run` validates everything and writes nothing. Fix the field it names before running.
 3. `workbench run <file>` runs or resumes the evaluation. Repeating it is safe: finished trials are not re-run, and interrupted attempts follow the schedule's retry policy.
 4. `workbench status <evaluation-id> --json` is read-only and reports each trial's runs, verification state and outcome.
+5. `workbench summary <evaluation-id> --json` gives the pass rate with a 95% interval and records `metric_result` and `analysis_result` records. `workbench compare <baseline-id> <treatment-id> --json` compares two evaluations paired by task and records a `comparison_result`.
+
+When reporting summaries and comparisons:
+
+- Report the pass rate with its interval, status and notes, never the bare number. Trials without a verdict count as not passed, so say how many there were, and fix their cause (for example missing judge credentials) before drawing conclusions.
+- `descriptive_only` (fewer than 10 trials with an outcome, unrun trials, or too few tasks for an interval) and `insufficient_data` results do not support claims about which agent is better.
+- Comparisons are paired by task and labelled exploratory. Claim a direction only when the comparison says `favors_baseline` or `favors_treatment`, and say it was not predeclared. If the comparison is `not_comparable`, do not compare the pass rates by hand: the evaluations ran different task revisions.
+- To compare agents fairly, run the same task revisions with the same verifier for each agent, and use enough distinct tasks (at least 5 for an interval, ideally many more): repeating a few tasks does not add independent evidence.
 
 Respect the runners' documented limits: both share the host kernel, output is unredacted unless credentials were granted, and secrets must never go in task inputs or evaluation files. The container runner never pulls images and refuses to run if the cgroup limits are not enforced; report that to the user rather than switching to a weaker runner silently. A run stopped by a resource limit is an execution error (`not_scored`), not a task failure. Set `store_output_evidence` only for non-sensitive tasks. Treat failed or inconclusive outcomes as results to analyse, not as tool errors.
 
