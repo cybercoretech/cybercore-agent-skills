@@ -6,7 +6,7 @@ The [CyberCore Agent Evaluation Workbench](https://github.com/cybercoretech/cybe
 
 - append-only, contract-validated persistence (SQLite records plus a content-addressed evidence store);
 - crash-safe scheduling with a fenced write-ahead journal and concurrent attempts;
-- `run`, `run_event` and `verification_result` records, where pass/fail comes only from an independent verifier;
+- `run`, `run_event` and `verification_result` records, where pass/fail comes only from an independent verifier: exact checks on stdout and output files, a Claude **model judge** for rubric criteria, or a **composite** of both, with each verdict recording which verifier produced it;
 - outcome rules taken from stored `task_revision` acceptance criteria;
 - opt-in collection of files a task writes to `/workspace/output`;
 - the local `workbench` CLI.
@@ -95,12 +95,20 @@ A cloud sandbox is not permission to run any arbitrary workload. Validate provid
 
 When the user has the Workbench checked out and the CLI built, it can run and inspect local evaluations without any service:
 
-1. Write an evaluation file (`cybercore-workbench-evaluation/v0`) with the frozen schedule, a runner (`podman` with pre-pulled images, which is preferred when tasks need resource limits or their own toolchain; or `local_bubblewrap`), a verifier (`stdout_equals` or `checks`), and optionally `task_revisions` whose acceptance criteria set outcome rules. Keep expected outputs in the verifier section, never in a trial's `task_input`.
+1. Write an evaluation file (`cybercore-workbench-evaluation/v0`) with the frozen schedule, a runner (`podman` with pre-pulled images, which is preferred when tasks need resource limits or their own toolchain; or `local_bubblewrap`), a verifier (`stdout_equals`, `checks`, `model_judge`, or a `composite` of several), and optionally `task_revisions` whose acceptance criteria set outcome rules. Keep expected outputs in the verifier section, never in a trial's `task_input`.
 2. `workbench run <file> --dry-run` validates everything and writes nothing. Fix the field it names before running.
 3. `workbench run <file>` runs or resumes the evaluation. Repeating it is safe: finished trials are not re-run, and interrupted attempts follow the schedule's retry policy.
 4. `workbench status <evaluation-id> --json` is read-only and reports each trial's runs, verification state and outcome.
 
 Respect the runners' documented limits: both share the host kernel, output is unredacted, and secrets must not go in task inputs. The container runner never pulls images and refuses to run if the cgroup limits are not enforced; report that to the user rather than switching to a weaker runner silently. A run stopped by a resource limit is an execution error (`not_scored`), not a task failure. Set `store_output_evidence` only for non-sensitive tasks. Treat failed or inconclusive outcomes as results to analyse, not as tool errors.
+
+When using the `model_judge` verifier:
+
+- Prefer exact checks wherever a criterion can be checked exactly, and judge only what genuinely needs judgment. A model judge can be mistaken, and the judged output may try to influence it; each verdict records that limitation.
+- Judged outputs are sent to the Anthropic API. The evaluation file must set `consent_to_send_outputs: true`; confirm with the user before doing so for anything that is not synthetic or public, and before running an evaluation that will be billed to their credentials.
+- Credentials come only from `ANTHROPIC_API_KEY` or `ANTHROPIC_AUTH_TOKEN`; never put a key in an evaluation file or a command line.
+- A judge failure (no credentials, an API error such as an exhausted credit balance, a refusal, oversized output) is recorded as `unavailable` or `inconclusive` with the reason, never as a pass. Read the verification record's limitations before concluding anything about the agent.
+- In a `composite`, criterion IDs must be unique per trial across the verifiers.
 
 ## 8. Future integration workflow
 
