@@ -2,7 +2,7 @@
 
 The [CyberCore Agent Evaluation Workbench](https://github.com/cybercoretech/cybercore-agent-evaluation) is a companion application in development. This reference captures its architectural direction so the skill can interact with it as capabilities land. It does not imply that any API, endpoint, CLI command, MCP tool, or hosted service is currently available.
 
-**Current state:** the repository provides canonical v0 JSON Schema Draft 2020-12 contracts (`contracts/schemas/v0`) validated identically by Python, TypeScript, and Rust; a Rust evaluation core (domain invariants, run state machine, runner port, in-memory trial orchestration); and a Linux Bubblewrap local process runner prototype that is not hostile-code isolation. It also provides, locally:
+**Current state:** the repository provides canonical v0 JSON Schema Draft 2020-12 contracts (`contracts/schemas/v0`) validated identically by Python, TypeScript, and Rust; a Rust evaluation core (domain invariants, run state machine, runner port, in-memory trial orchestration); and two local runners. The **Podman container runner** runs each attempt in a rootless container with no network, a read-only pinned image, size-capped tmpfs mounts, and cgroup memory/CPU/process limits that it verifies before running. The **Bubblewrap runner** is a lighter prototype without resource limits. Both share the host kernel, so neither is hostile-code isolation. It also provides, locally:
 
 - append-only, contract-validated persistence (SQLite records plus a content-addressed evidence store);
 - crash-safe scheduling with a fenced write-ahead journal and concurrent attempts;
@@ -95,12 +95,12 @@ A cloud sandbox is not permission to run any arbitrary workload. Validate provid
 
 When the user has the Workbench checked out and the CLI built, it can run and inspect local evaluations without any service:
 
-1. Write an evaluation file (`cybercore-workbench-evaluation/v0`) with the frozen schedule, a `local_bubblewrap` runner allowlist, a verifier (`stdout_equals` or `checks`), and optionally `task_revisions` whose acceptance criteria set outcome rules. Keep expected outputs in the verifier section, never in a trial's `task_input`.
+1. Write an evaluation file (`cybercore-workbench-evaluation/v0`) with the frozen schedule, a runner (`podman` with pre-pulled images, which is preferred when tasks need resource limits or their own toolchain; or `local_bubblewrap`), a verifier (`stdout_equals` or `checks`), and optionally `task_revisions` whose acceptance criteria set outcome rules. Keep expected outputs in the verifier section, never in a trial's `task_input`.
 2. `workbench run <file> --dry-run` validates everything and writes nothing. Fix the field it names before running.
 3. `workbench run <file>` runs or resumes the evaluation. Repeating it is safe: finished trials are not re-run, and interrupted attempts follow the schedule's retry policy.
 4. `workbench status <evaluation-id> --json` is read-only and reports each trial's runs, verification state and outcome.
 
-Respect the runner's documented limits: it is prototype isolation, output is unredacted, and secrets must not go in task inputs. Set `store_output_evidence` only for non-sensitive tasks. Treat failed or inconclusive outcomes as results to analyse, not as tool errors.
+Respect the runners' documented limits: both share the host kernel, output is unredacted, and secrets must not go in task inputs. The container runner never pulls images and refuses to run if the cgroup limits are not enforced; report that to the user rather than switching to a weaker runner silently. A run stopped by a resource limit is an execution error (`not_scored`), not a task failure. Set `store_output_evidence` only for non-sensitive tasks. Treat failed or inconclusive outcomes as results to analyse, not as tool errors.
 
 ## 8. Future integration workflow
 
