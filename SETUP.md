@@ -54,6 +54,26 @@ Some agents may need a one-time step before they load the rules or skills. The i
 
 Restart your agent session afterwards.
 
+## Updating
+
+Pull the clone, then check your installed skills and rules against it:
+
+```bash
+git -C ~/cybercore-agent-skills pull
+bash ~/cybercore-agent-skills/scripts/update-skills.sh all            # report only
+bash ~/cybercore-agent-skills/scripts/update-skills.sh all --apply    # update and add new skills
+bash ~/cybercore-agent-skills/scripts/update-skills.sh all --apply --prune   # also clear removed skills
+```
+
+| Status | Meaning | With `--apply` |
+|---|---|---|
+| `UPDATE` | The installed copy matches an older version from this repo | Replaced; the old copy goes to the backup folder |
+| `NEW` | In the catalog (or an installed pack) but not installed | Installed |
+| `CUSTOMISED` | Matches no version this repo ever published | Never changed; compare it with the `diff` command shown |
+| `REMOVED` | Was in the catalog, has since been removed | Moved to the backup folder only with `--prune` |
+
+Skills that were never part of this repo are listed as not managed and left alone. The script needs the clone's full git history and never uses the network. It exits 0 when nothing needs doing and 1 when updates are available, so it also works in scripts.
+
 ## Validate
 
 ```bash

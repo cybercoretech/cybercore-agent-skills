@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # update-skills.sh recognises old skill versions from the history
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -48,13 +50,14 @@ jobs:
           done < <(find . -path './.git' -prune -o -name 'setup-*.sh' -type f -print0)
           bash -n tests/smoke_installers.sh
           bash -n scripts/install-skill.sh
+          bash -n scripts/update-skills.sh
 
       - name: Lint shell scripts
         shell: bash
         run: |
           set -euo pipefail
           find . -path './.git' -prune -o -name 'setup-*.sh' -type f -print0 \
-            | xargs -0 shellcheck -S warning tests/smoke_installers.sh scripts/install-skill.sh
+            | xargs -0 shellcheck -S warning tests/smoke_installers.sh scripts/install-skill.sh scripts/update-skills.sh
 
       - name: Smoke-test all installers in temporary directories
         run: bash tests/smoke_installers.sh
