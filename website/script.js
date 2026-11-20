@@ -271,6 +271,7 @@ const actions = {
     $('#pane [data-action="favourite"]').focus();
   },
   back: () => leaveViewing(),
+  'open-doc': button => openSheet('skill-doc', state.active, button),
 };
 
 function setupExplorer() {
@@ -324,12 +325,146 @@ function setupExplorer() {
   });
 }
 
+
+// ===== Sheets: full SKILL.md and agent details =====
+let docsPromise = null;
+function loadDocs() {
+  if (window.CC_DOCS) return Promise.resolve(window.CC_DOCS);
+  if (!docsPromise) {
+    docsPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = TEST && params.has('nodocs') ? 'docs-missing.js' : 'docs.js';
+      script.async = true;
+      script.onload = () => (window.CC_DOCS ? resolve(window.CC_DOCS) : reject(new Error('docs.js has no data')));
+      script.onerror = () => { docsPromise = null; script.remove(); reject(new Error('Could not load docs.js')); };
+      document.head.append(script);
+    });
+  }
+  return docsPromise;
+}
+
+const sheetState = { kind: null, id: null, opener: null };
+const BACKGROUND = ['header.titlebar', '#drawer', 'main', 'footer'];
+
+function setBackgroundInert(on) {
+  BACKGROUND.forEach(sel => { const node = $(sel); if (node) node.inert = on; });
+  document.body.classList.toggle('sheet-open', on);
+}
+
+function sheetHeader(title) {
+  return el('div', { class: 'sheet-head' },
+    el('h2', { id: 'sheetTitle', class: 'sheet-title' }, title),
+    el('button', { class: 'sheet-close', type: 'button', 'data-action': 'close-sheet', 'aria-label': 'Close' }, '✕'));
+}
+
+async function renderSkillDoc(skill) {
+  const sheet = $('#sheet');
+  const body = el('div', { class: 'sheet-body' }, el('p', { class: 'comment' }, '// loading SKILL.md…'));
+  sheet.replaceChildren(el('div', { class: 'sheet-card' }, sheetHeader(`${skill.id} · SKILL.md`), body));
+  try {
+    const docs = await loadDocs();
+    if (sheetState.id !== skill.id) return;
+    const md = el('div', { class: 'md' });
+    md.innerHTML = lib.renderMarkdown(docs[skill.id] || ''); // renderMarkdown escapes all skill text
+    body.replaceChildren(
+      el('div', { class: 'sheet-actions' },
+        el('button', { class: 'btn', type: 'button', 'data-action': 'copy-doc' }, '⧉ copy SKILL.md'),
+        el('a', { class: 'btn', href: `https://github.com/${DATA.repo}/blob/${DATA.ref}/skills/${encodeURIComponent(skill.id)}/SKILL.md`, target: '_blank', rel: 'noopener' }, 'source on GitHub ↗')),
+      md);
+  } catch {
+    body.replaceChildren(
+      el('p', { class: 'sheet-error' }, 'Could not load the skill text. Check your connection and try again.'),
+      el('button', { class: 'btn', type: 'button', 'data-action': 'retry' }, '↻ retry'));
+  }
+}
+
+function renderAgentSheet(agent) {
+  const status = lib.statusInfo(agent);
+  const rows = [
+    ['skills', agent.skillsDir ? `~/${agent.skillsDir}/` : 'none (rules only)'],
+    ['rules', `~/${agent.rulesDir}/`],
+    ['instructions', agent.instructions],
+  ];
+  $('#sheet').replaceChildren(el('div', { class: 'sheet-card' },
+    sheetHeader(agent.name),
+    el('div', { class: 'sheet-body' },
+      el('p', { class: 'agent-status' }, el('span', { class: 'led', 'data-tone': status.tone, 'aria-hidden': 'true' }), status.label, ' · ', agent.statusText),
+      el('dl', { class: 'agent-facts' }, rows.flatMap(([k, v]) => [el('dt', {}, k), el('dd', {}, el('code', {}, v))])),
+      el('div', { class: 'install-box' },
+        el('span', { class: 'install-label' }, 'setup'),
+        el('code', { id: 'agentCommand', class: 'install-command' }, lib.setupCommand(agent)),
+        el('button', { class: 'btn-copy', type: 'button', 'data-action': 'copy-agent' }, '⧉ copy')),
+      agent.notes && agent.notes.length ? el('ul', { class: 'agent-notes' }, agent.notes.map(n => el('li', {}, n))) : null)));
+}
+
+function openSheet(kind, id, opener = null) {
+  const item = kind === 'agent' ? agentById[id] : skillById[id];
+  if (!item) return false;
+  sheetState.kind = kind;
+  sheetState.id = id;
+  if ($('#sheet').hidden) sheetState.opener = opener || document.activeElement; // keep the first opener when switching sheets
+  const sheet = $('#sheet');
+  sheet.hidden = false;
+  setBackgroundInert(true);
+  if (kind === 'agent') {
+    renderAgentSheet(item);
+    if (location.hash !== '#agent/' + id) history.pushState(null, '', '#agent/' + id);
+  } else {
+    renderSkillDoc(item);
+  }
+  $('#sheet [data-action="close-sheet"]').focus();
+  return true;
+}
+
+function closeSheet() {
+  const sheet = $('#sheet');
+  if (sheet.hidden) return;
+  const wasAgent = sheetState.kind === 'agent';
+  sheet.hidden = true;
+  sheet.replaceChildren();
+  setBackgroundInert(false);
+  sheetState.kind = sheetState.id = null;
+  if (wasAgent && location.hash.startsWith('#agent/')) history.replaceState(null, '', location.pathname + location.search);
+  const opener = sheetState.opener;
+  sheetState.opener = null;
+  if (opener && opener.isConnected) opener.focus();
+}
+
+function setupSheet() {
+  const sheet = $('#sheet');
+  sheet.addEventListener('click', e => {
+    if (e.target === sheet) { closeSheet(); return; }
+    const action = e.target.closest('[data-action]');
+    if (!action) return;
+    const name = action.dataset.action;
+    if (name === 'close-sheet') closeSheet();
+    else if (name === 'retry') renderSkillDoc(skillById[sheetState.id]);
+    else if (name === 'copy-doc') copyText((window.CC_DOCS || {})[sheetState.id] || '', 'Copied SKILL.md');
+    else if (name === 'copy-agent') copyText($('#agentCommand').textContent, 'Copied setup command');
+  });
+  document.addEventListener('keydown', e => {
+    if (sheet.hidden) return;
+    if (e.key === 'Escape') { e.stopImmediatePropagation(); closeSheet(); return; }
+    if (e.key !== 'Tab') return;
+    const items = [...sheet.querySelectorAll('button, a[href], select, input, [tabindex]:not([tabindex="-1"])')].filter(n => !n.disabled);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items.at(-1);
+    if (!sheet.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }, true);
+}
+
 // ===== Routing =====
 function route() {
   const target = lib.parseHash(location.hash);
-  if (!target) { if (PHONE.matches) $('.explorer').classList.remove('viewing'); return; }
+  if (!target) { closeSheet(); if (PHONE.matches) $('.explorer').classList.remove('viewing'); return; }
   if (target.type === 'skill') {
+    if (sheetState.kind === 'agent') closeSheet();
     if (!openSkill(target.id, { push: false, view: true })) showToast(`No skill named ${target.id}`);
+  } else if (target.type === 'agent') {
+    if (!openSheet('agent', target.id)) showToast(`No agent named ${target.id}`);
   }
 }
 
@@ -341,6 +476,10 @@ function startRoute() {
     showToast(`No skill named ${first.missing}`);
     history.replaceState(null, '', location.pathname + location.search);
   }
+  if (target && target.type === 'agent' && !openSheet('agent', target.id)) {
+    showToast(`No agent named ${target.id}`);
+    history.replaceState(null, '', location.pathname + location.search);
+  }
   window.addEventListener('popstate', route);
   window.addEventListener('hashchange', route);
 }
@@ -349,10 +488,11 @@ function init() {
   renderGutter();
   setupTitlebar();
   setupExplorer();
+  setupSheet();
   startRoute();
   if (TEST) {
     window.applySearchForTest = applySearch;
-    window.__cc = { lib, DATA, showToast, openDrawer, openSkill };
+    window.__cc = { lib, DATA, showToast, openDrawer, openSkill, openSheet, closeSheet };
   }
 }
 
