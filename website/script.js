@@ -298,6 +298,7 @@ const actions = {
 
 function setupExplorer() {
   renderExplorerShell();
+  scrollableTabs($('#paneTabs'));
   renderTree();
   $('#tree').addEventListener('click', e => {
     const file = e.target.closest('button.file');
@@ -555,6 +556,7 @@ function renderInstall() {
     renderInstallTerminal();
   });
   tabArrows($('#installTabs'));
+  scrollableTabs($('#installTabs'));
   $('#installBody [data-action="copy-install"]').addEventListener('click', () => copyText(installLines().join('\n'), 'Copied install commands'));
 }
 
@@ -585,6 +587,55 @@ function renderRules() {
     renderRuleBody();
   });
   tabArrows($('#ruleTabs'));
+  scrollableTabs($('#ruleTabs'));
+}
+
+/**
+ * Makes a horizontally overflowing tab strip scrollable with ‹ › arrows
+ * (shown only when there is more that way), a vertical mouse wheel, and
+ * keeps the selected tab in view. Works for strips that re-render.
+ */
+function scrollableTabs(strip) {
+  const wrap = el('div', { class: 'tab-scroller' });
+  const arrow = dir => el('button', { type: 'button', class: `tab-arrow ${dir}`, tabindex: '-1', 'aria-hidden': 'true', hidden: true }, dir === 'prev' ? '‹' : '›');
+  const prev = arrow('prev');
+  const next = arrow('next');
+  strip.replaceWith(wrap);
+  wrap.append(prev, strip, next);
+
+  const update = () => {
+    const max = strip.scrollWidth - strip.clientWidth;
+    prev.hidden = strip.scrollLeft <= 1;
+    next.hidden = strip.scrollLeft >= max - 1;
+    wrap.classList.toggle('more-left', !prev.hidden);
+    wrap.classList.toggle('more-right', !next.hidden);
+  };
+  const by = dir => strip.scrollBy({ left: dir * strip.clientWidth * 0.7, behavior: 'smooth' });
+  const reveal = () => {
+    const tab = strip.querySelector('[aria-selected="true"]');
+    if (!tab) return;
+    const s = strip.getBoundingClientRect();
+    const t = tab.getBoundingClientRect();
+    if (t.left < s.left) strip.scrollLeft -= s.left - t.left + 24;
+    else if (t.right > s.right) strip.scrollLeft += t.right - s.right + 24;
+    update();
+  };
+
+  prev.addEventListener('click', () => by(-1));
+  next.addEventListener('click', () => by(1));
+  strip.addEventListener('scroll', update, { passive: true });
+  strip.addEventListener('wheel', e => {
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // trackpads already scroll sideways
+    const max = strip.scrollWidth - strip.clientWidth;
+    const canMove = e.deltaY > 0 ? strip.scrollLeft < max - 1 : strip.scrollLeft > 1;
+    if (!canMove) return; // at the end: let the page scroll
+    e.preventDefault();
+    strip.scrollLeft += e.deltaY;
+  }, { passive: false });
+  new ResizeObserver(update).observe(strip);
+  new MutationObserver(() => requestAnimationFrame(reveal)).observe(strip, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-selected'] });
+  requestAnimationFrame(reveal);
+  update();
 }
 
 /** Left/right arrows move between tabs in a tablist (and activate them). */

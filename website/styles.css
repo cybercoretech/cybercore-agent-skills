@@ -442,6 +442,19 @@ main > .section:not(#hero) > .panel::before, .split > .section > .panel::before 
 /* Hidden tab: freeze everything. */
 .fx-paused *, .fx-paused *::before, .fx-paused *::after { animation-play-state: paused !important; }
 
+/* Scrollable tab strips: arrows and edge fades (added by scrollableTabs). */
+.tab-scroller { position: relative; display: flex; min-width: 0; background: var(--cc-bar); border-bottom: 1px solid var(--cc-line); }
+.tab-scroller > .term-tabs, .tab-scroller > .pane-tabs { flex: 1; min-width: 0; border-bottom: 0; scrollbar-width: none; }
+.tab-scroller > .term-tabs::-webkit-scrollbar, .tab-scroller > .pane-tabs::-webkit-scrollbar { display: none; }
+.tab-arrow {
+  position: absolute; top: 0; bottom: 0; z-index: 2; width: 34px; border: 0; padding: 0; cursor: pointer;
+  color: var(--cc-neon-cyan); font: inherit; font-size: 20px; line-height: 1;
+}
+.tab-arrow[hidden] { display: none; }
+.tab-arrow.prev { left: 0; background: linear-gradient(90deg, var(--cc-bar) 55%, transparent); text-align: left; padding-left: 8px; }
+.tab-arrow.next { right: 0; background: linear-gradient(270deg, var(--cc-bar) 55%, transparent); text-align: right; padding-right: 8px; }
+.tab-arrow:hover { color: var(--cc-fg); text-shadow: 0 0 10px var(--cc-cyan-glow); }
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .explorer { grid-template-columns: 1fr; min-height: 0; }

@@ -104,3 +104,31 @@ test('phone: the install copy button does not cover the commands', { skip }, asy
     assert.equal(overlap, false);
   } finally { await p.close(); }
 });
+
+test('overflowing tab strips get scroll arrows and take the mouse wheel sideways', { skip }, async () => {
+  const p = await openPage(site.url, { width: 1440, height: 900, reducedMotion: true });
+  try {
+    const state = `(() => { const s = document.getElementById('installTabs'); const w = s.closest('.tab-scroller');
+      return { left: s.scrollLeft, max: s.scrollWidth - s.clientWidth,
+        prev: w && !w.querySelector('.tab-arrow.prev').hidden, next: w && !w.querySelector('.tab-arrow.next').hidden }; })()`;
+    let s = await p.evaluate(state);
+    assert.ok(s.max > 0, 'install tabs overflow at 1440 px');
+    assert.equal(s.prev, false, 'no ‹ at the start');
+    assert.equal(s.next, true, '› shown when more tabs are to the right');
+    await p.evaluate(`document.querySelector('#installTabs').closest('.tab-scroller').querySelector('.tab-arrow.next').click()`);
+    await p.evaluate(`new Promise(r => setTimeout(r, 400))`);
+    s = await p.evaluate(state);
+    assert.ok(s.left > 0, '› scrolls the strip');
+    assert.equal(s.prev, true, '‹ appears once scrolled');
+    await p.evaluate(`(() => { const s = document.getElementById('installTabs'); s.scrollLeft = 0;
+      s.dispatchEvent(new WheelEvent('wheel', { deltaY: 120, bubbles: true, cancelable: true })); })()`);
+    await p.evaluate(`new Promise(r => setTimeout(r, 400))`);
+    assert.ok((await p.evaluate(state)).left > 0, 'a vertical wheel scrolls the strip sideways');
+    await p.evaluate(`(() => { const t = document.querySelector('#installTabs [data-agent="qwen"]'); t.click(); })()`);
+    await p.evaluate(`new Promise(r => setTimeout(r, 400))`);
+    assert.equal(await p.evaluate(`(() => { const s = document.getElementById('installTabs').getBoundingClientRect();
+      const t = document.querySelector('#installTabs [data-agent="qwen"]').getBoundingClientRect();
+      return t.left >= s.left - 1 && t.right <= s.right + 1; })()`), true, 'the selected tab is scrolled into view');
+    assert.equal(await p.evaluate(`document.documentElement.scrollWidth <= innerWidth`), true);
+  } finally { await p.close(); }
+});
