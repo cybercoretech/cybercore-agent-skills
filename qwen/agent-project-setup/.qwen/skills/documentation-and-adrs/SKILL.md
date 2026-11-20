@@ -1,8 +1,8 @@
 ---
 name: documentation-and-adrs
-description: Documentation, README quality, Architecture Decision Records (ADRs), and knowledge capture standards for Cybercore repositories.
+description: Decide what to document and how to structure it, including READMEs, guides, Architecture Decision Records (ADRs), changelogs and knowledge capture. Use when creating or reorganizing project documentation, recording a technical decision, or checking docs match the code. Not for improving the wording itself (use plain-writing) or drawing diagrams (use diagrams-as-code).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Documentation and ADRs

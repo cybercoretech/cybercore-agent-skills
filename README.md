@@ -97,15 +97,15 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 |---|---|
 | 📱 `android-development` | Android SDK, Gradle, APK signing, and device tooling |
 | 🔌 `api-backend` | API design, backend services, validation, and error handling |
-| ☁️ `container-devops` | Containers, CI/CD, and deployment workflows |
+| ☁️ `container-devops` | Docker, Compose, images, and containerized services |
 | 🔀 `git-workflow` | Branches, commits, pull requests, and safe Git operations |
 | 🖥️ `qt-cpp-desktop` | Qt 6, C++, QML, and desktop application development |
 | 🦀 `rust-development` | Cargo workspaces, crates.io publishing, MSRV, and library error handling |
 | 🔒 `security-guidelines` | Secrets, credentials, permissions, threat modeling, auth, input handling, and secure defaults |
 | 🐚 `shell-scripting` | Bash and Zsh scripting, shell safety, and automation |
 | 🐧 `system-administration` | Linux administration, systemd, packages, and services |
-| 🧪 `testing-qa` | Unit, integration, UI, and CI testing practices |
-| 🎨 `web-design-and-frontend-craft` | UI/UX, CSS systems, accessibility, and frontend performance |
+| 🧪 `testing-qa` | Test strategy: which tests, where, and CI test gates |
+| 🎨 `web-design-and-frontend-craft` | Building new sites and UI: visual direction, CSS systems, and assets |
 
 ### General engineering
 
@@ -130,7 +130,7 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 | 🌙 `lua-development` | Lua modules, error handling, performance, and testing |
 | 🧩 `mcp-server-development` | MCP servers agents can use safely: task-shaped tools, strict schemas, transports, auth, and protocol testing |
 | 📲 `mobile-cross-platform` | Flutter, React Native, and Kotlin Multiplatform |
-| 🔭 `observability-and-debugging` | Structured logging, metrics, tracing, and systematic debugging |
+| 🔭 `observability-and-debugging` | Structured logging, metrics, tracing, and profiling |
 | 📄 `office-documents` | Word, Excel, PowerPoint and PDF: templates and styles, intact formulas, local conversion, render-and-inspect checks |
 | ⚡ `performance-optimization` | Measurement, complexity, caching, and hot-path optimization |
 | ✍️ `plain-writing` | Clear, specific, human prose for docs, PRs, release notes and UI copy; removes machine-writing patterns, keeps every fact |
@@ -167,7 +167,7 @@ For [Omarchy](https://omarchy.org) (Arch Linux + Hyprland) desktops. Not install
 | 🛠️ `omarchy-agent-operations` | Safe agent changes to Omarchy settings, packages, and themes |
 | 🎚️ `omarchy-lua-config` | Omarchy Lua configuration for Hyprland, bindings, and look-and-feel |
 | 🧩 `omarchy-plugin-theme` | Omarchy plugins, themes, and menu integrations |
-| 🔧 `rust-omarchy-tooling` | Rust CLIs and utilities built for Omarchy |
+| 🔧 `rust-omarchy-tooling` | Omarchy integration for Rust tools |
 
 ## 📁 Repository layout
 

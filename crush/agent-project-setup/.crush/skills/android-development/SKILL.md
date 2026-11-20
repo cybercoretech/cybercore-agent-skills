@@ -1,8 +1,8 @@
 ---
 name: android-development
-description: Android development with Gradle, APK signing, and Android CLI tooling.
+description: Native Android development with Gradle, the Android SDK and command-line tools, APK and AAB signing, and release builds. Use when building, signing, debugging or releasing a native Android app, editing Gradle files, or running adb and emulator tasks. Not for Flutter, React Native or Kotlin Multiplatform apps (use mobile-cross-platform).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # Android Development

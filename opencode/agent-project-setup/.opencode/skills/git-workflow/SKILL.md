@@ -1,8 +1,8 @@
 ---
 name: git-workflow
-description: Git workflow standards for Cybercore repositories. Covers commit conventions, branch strategies, PR hygiene, and safe Git operations.
+description: Git workflow standards for commits, branches and pull requests. Covers commit message conventions, branch naming, PR hygiene, rebasing and merging, and safe Git operations that never lose work. Use when committing, branching, opening or updating a pull request, resolving conflicts, or cleaning up history. Not for reviewing the code in a pull request (use code-review-and-refactoring).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # Git Workflow

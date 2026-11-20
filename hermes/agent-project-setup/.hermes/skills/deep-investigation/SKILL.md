@@ -1,8 +1,8 @@
 ---
 name: deep-investigation
-description: Persistent, evidence-driven investigation for technical and non-technical problems. Use when asked to scan, inspect, review, audit, investigate, troubleshoot, diagnose, determine why something happens, examine a suspected cause, look deeper, or verify a conclusion or fix.
+description: Find the root cause of a problem with persistent, evidence-driven investigation that forms hypotheses, tests them, rules out alternatives and verifies the conclusion. Use when asked why something happens, to troubleshoot or diagnose a failure, to check a suspected cause, or to verify that a fix really worked, for technical or non-technical problems. Not for routine code review (use code-review-and-refactoring), security audits (use security-audit) or UI reviews (use ux-design-audit).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Deep Investigation

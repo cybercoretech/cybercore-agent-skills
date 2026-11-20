@@ -1,8 +1,8 @@
 ---
 name: dependency-and-supply-chain
-description: Dependency management, lockfiles, vulnerability awareness, SBOM basics, and supply-chain hygiene for Cybercore repositories.
+description: Dependency and supply-chain hygiene, covering choosing dependencies, lockfiles, updates, vulnerability advisories, licences and SBOMs. Use when adding, updating or removing a dependency, reviewing a lockfile change, or triaging a vulnerability advisory. Not for secure coding practices (use security-guidelines) or full security audits (use security-audit).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Dependency and Supply Chain

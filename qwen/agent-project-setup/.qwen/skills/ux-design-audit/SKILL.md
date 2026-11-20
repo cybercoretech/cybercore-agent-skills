@@ -1,8 +1,8 @@
 ---
 name: ux-design-audit
-description: Audit an existing user interface for usability and visual quality, then fix what matters most in small, verified steps. Reviews hierarchy, layout and spacing, typography, colour and contrast, component states (empty, loading, error, disabled, hover, focus), forms, navigation, responsiveness, motion, consistency with the project's own design system, and interface copy; produces prioritized findings with screenshots; and proves fixes with before and after captures. Use when asked to review, critique, polish or "make this look better"; when a page feels off, cluttered, generic or inconsistent; before a launch; or after a redesign. Respects the project's existing brand and tokens; for building new designs from scratch, use web-design-and-frontend-craft.
+description: Audit an existing user interface for usability and visual quality, then fix what matters most in small, verified steps. Reviews hierarchy, layout and spacing, typography, colour and contrast, component states (empty, loading, error, disabled, hover, focus), forms, navigation, responsiveness, motion, consistency with the project's own design system, and interface copy; produces prioritized findings with screenshots; and proves fixes with before and after captures. Use when asked to review, critique, polish or "make this look better"; when a page feels off, cluttered, generic or inconsistent; before a launch; or after a redesign. Respects the project's existing brand and tokens. Not for building new designs from scratch (use web-design-and-frontend-craft).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # UX and Design Audit

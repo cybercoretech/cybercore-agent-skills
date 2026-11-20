@@ -1,8 +1,8 @@
 ---
 name: engineering-planning
-description: Turn engineering objectives into evidence-grounded technical plans, executable task contracts, dependency models, and coordinated implementation work. Use when planning features, refactors, migrations, architecture changes, multi-step engineering work, or agent delegation; also use to validate, persist, or reconcile existing plans.
+description: Turn engineering goals into evidence-grounded technical plans with tasks, dependencies, interfaces and verification steps, then coordinate the work. Use when planning a feature, refactor, migration or architecture change, splitting work for several agents, or validating and updating an existing plan. Not for working out what the user wants first (use clarify-before-building).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Engineering Planning & Task Decomposition

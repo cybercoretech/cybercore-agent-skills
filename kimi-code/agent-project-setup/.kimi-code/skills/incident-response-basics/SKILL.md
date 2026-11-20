@@ -1,8 +1,8 @@
 ---
 name: incident-response-basics
-description: Lightweight incident response and on-call practices for Cybercore services. Covers detection, triage, communication, mitigation, rollback, and blameless follow-up.
+description: Lightweight incident response for running services, covering detection, triage, communication, mitigation, rollback and blameless follow-up. Use when a production service is down or degraded, during an outage, or when writing a post-incident review. Not for finding the root cause of a bug outside an incident (use deep-investigation).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Incident Response Basics

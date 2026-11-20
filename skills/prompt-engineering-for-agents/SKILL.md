@@ -1,8 +1,8 @@
 ---
 name: prompt-engineering-for-agents
-description: How to write effective agent skills, rules, and system prompts for the Cybercore agent ecosystem. Covers progressive disclosure, activation descriptions, safety framing, and maintainable instruction design.
+description: Write effective agent skills, rules and system prompts, covering activation descriptions, progressive disclosure, safety framing and maintainable instructions. Use when writing or revising a SKILL.md, a rules file, AGENTS.md or a system prompt. Not for measuring whether a skill works (use skill-evaluation) or LLM features in applications (use llm-application-patterns).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Prompt Engineering for Agents

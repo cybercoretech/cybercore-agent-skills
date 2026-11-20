@@ -1,8 +1,8 @@
 ---
 name: llm-application-patterns
-description: Practical patterns for building LLM-powered features and agentic applications in Cybercore repositories. Covers prompting structure, tool use, evaluation, safety boundaries, and operational hygiene.
+description: Build LLM-powered features and agentic applications, covering prompt structure, tool use, retrieval, structured output, evaluation, safety boundaries, cost and latency. Use when adding an AI feature to an app or building an agent that calls a model. Not for writing agent skills, rules or system prompts (use prompt-engineering-for-agents) or building MCP servers (use mcp-server-development).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # LLM Application Patterns

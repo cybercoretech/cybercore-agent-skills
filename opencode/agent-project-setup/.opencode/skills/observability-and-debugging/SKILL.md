@@ -1,8 +1,8 @@
 ---
 name: observability-and-debugging
-description: Observability, logging, metrics, tracing, and systematic debugging practices for Cybercore repositories. Covers structured logging, failure diagnosis, profiling, and post-incident hygiene.
+description: Instrument code so problems are visible with structured logging, metrics, tracing, health checks and profiling, plus debugging with those signals. Use when adding logs, metrics or traces, setting up dashboards or alerts, or profiling slow code. Not for root-cause investigations of a specific failure (use deep-investigation) or Rust tracing setup (use rust-observability).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Observability and Debugging

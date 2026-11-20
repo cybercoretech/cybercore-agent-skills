@@ -1,8 +1,8 @@
 ---
 name: testing-qa
-description: Testing and QA standards for Rust, shell scripts, and desktop applications. Covers unit tests, integration tests, CI/CD, and verification procedures.
+description: Decide what to test and where, covering test levels (unit, integration, end-to-end), coverage of risky paths, CI test gates and release verification for Rust, shell and desktop projects. Use when setting up or reviewing a project's test strategy, adding test suites or CI test steps, or checking a change is properly verified. Not for the red-green-refactor workflow (use test-first-development) or Rust-specific test tooling (use rust-testing).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # Testing & QA

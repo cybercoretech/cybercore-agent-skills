@@ -1,8 +1,8 @@
 ---
 name: system-administration
-description: Linux system administration for Arch Linux, Omarchy, and Cybercore environments. Covers systemd, package management, user services, dotfiles, and server maintenance.
+description: Linux system administration on Arch-based systems, including systemd units and timers, user services, package management, logs, users and permissions, and server maintenance. Use when managing services, packages, journals, disks or users, or keeping a Linux machine or server healthy. Not for Omarchy desktop settings, themes and Hyprland config (use omarchy-agent-operations) or writing scripts (use shell-scripting).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # System Administration
