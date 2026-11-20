@@ -1,6 +1,6 @@
 # 🔒 CyberCore Agent Skills
 
-Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 52 default skills, an opt-in 4-skill Omarchy pack, and five shared rule files, adapted to the configuration layout that agent actually reads.
+Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 18 default skills, 9 optional domain packs (38 more skills, from Rust to web to AI), and five shared rule files, adapted to the configuration layout that agent actually reads.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
@@ -69,13 +69,25 @@ bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh
 
 > **OpenCode:** The installer script is `setup-agent.sh`, not `setup-opencode.sh`.
 
-### Optional Omarchy pack
+### Optional packs
 
-Add `--with omarchy` to any command above, for example:
+The installers add the default skills. Add domain packs with `--with`: one pack, a comma list, or `all` for the whole catalog:
 
 ```bash
-bash ~/cybercore-agent-skills/opencode/agent-project-setup/setup-agent.sh --with omarchy
+bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh --with rust,web
+bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh --with all
+bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh --list-packs
 ```
+
+- `ai` (5): LLM features, agent prompts and skills, MCP servers, and agent and skill evaluation.
+- `backend` (2): HTTP APIs, databases and SQL.
+- `languages` (5): Python, TypeScript and Node.js, Zig, Lua, and Qt with C++.
+- `mobile` (2): Native Android and cross-platform mobile apps.
+- `office` (1): Word, Excel, PowerPoint and PDF documents.
+- `omarchy` (4): Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for Omarchy.
+- `ops` (4): Containers, Linux administration, observability and incident response.
+- `rust` (10): Rust libraries and applications, from architecture and async to testing, UI and releases.
+- `web` (5): Building and auditing web interfaces, accessibility, browser checks and localization.
 
 ### Install a single skill
 
@@ -102,63 +114,112 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 
 ## 🧩 Included skills
 
-### Core
+Every skills-capable agent gets the **18 default skills**. Domain skills come in **optional packs**: add them with `--with <pack>`, `--with rust,web` or `--with all` (see [Optional packs](#optional-packs)).
+
+### Default (18)
+
+Useful in nearly every software project, whatever the language or platform.
+
+| Skill | Purpose |
+|---|---|
+| 🔀 `git-workflow` | Branches, commits, pull requests, and safe Git operations |
+| 🔒 `security-guidelines` | Secrets, credentials, permissions, threat modeling, auth, input handling, and secure defaults |
+| 🐚 `shell-scripting` | Bash and Zsh scripting, shell safety, and automation |
+| 🧪 `testing-qa` | Test strategy: which tests, where, and CI test gates |
+| 🔁 `ci-cd-pipelines` | GitHub Actions, reusable workflows, caching, matrices, and secrets |
+| ❓ `clarify-before-building` | Ask the questions that change what gets built, then confirm a short brief before coding |
+| 🔍 `code-review-and-refactoring` | Review standards, constructive feedback, and safe refactoring |
+| 🔎 `deep-investigation` | Persistent investigation, evidence-driven troubleshooting, and root-cause analysis |
+| 🧭 `codebase-intelligence` | Repository structure, architecture, execution paths, dependencies, and integration points |
+| 🗺️ `diagrams-as-code` | Mermaid, DOT, D2 and SVG diagrams derived from real code, one question each, rendered, accessible, kept beside the source |
+| 📐 `engineering-planning` | Technical design, task decomposition, dependencies, delegation, and verification-ready plans |
+| 📦 `dependency-and-supply-chain` | Lockfiles, vulnerability awareness, SBOMs, and supply-chain hygiene |
+| 📝 `documentation-and-adrs` | READMEs, Architecture Decision Records, and knowledge capture |
+| ⚡ `performance-optimization` | Measurement, complexity, caching, and hot-path optimization |
+| ✍️ `plain-writing` | Clear, specific, human prose for docs, PRs, release notes and UI copy; removes machine-writing patterns, keeps every fact |
+| 🕵️ `security-audit` | Scoped, defensive audits: attack surface, scanners, review by vulnerability class, validated findings report |
+| 🤝 `session-handoff` | Verified, current-state handoff files so work survives session ends, context resets and agent switches |
+| 🚦 `test-first-development` | Red, green, refactor: failing test first, regression tests for bugs, characterization tests for legacy code |
+
+### 🧠 AI pack (`--with ai`, 5)
+
+LLM features, agent prompts and skills, MCP servers, and agent and skill evaluation.
+
+| Skill | Purpose |
+|---|---|
+| 📊 `agent-evaluation-and-benchmarking` | Agent evaluation, benchmark integrity, failure attribution, and reliability analysis |
+| 🤖 `llm-application-patterns` | Prompt structure, tool use, evaluation, and safety for LLM features |
+| 🧩 `mcp-server-development` | MCP servers agents can use safely: task-shaped tools, strict schemas, transports, auth, and protocol testing |
+| 🧠 `prompt-engineering-for-agents` | Writing effective skills, rules, and system prompts |
+| 🎯 `skill-evaluation` | Prove a skill helps: trigger tests, with/without comparisons on target and control tasks, scoped verdicts |
+
+### 🔌 Backend pack (`--with backend`, 2)
+
+HTTP APIs, databases and SQL.
+
+| Skill | Purpose |
+|---|---|
+| 🔌 `api-backend` | API design, backend services, validation, and error handling |
+| 🗄️ `database-and-sql` | Schema design, query safety, migrations, and data access |
+
+### 🔤 Languages pack (`--with languages`, 5)
+
+Python, TypeScript and Node.js, Zig, Lua, and Qt with C++.
+
+| Skill | Purpose |
+|---|---|
+| 🖥️ `qt-cpp-desktop` | Qt 6, C++, QML, and desktop application development |
+| 🌙 `lua-development` | Lua modules, error handling, performance, and testing |
+| 🐍 `python-development` | Packaging, typing, async, testing, and tooling |
+| 🟦 `typescript-nodejs` | Strict TypeScript, module systems, tooling, and testing |
+| ⚙️ `zig-development` | `build.zig`, allocators, C interop, and testing |
+
+### 📱 Mobile pack (`--with mobile`, 2)
+
+Native Android and cross-platform mobile apps.
 
 | Skill | Purpose |
 |---|---|
 | 📱 `android-development` | Android SDK, Gradle, APK signing, and device tooling |
-| 🔌 `api-backend` | API design, backend services, validation, and error handling |
-| ☁️ `container-devops` | Docker, Compose, images, and containerized services |
-| 🔀 `git-workflow` | Branches, commits, pull requests, and safe Git operations |
-| 🖥️ `qt-cpp-desktop` | Qt 6, C++, QML, and desktop application development |
-| 🦀 `rust-development` | Cargo workspaces, crates.io publishing, MSRV, and library error handling |
-| 🔒 `security-guidelines` | Secrets, credentials, permissions, threat modeling, auth, input handling, and secure defaults |
-| 🐚 `shell-scripting` | Bash and Zsh scripting, shell safety, and automation |
-| 🐧 `system-administration` | Linux administration, systemd, packages, and services |
-| 🧪 `testing-qa` | Test strategy: which tests, where, and CI test gates |
-| 🎨 `web-design-and-frontend-craft` | Building new sites and UI: visual direction, CSS systems, and assets |
-
-### General engineering
-
-| Skill | Purpose |
-|---|---|
-| ♿ `accessibility-a11y` | Semantic HTML, keyboard support, ARIA, contrast, and a11y testing |
-| 📊 `agent-evaluation-and-benchmarking` | Agent evaluation, benchmark integrity, failure attribution, and reliability analysis |
-| 🖱️ `browser-verification` | Walk changed flows in a real browser: screenshots by width and theme, console, network, and keyboard checks |
-| 🔁 `ci-cd-pipelines` | GitHub Actions, reusable workflows, caching, matrices, and secrets |
-| ❓ `clarify-before-building` | Ask the questions that change what gets built, then confirm a short brief before coding |
-| 🔍 `code-review-and-refactoring` | Review standards, constructive feedback, and safe refactoring |
-| 🧭 `codebase-intelligence` | Repository structure, architecture, execution paths, dependencies, and integration points |
-| 🗄️ `database-and-sql` | Schema design, query safety, migrations, and data access |
-| 🔎 `deep-investigation` | Persistent investigation, evidence-driven troubleshooting, and root-cause analysis |
-| 📦 `dependency-and-supply-chain` | Lockfiles, vulnerability awareness, SBOMs, and supply-chain hygiene |
-| 🗺️ `diagrams-as-code` | Mermaid, DOT, D2 and SVG diagrams derived from real code, one question each, rendered, accessible, kept beside the source |
-| 📝 `documentation-and-adrs` | READMEs, Architecture Decision Records, and knowledge capture |
-| 📐 `engineering-planning` | Technical design, task decomposition, dependencies, delegation, and verification-ready plans |
-| 🌐 `i18n-and-localization` | String extraction, locales, formatting, and RTL awareness |
-| 🚨 `incident-response-basics` | Detection, triage, communication, rollback, and blameless follow-up |
-| 🤖 `llm-application-patterns` | Prompt structure, tool use, evaluation, and safety for LLM features |
-| 🌙 `lua-development` | Lua modules, error handling, performance, and testing |
-| 🧩 `mcp-server-development` | MCP servers agents can use safely: task-shaped tools, strict schemas, transports, auth, and protocol testing |
 | 📲 `mobile-cross-platform` | Flutter, React Native, and Kotlin Multiplatform |
-| 🔭 `observability-and-debugging` | Structured logging, metrics, tracing, and profiling |
-| 📄 `office-documents` | Word, Excel, PowerPoint and PDF: templates and styles, intact formulas, local conversion, render-and-inspect checks |
-| ⚡ `performance-optimization` | Measurement, complexity, caching, and hot-path optimization |
-| ✍️ `plain-writing` | Clear, specific, human prose for docs, PRs, release notes and UI copy; removes machine-writing patterns, keeps every fact |
-| 🧠 `prompt-engineering-for-agents` | Writing effective skills, rules, and system prompts |
-| 🐍 `python-development` | Packaging, typing, async, testing, and tooling |
-| 🕵️ `security-audit` | Scoped, defensive audits: attack surface, scanners, review by vulnerability class, validated findings report |
-| 🤝 `session-handoff` | Verified, current-state handoff files so work survives session ends, context resets and agent switches |
-| 🎯 `skill-evaluation` | Prove a skill helps: trigger tests, with/without comparisons on target and control tasks, scoped verdicts |
-| 🚦 `test-first-development` | Red, green, refactor: failing test first, regression tests for bugs, characterization tests for legacy code |
-| 🟦 `typescript-nodejs` | Strict TypeScript, module systems, tooling, and testing |
-| 🧐 `ux-design-audit` | Audit existing UIs by area, prioritize findings with screenshots, fix within the design system with before/after proof |
-| ⚙️ `zig-development` | `build.zig`, allocators, C interop, and testing |
 
-### Rust applications
+### 📄 Office pack (`--with office`, 1)
+
+Word, Excel, PowerPoint and PDF documents.
 
 | Skill | Purpose |
 |---|---|
+| 📄 `office-documents` | Word, Excel, PowerPoint and PDF: templates and styles, intact formulas, local conversion, render-and-inspect checks |
+
+### 🖥️ Omarchy pack (`--with omarchy`, 4)
+
+Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for Omarchy. For [Omarchy](https://omarchy.org) (Arch Linux + Hyprland) desktops.
+
+| Skill | Purpose |
+|---|---|
+| 🛠️ `omarchy-agent-operations` | Safe agent changes to Omarchy settings, packages, and themes |
+| 🎚️ `omarchy-lua-config` | Omarchy Lua configuration for Hyprland, bindings, and look-and-feel |
+| 🧩 `omarchy-plugin-theme` | Omarchy plugins, themes, and menu integrations |
+| 🔧 `rust-omarchy-tooling` | Omarchy integration for Rust tools |
+
+### ⚙️ Ops pack (`--with ops`, 4)
+
+Containers, Linux administration, observability and incident response.
+
+| Skill | Purpose |
+|---|---|
+| ☁️ `container-devops` | Docker, Compose, images, and containerized services |
+| 🐧 `system-administration` | Linux administration, systemd, packages, and services |
+| 🚨 `incident-response-basics` | Detection, triage, communication, rollback, and blameless follow-up |
+| 🔭 `observability-and-debugging` | Structured logging, metrics, tracing, and profiling |
+
+### 🦀 Rust pack (`--with rust`, 10)
+
+Rust libraries and applications, from architecture and async to testing, UI and releases.
+
+| Skill | Purpose |
+|---|---|
+| 🦀 `rust-development` | Cargo workspaces, crates.io publishing, MSRV, and library error handling |
 | 🧭 `rust-applications` | Index that routes to the focused Rust application skills below |
 | 🏗️ `rust-app-architecture` | Library-plus-binary layout, crate and module boundaries |
 | ⏱️ `rust-async-tokio` | Tokio runtimes, cancellation, graceful shutdown, and timeouts |
@@ -169,16 +230,17 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 | ✅ `rust-testing` | Integration, async, temp-dir, and property tests |
 | 🪟 `rust-ui` | Choosing CLI, TUI (`ratatui`), or GUI, and building TUIs |
 
-### Omarchy pack (opt-in: `--with omarchy`)
+### 🌐 Web pack (`--with web`, 5)
 
-For [Omarchy](https://omarchy.org) (Arch Linux + Hyprland) desktops. Not installed by default.
+Building and auditing web interfaces, accessibility, browser checks and localization.
 
 | Skill | Purpose |
 |---|---|
-| 🛠️ `omarchy-agent-operations` | Safe agent changes to Omarchy settings, packages, and themes |
-| 🎚️ `omarchy-lua-config` | Omarchy Lua configuration for Hyprland, bindings, and look-and-feel |
-| 🧩 `omarchy-plugin-theme` | Omarchy plugins, themes, and menu integrations |
-| 🔧 `rust-omarchy-tooling` | Omarchy integration for Rust tools |
+| 🎨 `web-design-and-frontend-craft` | Building new sites and UI: visual direction, CSS systems, and assets |
+| ♿ `accessibility-a11y` | Semantic HTML, keyboard support, ARIA, contrast, and a11y testing |
+| 🖱️ `browser-verification` | Walk changed flows in a real browser: screenshots by width and theme, console, network, and keyboard checks |
+| 🌐 `i18n-and-localization` | String extraction, locales, formatting, and RTL awareness |
+| 🧐 `ux-design-audit` | Audit existing UIs by area, prioritize findings with screenshots, fix within the design system with before/after proof |
 
 ## 📁 Repository layout
 
@@ -202,7 +264,7 @@ cybercore-agent-skills/
     ├── setup-<agent>.sh
     ├── .<agent>/rules/
     ├── <skills dir>/          # default skills
-    └── packs/omarchy/         # opt-in pack
+    └── packs/<pack>/          # optional packs (ai, backend, languages, …, web)
 ```
 
 Skills, rules, and installers inside `<agent>/agent-project-setup/` are generated. Edit the canonical files, then sync.
@@ -210,7 +272,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 ## ✍️ Contributing a skill
 
 1. Copy `templates/skill-skeleton/` to `skills/<your-skill>/` and set `name:` to the folder name. Use only [Agent Skills spec](https://agentskills.io/specification) frontmatter fields; extras such as `version` go under `metadata:`.
-2. Add the skill to `manifest.yaml` with a group, category, and icon.
+2. Add the skill to `manifest.yaml` with a group, category, and icon. Choose the group by this rule: **default** (`core`) only if the skill is useful in nearly every software project, whatever the language or platform (ways of working, quality, testing, security, git, CI, docs, writing); otherwise the **pack** for its language, platform, stack or domain. Prefer an existing pack; a new pack needs at least two skills unless the domain clearly stands alone. If the skill shares ground with an existing one, add the pair to `scripts/skill-neighbours.yaml`.
 3. Add it to the matching table in this README.
 4. Run `python3 scripts/sync_templates.py` and `python3 scripts/build_site_data.py`, then the validation commands below.
 

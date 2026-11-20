@@ -6,34 +6,70 @@ window.CC_DATA = {
  "groups": [
   {
    "id": "core",
-   "title": "Core",
+   "title": "Default",
    "default": true,
    "pack": null
   },
   {
-   "id": "general",
-   "title": "General engineering",
-   "default": true,
-   "pack": null
+   "id": "ai",
+   "title": "AI pack",
+   "default": false,
+   "pack": "ai"
   },
   {
-   "id": "rust",
-   "title": "Rust applications",
-   "default": true,
-   "pack": null
+   "id": "backend",
+   "title": "Backend pack",
+   "default": false,
+   "pack": "backend"
+  },
+  {
+   "id": "languages",
+   "title": "Languages pack",
+   "default": false,
+   "pack": "languages"
+  },
+  {
+   "id": "mobile",
+   "title": "Mobile pack",
+   "default": false,
+   "pack": "mobile"
+  },
+  {
+   "id": "office",
+   "title": "Office pack",
+   "default": false,
+   "pack": "office"
   },
   {
    "id": "omarchy",
    "title": "Omarchy pack",
    "default": false,
    "pack": "omarchy"
+  },
+  {
+   "id": "ops",
+   "title": "Ops pack",
+   "default": false,
+   "pack": "ops"
+  },
+  {
+   "id": "rust",
+   "title": "Rust pack",
+   "default": false,
+   "pack": "rust"
+  },
+  {
+   "id": "web",
+   "title": "Web pack",
+   "default": false,
+   "pack": "web"
   }
  ],
  "skills": [
   {
    "id": "android-development",
    "name": "Android Development",
-   "group": "core",
+   "group": "mobile",
    "category": "mobile",
    "icon": "📱",
    "desc": "Native Android development with Gradle, the Android SDK and command-line tools, APK and AAB signing, and release builds. Use when building, signing, debugging or releasing a native Android app, editing Gradle files, or running adb and emulator tasks. Not for Flutter, React Native or Kotlin Multiplatform apps (use mobile-cross-platform).",
@@ -45,7 +81,7 @@ window.CC_DATA = {
   {
    "id": "api-backend",
    "name": "API Backend Development",
-   "group": "core",
+   "group": "backend",
    "category": "backend",
    "icon": "🔌",
    "desc": "Design and build HTTP API backends with REST resource design, JSON request and response schemas, status codes, error formats, pagination, versioning and service patterns. Use when adding or changing API endpoints, defining request and response contracts, or structuring a backend service. Not for database schema and queries (use database-and-sql) or MCP servers for AI agents (use mcp-server-development).",
@@ -57,7 +93,7 @@ window.CC_DATA = {
   {
    "id": "container-devops",
    "name": "Container & DevOps",
-   "group": "core",
+   "group": "ops",
    "category": "devops",
    "icon": "☁️",
    "desc": "Containers for development and deployment with Docker and Docker Compose. Covers Dockerfiles, multi-stage builds, image size and security, volumes, networks, health checks and local service stacks. Use when writing or debugging a Dockerfile or compose file, containerizing an app, or running services in containers. Not for CI workflows and GitHub Actions (use ci-cd-pipelines).",
@@ -81,7 +117,7 @@ window.CC_DATA = {
   {
    "id": "qt-cpp-desktop",
    "name": "Qt6/C++ Desktop Development",
-   "group": "core",
+   "group": "languages",
    "category": "language",
    "icon": "🖥️",
    "desc": "Qt6 and C++ desktop applications built with qmake6 or CMake, including widgets, QML, signals and slots, resources and packaging. Use when building or changing a Qt desktop app, a QML interface, or C++ desktop code. Not for Omarchy or Quickshell plugins and themes (use omarchy-plugin-theme).",
@@ -93,7 +129,7 @@ window.CC_DATA = {
   {
    "id": "rust-development",
    "name": "Rust Development Standards",
-   "group": "core",
+   "group": "rust",
    "category": "language",
    "icon": "🦀",
    "desc": "Rust standards for Cargo workspaces, library crates, crates.io publishing, MSRV compliance and library error handling. Use when working on a Rust library or workspace, publishing a crate, changing the minimum supported Rust version, or designing a library's error types. Not for structuring Rust applications and CLIs (use rust-applications and its focused skills).",
@@ -129,7 +165,7 @@ window.CC_DATA = {
   {
    "id": "system-administration",
    "name": "System Administration",
-   "group": "core",
+   "group": "ops",
    "category": "system",
    "icon": "🐧",
    "desc": "Linux system administration on Arch-based systems, including systemd units and timers, user services, package management, logs, users and permissions, and server maintenance. Use when managing services, packages, journals, disks or users, or keeping a Linux machine or server healthy. Not for Omarchy desktop settings, themes and Hyprland config (use omarchy-agent-operations) or writing scripts (use shell-scripting).",
@@ -153,7 +189,7 @@ window.CC_DATA = {
   {
    "id": "web-design-and-frontend-craft",
    "name": "Web Design & Frontend Craft",
-   "group": "core",
+   "group": "web",
    "category": "web",
    "icon": "🎨",
    "desc": "Build new, polished, responsive websites and web apps with a distinctive look. Covers visual direction, CSS custom properties and themes, neon and cyber aesthetics, layout, components, cards and hero sections, motion, and complete visual asset packs (SVG, PNG, icons, optimized images). Use when designing or building a new page, site, component or visual style. Not for reviewing an existing interface (use ux-design-audit), in-depth accessibility work (use accessibility-a11y) or speed problems (use performance-optimization).",
@@ -165,7 +201,7 @@ window.CC_DATA = {
   {
    "id": "accessibility-a11y",
    "name": "Accessibility (a11y)",
-   "group": "general",
+   "group": "web",
    "category": "web",
    "icon": "♿",
    "desc": "Accessibility standards and fixes for web and desktop interfaces, covering semantic HTML, keyboard support and focus order, ARIA, colour contrast, motion preferences, screen-reader testing and inclusive defaults. Use when building or reviewing UI for accessibility, fixing an accessibility bug, or meeting WCAG requirements. Not for general visual polish (use ux-design-audit).",
@@ -177,7 +213,7 @@ window.CC_DATA = {
   {
    "id": "agent-evaluation-and-benchmarking",
    "name": "AI Agent Evaluation & Benchmarking",
-   "group": "general",
+   "group": "ai",
    "category": "quality",
    "icon": "📊",
    "desc": "Design, run, compare and improve AI agent evaluations. Use when measuring an agent's capability or reliability, selecting or building benchmarks, comparing models, harnesses or tools, analyzing execution traces, investigating failures and their systemic causes, validating repairs, or deciding whether an agent is ready for a defined workload. Not for testing a single skill, rule or prompt (use skill-evaluation).",
@@ -198,7 +234,7 @@ window.CC_DATA = {
   {
    "id": "browser-verification",
    "name": "Browser Verification",
-   "group": "general",
+   "group": "web",
    "category": "web",
    "icon": "🖱️",
    "desc": "Check web changes in a real (usually headless) browser before claiming they work. Opens the running app, walks the changed user flow, and collects evidence, including screenshots at phone and desktop widths and in light and dark themes, console errors, failed network requests, and basic keyboard and accessibility checks. Use after changing a website, web app, component, style, route, form or client-side script; when a user reports something broken in the UI; or when asked to \"check it in the browser\", \"take a screenshot\", or \"verify the page\". Works with Playwright, browser automation tools or Chrome DevTools, whichever the environment provides.",
@@ -212,7 +248,7 @@ window.CC_DATA = {
   {
    "id": "ci-cd-pipelines",
    "name": "CI/CD Pipelines",
-   "group": "general",
+   "group": "core",
    "category": "devops",
    "icon": "🔁",
    "desc": "CI/CD pipelines with GitHub Actions. Covers workflow design, reusable workflows, caching, matrix builds, secrets and permissions, required checks, and safe deployments. Use when creating, fixing or speeding up a CI workflow, adding a deployment step, or debugging a failing check. Not for Dockerfiles and container images (use container-devops).",
@@ -224,7 +260,7 @@ window.CC_DATA = {
   {
    "id": "clarify-before-building",
    "name": "Clarify Before Building",
-   "group": "general",
+   "group": "core",
    "category": "workflow",
    "icon": "❓",
    "desc": "Find out what the user actually wants before writing code. Reads the repository and its docs first, asks only the questions whose answers would change what gets built (one or a few at a time, each with a recommended answer), plays the requirements back as a short brief, and gets confirmation before implementing. Use when a request is new, vague, underspecified, or large; when it conflicts with existing docs or code; before features, refactors, migrations, or UI work; or when the user says \"build\", \"add\", \"make\", or \"change\" something without saying why or what done looks like. Skip it for small, fully specified changes and when the user says to just proceed. Not for planning implementation once requirements are clear (use engineering-planning).",
@@ -239,7 +275,7 @@ window.CC_DATA = {
   {
    "id": "code-review-and-refactoring",
    "name": "Code Review and Refactoring",
-   "group": "general",
+   "group": "core",
    "category": "quality",
    "icon": "🔍",
    "desc": "Review code changes and refactor safely. Covers what to look for in a pull request (correctness, clarity, tests, risk), giving constructive feedback, and refactoring in small behaviour-preserving steps. Use when reviewing a pull request or diff, or restructuring code without changing what it does. Not for security reviews (use security-audit) or UI reviews (use ux-design-audit).",
@@ -251,7 +287,7 @@ window.CC_DATA = {
   {
    "id": "database-and-sql",
    "name": "Database and SQL",
-   "group": "general",
+   "group": "backend",
    "category": "backend",
    "icon": "🗄️",
    "desc": "Database design and SQL, covering schemas, indexes, queries, migrations, transactions, ORMs and data-access patterns. Use when designing tables, writing or optimizing queries, adding a migration, or choosing how code talks to a database. Not for SQLite persistence in Rust apps (use rust-persistence).",
@@ -263,7 +299,7 @@ window.CC_DATA = {
   {
    "id": "deep-investigation",
    "name": "Deep Investigation",
-   "group": "general",
+   "group": "core",
    "category": "quality",
    "icon": "🔎",
    "desc": "Find the root cause of a problem with persistent, evidence-driven investigation that forms hypotheses, tests them, rules out alternatives and verifies the conclusion. Use when asked why something happens, to troubleshoot or diagnose a failure, to check a suspected cause, or to verify that a fix really worked, for technical or non-technical problems. Not for routine code review (use code-review-and-refactoring), security audits (use security-audit) or UI reviews (use ux-design-audit).",
@@ -275,7 +311,7 @@ window.CC_DATA = {
   {
    "id": "codebase-intelligence",
    "name": "Codebase Intelligence",
-   "group": "general",
+   "group": "core",
    "category": "quality",
    "icon": "🧭",
    "desc": "Understand an unfamiliar codebase with evidence by mapping architecture, execution paths, data flow, dependencies, conventions and integration points. Use when exploring a repository for the first time, working out how a project works, tracing where something happens, or locating where new functionality belongs. Not for deciding what the user wants (use clarify-before-building) or planning the work (use engineering-planning).",
@@ -287,7 +323,7 @@ window.CC_DATA = {
   {
    "id": "diagrams-as-code",
    "name": "Diagrams as Code",
-   "group": "general",
+   "group": "core",
    "category": "workflow",
    "icon": "🗺️",
    "desc": "Draw architecture, flow, sequence, state, data-model and dependency diagrams as text (Mermaid, Graphviz DOT, D2, PlantUML or hand-written SVG) that lives next to the code, renders in documentation, and stays accurate. Chooses the format for where the diagram will be read, keeps each diagram focused on one question, derives it from the actual code or system rather than memory, renders it to check layout, and adds a text description for accessibility. Use when documenting a system or decision, explaining a flow in a README, pull request or ADR, mapping dependencies, modelling states or database tables, or when asked to \"draw\", \"diagram\", \"visualise\" or \"map\" how something works.",
@@ -301,7 +337,7 @@ window.CC_DATA = {
   {
    "id": "engineering-planning",
    "name": "Engineering Planning & Task Decomposition",
-   "group": "general",
+   "group": "core",
    "category": "workflow",
    "icon": "📐",
    "desc": "Turn engineering goals into evidence-grounded technical plans with tasks, dependencies, interfaces and verification steps, then coordinate the work. Use when planning a feature, refactor, migration or architecture change, splitting work for several agents, or validating and updating an existing plan. Not for working out what the user wants first (use clarify-before-building).",
@@ -319,7 +355,7 @@ window.CC_DATA = {
   {
    "id": "dependency-and-supply-chain",
    "name": "Dependency and Supply Chain",
-   "group": "general",
+   "group": "core",
    "category": "security",
    "icon": "📦",
    "desc": "Dependency and supply-chain hygiene, covering choosing dependencies, lockfiles, updates, vulnerability advisories, licences and SBOMs. Use when adding, updating or removing a dependency, reviewing a lockfile change, or triaging a vulnerability advisory. Not for secure coding practices (use security-guidelines) or full security audits (use security-audit).",
@@ -331,7 +367,7 @@ window.CC_DATA = {
   {
    "id": "documentation-and-adrs",
    "name": "Documentation and ADRs",
-   "group": "general",
+   "group": "core",
    "category": "workflow",
    "icon": "📝",
    "desc": "Decide what to document and how to structure it, including READMEs, guides, Architecture Decision Records (ADRs), changelogs and knowledge capture. Use when creating or reorganizing project documentation, recording a technical decision, or checking docs match the code. Not for improving the wording itself (use plain-writing) or drawing diagrams (use diagrams-as-code).",
@@ -343,7 +379,7 @@ window.CC_DATA = {
   {
    "id": "i18n-and-localization",
    "name": "Internationalization and Localization",
-   "group": "general",
+   "group": "web",
    "category": "web",
    "icon": "🌐",
    "desc": "Internationalization and localization, covering string extraction, locale handling, plurals, date, number and currency formatting, right-to-left layouts and translation workflows. Use when making an app translatable, adding a language, or fixing locale-specific formatting or layout bugs.",
@@ -355,7 +391,7 @@ window.CC_DATA = {
   {
    "id": "incident-response-basics",
    "name": "Incident Response Basics",
-   "group": "general",
+   "group": "ops",
    "category": "devops",
    "icon": "🚨",
    "desc": "Lightweight incident response for running services, covering detection, triage, communication, mitigation, rollback and blameless follow-up. Use when a production service is down or degraded, during an outage, or when writing a post-incident review. Not for finding the root cause of a bug outside an incident (use deep-investigation).",
@@ -367,7 +403,7 @@ window.CC_DATA = {
   {
    "id": "llm-application-patterns",
    "name": "LLM Application Patterns",
-   "group": "general",
+   "group": "ai",
    "category": "ai",
    "icon": "🤖",
    "desc": "Build LLM-powered features and agentic applications, covering prompt structure, tool use, retrieval, structured output, evaluation, safety boundaries, cost and latency. Use when adding an AI feature to an app or building an agent that calls a model. Not for writing agent skills, rules or system prompts (use prompt-engineering-for-agents) or building MCP servers (use mcp-server-development).",
@@ -379,7 +415,7 @@ window.CC_DATA = {
   {
    "id": "lua-development",
    "name": "Lua Development",
-   "group": "general",
+   "group": "languages",
    "category": "language",
    "icon": "🌙",
    "desc": "Lua language and module development, covering modules, error handling, performance, testing, and embedded or scripting use. Use for general Lua code, Lua libraries, and Lua embedded in other programs. Not for Omarchy or Hyprland Lua configuration (use omarchy-lua-config).",
@@ -391,7 +427,7 @@ window.CC_DATA = {
   {
    "id": "mcp-server-development",
    "name": "MCP Server Development",
-   "group": "general",
+   "group": "ai",
    "category": "ai",
    "icon": "🧩",
    "desc": "Design, build, secure and test Model Context Protocol (MCP) servers that expose tools, resources and prompts to AI agents. Covers agent-friendly tool design (names, descriptions, strict input schemas, structured output, errors the model can recover from), the stdio and Streamable HTTP transports, the stateless request model of current spec revisions, authorization for remote servers, security against prompt injection and over-broad permissions, and testing at the handler, protocol and real-client levels. Use when creating or changing an MCP server or tool, wrapping an API or CLI for agents, reviewing an MCP server's safety, or debugging why a client cannot see or call a tool. Not for LLM features inside an application (use llm-application-patterns).",
@@ -406,7 +442,7 @@ window.CC_DATA = {
   {
    "id": "mobile-cross-platform",
    "name": "Mobile Cross-Platform Development",
-   "group": "general",
+   "group": "mobile",
    "category": "mobile",
    "icon": "📲",
    "desc": "Cross-platform mobile apps with Flutter, React Native or Kotlin Multiplatform, covering navigation, state, platform APIs, permissions, builds and store releases. Use when building or releasing a cross-platform mobile app. Not for native Android with Gradle (use android-development).",
@@ -418,7 +454,7 @@ window.CC_DATA = {
   {
    "id": "observability-and-debugging",
    "name": "Observability and Debugging",
-   "group": "general",
+   "group": "ops",
    "category": "devops",
    "icon": "🔭",
    "desc": "Instrument code so problems are visible with structured logging, metrics, tracing, health checks and profiling, plus debugging with those signals. Use when adding logs, metrics or traces, setting up dashboards or alerts, or profiling slow code. Not for root-cause investigations of a specific failure (use deep-investigation) or Rust tracing setup (use rust-observability).",
@@ -430,7 +466,7 @@ window.CC_DATA = {
   {
    "id": "office-documents",
    "name": "Office Documents",
-   "group": "general",
+   "group": "office",
    "category": "workflow",
    "icon": "📄",
    "desc": "Create, edit, convert and extract content from office documents (Word .docx, Excel .xlsx, PowerPoint .pptx and PDF) with scripts and local tools, while keeping originals safe and checking the result visually. Covers styles and templates instead of hand formatting, keeping spreadsheet formulas intact and recalculated, tables and charts, slide layouts, PDF text, table and form handling, conversions with LibreOffice or pandoc, metadata clean-up before sharing, and accessible structure. Use when asked to make a report, letter, spreadsheet, budget, slide deck or PDF; to fill, merge, split or convert documents; to pull text or tables out of them; or to batch-edit many files.",
@@ -444,7 +480,7 @@ window.CC_DATA = {
   {
    "id": "performance-optimization",
    "name": "Performance Optimization",
-   "group": "general",
+   "group": "core",
    "category": "quality",
    "icon": "⚡",
    "desc": "Measure and improve performance across algorithms, caching, memory, frontend load and rendering, and backend hot paths, always measuring before and after. Use when something is slow, uses too much memory, or must meet a speed target. Not for adding monitoring (use observability-and-debugging).",
@@ -456,7 +492,7 @@ window.CC_DATA = {
   {
    "id": "plain-writing",
    "name": "Plain Writing",
-   "group": "general",
+   "group": "core",
    "category": "workflow",
    "icon": "✍️",
    "desc": "Write and edit prose so it reads as clear, specific, human writing instead of generic AI text. Applies plain-language principles (reader first, concrete words, short active sentences, one idea per sentence) and removes common machine-writing patterns such as inflated vocabulary, filler openers, hedging chains, \"not just X but Y\" constructions, padded lists of three, decorative emoji and headings on everything, while keeping every fact, number, name and command intact. Use when drafting or revising READMEs, documentation, pull request and commit descriptions, release notes, announcements, emails, error messages and interface copy, or when asked to \"make this sound less like AI\", \"simplify\", \"tighten\" or \"rewrite in plain English\". Not for deciding what documentation a project needs (use documentation-and-adrs).",
@@ -470,7 +506,7 @@ window.CC_DATA = {
   {
    "id": "prompt-engineering-for-agents",
    "name": "Prompt Engineering for Agents",
-   "group": "general",
+   "group": "ai",
    "category": "ai",
    "icon": "🧠",
    "desc": "Write effective agent skills, rules and system prompts, covering activation descriptions, progressive disclosure, safety framing and maintainable instructions. Use when writing or revising a SKILL.md, a rules file, AGENTS.md or a system prompt. Not for measuring whether a skill works (use skill-evaluation) or LLM features in applications (use llm-application-patterns).",
@@ -482,7 +518,7 @@ window.CC_DATA = {
   {
    "id": "python-development",
    "name": "Python Development",
-   "group": "general",
+   "group": "languages",
    "category": "language",
    "icon": "🐍",
    "desc": "Modern Python development covering packaging with pyproject, type hints, async, error handling, testing with pytest, linting and formatting. Use when writing, packaging or testing Python code.",
@@ -494,7 +530,7 @@ window.CC_DATA = {
   {
    "id": "security-audit",
    "name": "Security Audit",
-   "group": "general",
+   "group": "core",
    "category": "security",
    "icon": "🕵️",
    "desc": "Run a structured, defensive security audit of code you are authorized to review and produce a findings report. Scopes the audit, maps the attack surface and trust boundaries, runs read-only scanners for secrets, dependencies and code patterns, reviews by vulnerability class, validates each finding by tracing data from source to sink, rates severity and confidence, and recommends fixes with regression tests. Use for security reviews of a pull request, component or whole repository; vulnerability assessments; pre-release audits; or when asked to \"audit\", \"pen-test the code\", \"find vulnerabilities\", or \"check this for security issues\". For secure-by-default practices while building and for handling secrets, use security-guidelines.",
@@ -509,7 +545,7 @@ window.CC_DATA = {
   {
    "id": "session-handoff",
    "name": "Session Handoff",
-   "group": "general",
+   "group": "core",
    "category": "workflow",
    "icon": "🤝",
    "desc": "Write and resume from a handoff file so work survives the end of a session, a context reset, or a switch to another agent. Records verified current state (branch, commits, open pull requests, CI, uncommitted changes), the next concrete steps, decisions with who made them, gotchas, and open questions; and on resume, checks every claim against reality before continuing. Use when a session is ending or running out of context, before pausing multi-step work, after merges or important decisions, when handing work to another agent or person, or at the start of a session in a project that has a handoff file (for example AGENT_HANDOFF.md).",
@@ -524,7 +560,7 @@ window.CC_DATA = {
   {
    "id": "skill-evaluation",
    "name": "Skill Evaluation",
-   "group": "general",
+   "group": "ai",
    "category": "quality",
    "icon": "🎯",
    "desc": "Test whether an agent skill actually helps before shipping or changing it. Runs trigger tests (does it activate on the right requests and stay quiet on near misses), then an effect test that compares the same agent with and without the skill (or old versus new revision) on tasks where it should matter and control tasks where it should not, using the CyberCore Agent Evaluation Workbench when available. Covers holdout tasks, adherence checks, token and cost overhead, comparisons declared in advance, and an honest, scoped verdict. Use when writing, revising, choosing, or removing a skill, rule or system prompt; when asked whether a skill is worth it; or before publishing skills to others.",
@@ -539,7 +575,7 @@ window.CC_DATA = {
   {
    "id": "test-first-development",
    "name": "Test-First Development",
-   "group": "general",
+   "group": "core",
    "category": "quality",
    "icon": "🚦",
    "desc": "Write the failing test first, watch it fail for the right reason, make it pass with the smallest change, then refactor with the tests green (red, green, refactor). Use when implementing a feature or behaviour change, when fixing a bug (reproduce it with a failing regression test before touching the code), when changing code that has no tests (pin current behaviour with characterization tests first), or when the user asks for TDD or test-driven work. Works in any language; covers choosing the test level, deterministic tests, and reporting test evidence honestly. Not for deciding a project's overall test strategy (use testing-qa).",
@@ -554,7 +590,7 @@ window.CC_DATA = {
   {
    "id": "typescript-nodejs",
    "name": "TypeScript & Node.js Development",
-   "group": "general",
+   "group": "languages",
    "category": "language",
    "icon": "🟦",
    "desc": "TypeScript and Node.js development covering strict typing, ES modules, tooling, API patterns, testing and safe practices. Use when writing or configuring TypeScript or Node.js code, packages or services.",
@@ -566,7 +602,7 @@ window.CC_DATA = {
   {
    "id": "ux-design-audit",
    "name": "UX and Design Audit",
-   "group": "general",
+   "group": "web",
    "category": "web",
    "icon": "🧐",
    "desc": "Audit an existing user interface for usability and visual quality, then fix what matters most in small, verified steps. Reviews hierarchy, layout and spacing, typography, colour and contrast, component states (empty, loading, error, disabled, hover, focus), forms, navigation, responsiveness, motion, consistency with the project's own design system, and interface copy; produces prioritized findings with screenshots; and proves fixes with before and after captures. Use when asked to review, critique, polish or \"make this look better\"; when a page feels off, cluttered, generic or inconsistent; before a launch; or after a redesign. Respects the project's existing brand and tokens. Not for building new designs from scratch (use web-design-and-frontend-craft).",
@@ -580,7 +616,7 @@ window.CC_DATA = {
   {
    "id": "zig-development",
    "name": "Zig Development",
-   "group": "general",
+   "group": "languages",
    "category": "language",
    "icon": "⚙️",
    "desc": "Zig development standards for Cybercore repositories and systems tooling. Use for Zig projects, build.zig, allocators, C interop, testing, and explicit systems-level code.",

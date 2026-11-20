@@ -13,67 +13,100 @@ rules: [safety, workflow, concise-output, rust, gleam]
 # `setup-*.sh --with <pack>`.
 groups:
   core:
-    title: Core
+    title: Default
+    description: Installed for every agent. Ways of working, quality, security, git, CI, docs and writing.
     default: true
-  general:
-    title: General engineering
-    default: true
-  rust:
-    title: Rust applications
-    default: true
+  ai:
+    title: AI pack
+    description: LLM features, agent prompts and skills, MCP servers, and agent and skill evaluation.
+    default: false
+    pack: ai
+  backend:
+    title: Backend pack
+    description: HTTP APIs, databases and SQL.
+    default: false
+    pack: backend
+  languages:
+    title: Languages pack
+    description: Python, TypeScript and Node.js, Zig, Lua, and Qt with C++.
+    default: false
+    pack: languages
+  mobile:
+    title: Mobile pack
+    description: Native Android and cross-platform mobile apps.
+    default: false
+    pack: mobile
+  office:
+    title: Office pack
+    description: Word, Excel, PowerPoint and PDF documents.
+    default: false
+    pack: office
   omarchy:
     title: Omarchy pack
+    description: Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for Omarchy.
     default: false
     pack: omarchy
-
+  ops:
+    title: Ops pack
+    description: Containers, Linux administration, observability and incident response.
+    default: false
+    pack: ops
+  rust:
+    title: Rust pack
+    description: Rust libraries and applications, from architecture and async to testing, UI and releases.
+    default: false
+    pack: rust
+  web:
+    title: Web pack
+    description: Building and auditing web interfaces, accessibility, browser checks and localization.
+    default: false
+    pack: web
 # category and icon are display metadata for the website and README.
+# `group` decides where a skill installs: core (default) or one of the packs above.
 skills:
-  # core
-  android-development:           {group: core, category: mobile, icon: "📱"}
-  api-backend:                   {group: core, category: backend, icon: "🔌"}
-  container-devops:              {group: core, category: devops, icon: "☁️"}
+  android-development:           {group: mobile, category: mobile, icon: "📱"}
+  api-backend:                   {group: backend, category: backend, icon: "🔌"}
+  container-devops:              {group: ops, category: devops, icon: "☁️"}
   git-workflow:                  {group: core, category: workflow, icon: "🔀"}
-  qt-cpp-desktop:                {group: core, category: language, icon: "🖥️"}
-  rust-development:              {group: core, category: language, icon: "🦀"}
+  qt-cpp-desktop:                {group: languages, category: language, icon: "🖥️"}
+  rust-development:              {group: rust, category: language, icon: "🦀"}
   security-guidelines:           {group: core, category: security, icon: "🔒"}
   shell-scripting:               {group: core, category: system, icon: "🐚"}
-  system-administration:         {group: core, category: system, icon: "🐧"}
+  system-administration:         {group: ops, category: system, icon: "🐧"}
   testing-qa:                    {group: core, category: quality, icon: "🧪"}
-  web-design-and-frontend-craft: {group: core, category: web, icon: "🎨"}
-  # general
-  accessibility-a11y:            {group: general, category: web, icon: "♿"}
-  agent-evaluation-and-benchmarking: {group: general, category: quality, icon: "📊"}
-  browser-verification:           {group: general, category: web, icon: "🖱️"}
-  ci-cd-pipelines:               {group: general, category: devops, icon: "🔁"}
-  clarify-before-building:       {group: general, category: workflow, icon: "❓"}
-  code-review-and-refactoring:   {group: general, category: quality, icon: "🔍"}
-  database-and-sql:              {group: general, category: backend, icon: "🗄️"}
-  deep-investigation:            {group: general, category: quality, icon: "🔎"}
-  codebase-intelligence:            {group: general, category: quality, icon: "🧭"}
-  diagrams-as-code:               {group: general, category: workflow, icon: "🗺️"}
-  engineering-planning:         {group: general, category: workflow, icon: "📐"}
-  dependency-and-supply-chain:   {group: general, category: security, icon: "📦"}
-  documentation-and-adrs:        {group: general, category: workflow, icon: "📝"}
-  i18n-and-localization:         {group: general, category: web, icon: "🌐"}
-  incident-response-basics:      {group: general, category: devops, icon: "🚨"}
-  llm-application-patterns:      {group: general, category: ai, icon: "🤖"}
-  lua-development:               {group: general, category: language, icon: "🌙"}
-  mcp-server-development:         {group: general, category: ai, icon: "🧩"}
-  mobile-cross-platform:         {group: general, category: mobile, icon: "📲"}
-  observability-and-debugging:   {group: general, category: devops, icon: "🔭"}
-  office-documents:               {group: general, category: workflow, icon: "📄"}
-  performance-optimization:      {group: general, category: quality, icon: "⚡"}
-  plain-writing:                  {group: general, category: workflow, icon: "✍️"}
-  prompt-engineering-for-agents: {group: general, category: ai, icon: "🧠"}
-  python-development:            {group: general, category: language, icon: "🐍"}
-  security-audit:                 {group: general, category: security, icon: "🕵️"}
-  session-handoff:                {group: general, category: workflow, icon: "🤝"}
-  skill-evaluation:               {group: general, category: quality, icon: "🎯"}
-  test-first-development:         {group: general, category: quality, icon: "🚦"}
-  typescript-nodejs:             {group: general, category: language, icon: "🟦"}
-  ux-design-audit:                {group: general, category: web, icon: "🧐"}
-  zig-development:               {group: general, category: language, icon: "⚙️"}
-  # rust
+  web-design-and-frontend-craft: {group: web, category: web, icon: "🎨"}
+  accessibility-a11y:            {group: web, category: web, icon: "♿"}
+  agent-evaluation-and-benchmarking: {group: ai, category: quality, icon: "📊"}
+  browser-verification:           {group: web, category: web, icon: "🖱️"}
+  ci-cd-pipelines:               {group: core, category: devops, icon: "🔁"}
+  clarify-before-building:       {group: core, category: workflow, icon: "❓"}
+  code-review-and-refactoring:   {group: core, category: quality, icon: "🔍"}
+  database-and-sql:              {group: backend, category: backend, icon: "🗄️"}
+  deep-investigation:            {group: core, category: quality, icon: "🔎"}
+  codebase-intelligence:            {group: core, category: quality, icon: "🧭"}
+  diagrams-as-code:               {group: core, category: workflow, icon: "🗺️"}
+  engineering-planning:         {group: core, category: workflow, icon: "📐"}
+  dependency-and-supply-chain:   {group: core, category: security, icon: "📦"}
+  documentation-and-adrs:        {group: core, category: workflow, icon: "📝"}
+  i18n-and-localization:         {group: web, category: web, icon: "🌐"}
+  incident-response-basics:      {group: ops, category: devops, icon: "🚨"}
+  llm-application-patterns:      {group: ai, category: ai, icon: "🤖"}
+  lua-development:               {group: languages, category: language, icon: "🌙"}
+  mcp-server-development:         {group: ai, category: ai, icon: "🧩"}
+  mobile-cross-platform:         {group: mobile, category: mobile, icon: "📲"}
+  observability-and-debugging:   {group: ops, category: devops, icon: "🔭"}
+  office-documents:               {group: office, category: workflow, icon: "📄"}
+  performance-optimization:      {group: core, category: quality, icon: "⚡"}
+  plain-writing:                  {group: core, category: workflow, icon: "✍️"}
+  prompt-engineering-for-agents: {group: ai, category: ai, icon: "🧠"}
+  python-development:            {group: languages, category: language, icon: "🐍"}
+  security-audit:                 {group: core, category: security, icon: "🕵️"}
+  session-handoff:                {group: core, category: workflow, icon: "🤝"}
+  skill-evaluation:               {group: ai, category: quality, icon: "🎯"}
+  test-first-development:         {group: core, category: quality, icon: "🚦"}
+  typescript-nodejs:             {group: languages, category: language, icon: "🟦"}
+  ux-design-audit:                {group: web, category: web, icon: "🧐"}
+  zig-development:               {group: languages, category: language, icon: "⚙️"}
   rust-applications:             {group: rust, category: rust, icon: "🧭"}
   rust-app-architecture:         {group: rust, category: rust, icon: "🏗️"}
   rust-async-tokio:              {group: rust, category: rust, icon: "⏱️"}
@@ -83,7 +116,6 @@ skills:
   rust-release-and-cross-compile: {group: rust, category: rust, icon: "🚀"}
   rust-testing:                  {group: rust, category: rust, icon: "✅"}
   rust-ui:                       {group: rust, category: rust, icon: "🪟"}
-  # omarchy pack (opt-in)
   omarchy-agent-operations:      {group: omarchy, category: omarchy, icon: "🛠️"}
   omarchy-lua-config:            {group: omarchy, category: omarchy, icon: "🎚️"}
   omarchy-plugin-theme:          {group: omarchy, category: omarchy, icon: "🧩"}

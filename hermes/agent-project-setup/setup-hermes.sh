@@ -12,6 +12,7 @@ RULES_DIR=".hermes/rules"
 SKILLS_DIR=".hermes/skills" # empty: rules-only template
 ROOT_FILES=()
 KEEP_FILES=()
+PACK_INFO=('ai|LLM features, agent prompts and skills, MCP servers, and agent and skill evaluation.' 'backend|HTTP APIs, databases and SQL.' 'languages|Python, TypeScript and Node.js, Zig, Lua, and Qt with C++.' 'mobile|Native Android and cross-platform mobile apps.' 'office|Word, Excel, PowerPoint and PDF documents.' 'omarchy|Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for Omarchy.' 'ops|Containers, Linux administration, observability and incident response.' 'rust|Rust libraries and applications, from architecture and async to testing, UI and releases.' 'web|Building and auditing web interfaces, accessibility, browser checks and localization.') # "pack|description" for --list-packs
 MARKER_PREFIX="<!-- cybercore-agent-skills:"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
@@ -20,11 +21,12 @@ TARGET_DIR="$HOME"
 
 usage() {
   cat <<EOF
-Usage: $(basename -- "$0") [--with PACK]... [--list-packs] [--help]
+Usage: $(basename -- "$0") [--with PACK[,PACK...]]... [--list-packs] [--help]
 
-Install the $AGENT_NAME rules and skills into your home directory ($HOME).
+Install the $AGENT_NAME rules and the default skills into your home directory ($HOME).
 
-  --with PACK    Also install an optional skill pack (repeatable), e.g. --with omarchy
+  --with PACKS   Also install optional skill packs: one name, a comma list
+                 (--with rust,web) or 'all'. Repeatable.
   --list-packs   List the optional skill packs available for $AGENT_NAME
   -h, --help     Show this help
 
@@ -34,15 +36,38 @@ EOF
 }
 
 list_packs() {
-  local found=0 pack
+  local found=0 pack name count info desc
   if [[ -n "$SKILLS_DIR" && -d "$TEMPLATE_DIR/packs" ]]; then
     for pack in "$TEMPLATE_DIR"/packs/*/; do
       [[ -d "$pack" ]] || continue
-      printf '%s\n' "$(basename -- "$pack")"
+      name="$(basename -- "$pack")"
+      count="$(find "$pack" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
+      desc=""
+      for info in ${PACK_INFO[@]+"${PACK_INFO[@]}"}; do
+        [[ "${info%%|*}" == "$name" ]] && desc="${info#*|}"
+      done
+      printf '%-10s %2s skill%s  %s\n' "$name" "$count" "$([[ "$count" -eq 1 ]] || printf s)" "$desc"
       found=1
     done
+    [[ "$found" -eq 1 ]] && printf '\nInstall with --with <pack>, --with pack1,pack2 or --with all.\n'
   fi
   if [[ "$found" -eq 0 ]]; then printf 'No optional packs for %s.\n' "$AGENT_NAME"; fi
+}
+
+# Adds packs from a --with value: one name, a comma list, or "all".
+add_packs() {
+  local value="$1" pack
+  local -a parts=()
+  if [[ "$value" == "all" ]]; then
+    for pack in "$TEMPLATE_DIR"/packs/*/; do
+      [[ -d "$pack" ]] && PACKS+=("$(basename -- "$pack")")
+    done
+    return
+  fi
+  IFS=',' read -r -a parts <<<"$value"
+  for pack in "${parts[@]}"; do
+    [[ -n "$pack" ]] && PACKS+=("$pack")
+  done
 }
 
 PACKS=()
@@ -53,11 +78,11 @@ while [[ $# -gt 0 ]]; do
         printf 'ERROR: --with needs a pack name.\n' >&2
         exit 2
       fi
-      PACKS+=("$2")
+      add_packs "$2"
       shift 2
       ;;
     --with=*)
-      PACKS+=("${1#--with=}")
+      add_packs "${1#--with=}"
       shift
       ;;
     --list-packs) list_packs; exit 0 ;;

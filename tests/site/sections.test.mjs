@@ -52,6 +52,13 @@ test('install tabs switch commands', { skip }, async () => {
     Boolean(data.agents.find(a => a.id === 'ollama').script));
 });
 
+test('install panel explains optional packs', { skip }, async () => {
+  const note = await page.evaluate(`document.getElementById('installPacks').textContent`);
+  assert.match(note, /--with rust,web/);
+  assert.match(note, /--with all/);
+  for (const g of data.groups.filter(g => g.pack)) assert.match(note, new RegExp(`\\b${g.pack}\\b`));
+});
+
 test('rules render each file', { skip }, async () => {
   assert.deepEqual(await page.evaluate(`[...document.querySelectorAll('#ruleTabs [data-rule]')].map(t => t.dataset.rule)`),
     data.rules.map(r => r.id));
@@ -78,7 +85,7 @@ test('phone: skill folders start collapsed so later sections stay reachable', { 
   const p = await openPage(site.url, { width: 390, height: 844 });
   try {
     assert.deepEqual(await p.evaluate(`[...document.querySelectorAll('#tree .folder-toggle')].map(t => t.getAttribute('aria-expanded'))`),
-      ['true', 'false', 'false', 'false', 'false']);
+      ['true', ...Array(data.groups.length).fill('false')]);
     await p.evaluate(`document.querySelector('[data-folder="core"] .folder-toggle').click()`);
     assert.equal(await p.evaluate(`document.querySelector('[data-folder="core"] .folder-files').hidden`), false);
   } finally { await p.close(); }

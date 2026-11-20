@@ -109,6 +109,8 @@ def render_setup(manifest: dict, agent: str) -> str:
         "@ROOT_FILES@": bash_array(spec.get("root_files")),
         "@KEEP_FILES@": bash_array(spec.get("keep_files")),
         "@NOTES@": notes,
+        "@PACK_INFO@": bash_array([f"{g['pack']}|{g.get('description', '')}" for g in manifest["groups"].values()
+                                   if g.get("pack") and spec.get("skills_dir")]),
     }
     text = SETUP_TEMPLATE.read_text(encoding="utf-8")
     for key, value in replacements.items():

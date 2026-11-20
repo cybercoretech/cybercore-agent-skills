@@ -62,12 +62,12 @@ test('phone: opening a skill moves focus into the pane; Escape returns to the tr
   const p = await openPage(site.url, { width: 390, height: 844, reducedMotion: true });
   try {
     await p.evaluate(`document.querySelector('[data-folder="core"] .folder-toggle').click()`);
-    await p.evaluate(`document.querySelector('#tree [data-skill="api-backend"]').focus()`);
+    await p.evaluate(`document.querySelector('#tree [data-skill="git-workflow"]').focus()`);
     await p.press('Enter');
     assert.equal(await p.evaluate(`document.querySelector('.explorer').classList.contains('viewing')`), true);
     assert.equal(await p.evaluate(`document.querySelector('.editor').contains(document.activeElement)`), true, 'focus moved into the pane');
     await p.press('Escape');
     assert.equal(await p.evaluate(`document.querySelector('.explorer').classList.contains('viewing')`), false);
-    assert.equal(await p.evaluate('document.activeElement.dataset.skill'), 'api-backend');
+    assert.equal(await p.evaluate('document.activeElement.dataset.skill'), 'git-workflow');
   } finally { await p.close(); }
 });

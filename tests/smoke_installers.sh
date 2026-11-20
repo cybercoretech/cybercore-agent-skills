@@ -25,8 +25,8 @@ EOF
 )
 [[ ${#AGENTS[@]} -gt 0 ]] || fail "no agents read from manifest.yaml"
 
-# One sample skill per default group, one from the opt-in pack.
-DEFAULT_SAMPLES=(android-development python-development rust-testing)
+# Sample skills: default ones, and one from a pack.
+DEFAULT_SAMPLES=(clarify-before-building testing-qa git-workflow)
 PACK=omarchy
 PACK_SAMPLE=omarchy-lua-config
 
@@ -66,6 +66,20 @@ for row in "${AGENTS[@]}"; do
     [[ -f "$HOME/$skills_dir/$PACK_SAMPLE/SKILL.md" ]] || fail "$agent: pack skill missing after --with"
     [[ -f "$HOME/$skills_dir/existing-skill/KEEP.txt" ]] || fail "$agent: user skill removed on re-run"
     if bash "$installer" --with no-such-pack >/dev/null 2>&1; then fail "$agent: unknown pack accepted"; fi
+    if bash "$installer" --with rust,no-such-pack >/dev/null 2>&1; then fail "$agent: unknown pack in a list accepted"; fi
+    [[ ! -e "$HOME/$skills_dir/rust-testing" ]] || fail "$agent: rust pack installed without --with rust"
+
+    # Several packs in one flag, then everything.
+    bash "$installer" --with rust,web >/dev/null || fail "$agent: --with rust,web failed"
+    [[ -f "$HOME/$skills_dir/rust-testing/SKILL.md" && -f "$HOME/$skills_dir/browser-verification/SKILL.md" ]] \
+      || fail "$agent: --with rust,web missed a pack"
+    [[ ! -e "$HOME/$skills_dir/office-documents" ]] || fail "$agent: --with rust,web installed another pack"
+    bash "$installer" --with all >/dev/null || fail "$agent: --with all failed"
+    installed="$(find "$HOME/$skills_dir" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
+    expected="$(find "$ROOT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
+    [[ "$installed" -eq "$expected" ]] || fail "$agent: --with all installed $installed skills, expected $expected"
+    packs="$(bash "$installer" --list-packs)"
+    grep -Eq '^rust +10 skills' <<<"$packs" || fail "$agent: --list-packs missing counts: $packs"
   else
     if find "$HOME" -name SKILL.md | grep -q .; then fail "$agent: rules-only template installed skills"; fi
     if bash "$installer" --with "$PACK" >/dev/null 2>&1; then fail "$agent: rules-only accepted --with"; fi
@@ -117,7 +131,8 @@ echo "PASS: single-skill installer"
 export HOME="$TMP/home-update"
 mkdir -p "$HOME"
 upd="$ROOT/scripts/update-skills.sh"
-bash "$ROOT/claude/agent-project-setup/setup-claude.sh" >/dev/null || fail "update: base install failed"
+# A full install (--with all) matches what everyone had before the catalog was split into packs.
+bash "$ROOT/claude/agent-project-setup/setup-claude.sh" --with all >/dev/null || fail "update: base install failed"
 SK="$HOME/.claude/skills"
 # Write an old revision of a canonical path from git history into the home directory.
 restore_old() { # <commit> <repo path> <destination>
@@ -168,11 +183,11 @@ diff -r "$SK/testing-qa" "$ROOT/skills/testing-qa" >/dev/null || fail "update: n
 [[ -d "$SK/security-hardening" ]] || fail "update: removed skill pruned without --prune"
 [[ -f "$SK/my-own-skill/SKILL.md" ]] || fail "update: unmanaged skill touched"
 if [[ -n "$old_rule" ]]; then cmp -s "$HOME/.claude/rules/$old_rule" "$ROOT/rules/$old_rule" || fail "update: stale rule not updated"; fi
-find "$XDG_STATE_HOME/cybercore-agent-skills/backups" -path '*clarify-before-building/SKILL.md' | grep -q . || fail "update: old skill not backed up"
+find "$XDG_STATE_HOME/cybercore-agent-skills/backups" -path '*clarify-before-building/SKILL.md' -print -quit | grep -q . || fail "update: old skill not backed up"
 
 bash "$upd" claude --apply --prune >/dev/null || fail "update: --prune failed"
 [[ ! -e "$SK/security-hardening" ]] || fail "update: removed skill not pruned"
-find "$XDG_STATE_HOME/cybercore-agent-skills/backups" -path '*security-hardening/SKILL.md' | grep -q . || fail "update: pruned skill not kept in backup"
+find "$XDG_STATE_HOME/cybercore-agent-skills/backups" -path '*security-hardening/SKILL.md' -print -quit | grep -q . || fail "update: pruned skill not kept in backup"
 out="$(bash "$upd" claude)" || fail "update: customised-only state should exit 0: $out"
 grep -Eq '^CUSTOMISED +skill +rust-testing' <<<"$out" || fail "update: customised skill not still reported: $out"
 

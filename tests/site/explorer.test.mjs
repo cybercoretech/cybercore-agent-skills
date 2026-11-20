@@ -18,7 +18,7 @@ after(async () => { await page?.close(); await site?.close(); });
 test('tree lists every skill in folders, favourites first', { skip }, async () => {
   assert.equal(await page.evaluate(`document.querySelectorAll('#tree button.file').length`), data.skills.length);
   assert.deepEqual(await page.evaluate(`[...document.querySelectorAll('#tree .folder')].map(f => f.dataset.folder)`),
-    ['favourites', 'core', 'general', 'rust', 'omarchy']);
+    ['favourites', ...data.groups.map(g => g.id)]);
 });
 
 test('the first skill opens on load', { skip }, async () => {
