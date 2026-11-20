@@ -462,6 +462,21 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "session-handoff",
+   "name": "Session Handoff",
+   "group": "general",
+   "category": "workflow",
+   "icon": "🤝",
+   "desc": "Write and resume from a handoff file so work survives the end of a session, a context reset, or a switch to another agent. Records verified current state (branch, commits, open pull requests, CI, uncommitted changes), the next concrete steps, decisions with who made them, gotchas, and open questions; and on resume, checks every claim against reality before continuing. Use when a session is ending or running out of context, before pausing multi-step work, after merges or important decisions, when handing work to another agent or person, or at the start of a session in a project that has a handoff file (for example AGENT_HANDOFF.md).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/examples.md",
+    "references/resume-checklist.md",
+    "references/template.md"
+   ]
+  },
+  {
    "id": "test-first-development",
    "name": "Test-First Development",
    "group": "general",
