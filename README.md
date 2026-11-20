@@ -85,6 +85,17 @@ To install one skill without the rest of the template, give the agent and the sk
 bash ~/cybercore-agent-skills/scripts/install-skill.sh claude rust-testing
 ```
 
+### Keep installed skills up to date
+
+After `git pull` in your clone, check what changed for your agents (this changes nothing):
+
+```bash
+bash ~/cybercore-agent-skills/scripts/update-skills.sh all      # or one agent, e.g. claude
+bash ~/cybercore-agent-skills/scripts/update-skills.sh all --apply
+```
+
+It compares every installed skill and rule with the versions in the clone's git history. Out-of-date copies are updated and new skills installed with `--apply`; copies you customised are never touched (it shows a `diff` command instead); skills removed from the catalog are only moved to the backup folder with `--apply --prune`. Your own skills that were never part of this repo are left alone.
+
 Installers merge rules and skills, keep unrelated files, and back up every file they are about to replace to `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/<home folder name>-<id>/<agent>/<timestamp>/`. Review the generated files and the backup.
 
 > ⚠️ Codex, Copilot, Gemini, and most other agents share one root `AGENTS.md`. If you install two of these agents, the second installer replaces the first agent's `AGENTS.md` and prints a warning. The previous file is kept in the backup.
@@ -216,7 +227,9 @@ bash tests/smoke_installers.sh
 
 ## ⬆️ Upgrading from an earlier version
 
-Earlier installers wrote a few files that no agent reads. The new installers never delete anything, so remove these yourself if they are present:
+To bring installed skills up to date after pulling, use `scripts/update-skills.sh` (see [Keep installed skills up to date](#keep-installed-skills-up-to-date)). Re-running an installer also works, but it replaces customised skills too (keeping a backup).
+
+Earlier installers wrote a few files that no agent reads. The installers never delete anything, so remove these yourself if they are present:
 
 - Claude: `settings.json` at the project root (the installer prints a note if it finds the old one). Settings now live in `.claude/settings.json`.
 - Codex: `.codex/skills/` (skills now live in `.agents/skills/`).

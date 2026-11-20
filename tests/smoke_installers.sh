@@ -113,4 +113,77 @@ if bash "$single" claude ../rules >/dev/null 2>&1; then fail "install-skill: pat
 if bash "$single" claude >/dev/null 2>&1; then fail "install-skill: missing argument accepted"; fi
 echo "PASS: single-skill installer"
 
+# Update checker: tells stale, customised, new, removed and unmanaged skills apart.
+export HOME="$TMP/home-update"
+mkdir -p "$HOME"
+upd="$ROOT/scripts/update-skills.sh"
+bash "$ROOT/claude/agent-project-setup/setup-claude.sh" >/dev/null || fail "update: base install failed"
+SK="$HOME/.claude/skills"
+# Write an old revision of a canonical path from git history into the home directory.
+restore_old() { # <commit> <repo path> <destination>
+  local commit="$1" path="$2" dest="$3" file
+  mkdir -p "$dest"
+  while IFS= read -r file; do
+    mkdir -p "$dest/$(dirname -- "${file#"$path"/}")"
+    git -C "$ROOT" show "$commit:$file" > "$dest/${file#"$path"/}"
+  done < <(git -C "$ROOT" ls-tree -r --name-only "$commit" -- "$path")
+}
+out="$(bash "$upd" claude)" || fail "update: fresh install not reported up to date (exit $?): $out"
+grep -q 'Everything is up to date' <<<"$out" || fail "update: fresh install summary missing: $out"
+
+old_clarify="$(git -C "$ROOT" log --format=%H -- skills/clarify-before-building | sed -n 2p)"
+[[ -n "$old_clarify" ]] || fail "update: need an older clarify-before-building revision (full git history?)"
+mv "$SK/clarify-before-building" "$TMP/clarify-current"
+restore_old "$old_clarify" skills/clarify-before-building "$SK/clarify-before-building"
+printf '\nmy local note\n' >> "$SK/rust-testing/SKILL.md"
+mv "$SK/testing-qa" "$TMP/testing-qa-moved"
+last_hardening="$(git -C "$ROOT" log --format=%H -1 -- skills/security-hardening)"
+restore_old "${last_hardening}^" skills/security-hardening "$SK/security-hardening"
+mkdir -p "$SK/my-own-skill" && printf -- '---\nname: my-own-skill\n---\n' > "$SK/my-own-skill/SKILL.md"
+old_rule=""
+for rule in "$ROOT"/rules/*.md; do
+  name="$(basename -- "$rule")"
+  for c in $(git -C "$ROOT" log --format=%H -- "rules/$name"); do
+    if ! git -C "$ROOT" show "$c:rules/$name" 2>/dev/null | cmp -s - "$rule"; then
+      if git -C "$ROOT" cat-file -e "$c:rules/$name" 2>/dev/null; then old_rule="$name"; git -C "$ROOT" show "$c:rules/$name" > "$HOME/.claude/rules/$name"; break 2; fi
+    fi
+  done
+done
+
+before="$(cd "$HOME" && find . -type f -exec cksum {} + | sort)"
+set +e; out="$(bash "$upd" claude)"; code=$?; set -e
+[[ $code -eq 1 ]] || fail "update: report should exit 1 when updates exist (got $code): $out"
+grep -Eq '^UPDATE +skill +clarify-before-building' <<<"$out" || fail "update: stale skill not reported: $out"
+grep -Eq '^CUSTOMISED +skill +rust-testing' <<<"$out" || fail "update: customised skill not reported: $out"
+grep -Eq '^NEW +skill +testing-qa' <<<"$out" || fail "update: missing skill not reported: $out"
+grep -Eq '^REMOVED +skill +security-hardening' <<<"$out" || fail "update: removed skill not reported: $out"
+grep -q 'my-own-skill' <<<"$out" || fail "update: unmanaged skill not listed: $out"
+if [[ -n "$old_rule" ]]; then grep -Eq "^UPDATE +rule +$old_rule" <<<"$out" || fail "update: stale rule not reported: $out"; fi
+[[ "$(cd "$HOME" && find . -type f -exec cksum {} + | sort)" == "$before" ]] || fail "update: report mode changed files"
+
+bash "$upd" claude --apply >/dev/null || fail "update: --apply failed"
+diff -r "$SK/clarify-before-building" "$ROOT/skills/clarify-before-building" >/dev/null || fail "update: stale skill not updated"
+grep -q 'my local note' "$SK/rust-testing/SKILL.md" || fail "update: customised skill was overwritten"
+diff -r "$SK/testing-qa" "$ROOT/skills/testing-qa" >/dev/null || fail "update: new skill not installed"
+[[ -d "$SK/security-hardening" ]] || fail "update: removed skill pruned without --prune"
+[[ -f "$SK/my-own-skill/SKILL.md" ]] || fail "update: unmanaged skill touched"
+if [[ -n "$old_rule" ]]; then cmp -s "$HOME/.claude/rules/$old_rule" "$ROOT/rules/$old_rule" || fail "update: stale rule not updated"; fi
+find "$XDG_STATE_HOME/cybercore-agent-skills/backups" -path '*clarify-before-building/SKILL.md' | grep -q . || fail "update: old skill not backed up"
+
+bash "$upd" claude --apply --prune >/dev/null || fail "update: --prune failed"
+[[ ! -e "$SK/security-hardening" ]] || fail "update: removed skill not pruned"
+find "$XDG_STATE_HOME/cybercore-agent-skills/backups" -path '*security-hardening/SKILL.md' | grep -q . || fail "update: pruned skill not kept in backup"
+out="$(bash "$upd" claude)" || fail "update: customised-only state should exit 0: $out"
+grep -Eq '^CUSTOMISED +skill +rust-testing' <<<"$out" || fail "update: customised skill not still reported: $out"
+
+out="$(bash "$upd" all)" || fail "update: 'all' failed: $out"
+grep -q 'claude' <<<"$out" || fail "update: 'all' did not check claude: $out"
+set +e
+bash "$upd" no-such-agent >/dev/null 2>&1; [[ $? -eq 2 ]] || fail "update: unknown agent not a usage error"
+bash "$upd" claude --bogus >/dev/null 2>&1; [[ $? -eq 2 ]] || fail "update: unknown flag not a usage error"
+bash "$upd" claude --prune >/dev/null 2>&1; [[ $? -eq 2 ]] || fail "update: --prune without --apply accepted"
+set -e
+bash "$upd" --help >/dev/null || fail "update: --help failed"
+echo "PASS: update checker"
+
 echo 'All installer smoke tests passed.'
