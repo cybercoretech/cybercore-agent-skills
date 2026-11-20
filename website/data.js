@@ -414,6 +414,20 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "office-documents",
+   "name": "Office Documents",
+   "group": "general",
+   "category": "workflow",
+   "icon": "📄",
+   "desc": "Create, edit, convert and extract content from office documents (Word .docx, Excel .xlsx, PowerPoint .pptx and PDF) with scripts and local tools, while keeping originals safe and checking the result visually. Covers styles and templates instead of hand formatting, keeping spreadsheet formulas intact and recalculated, tables and charts, slide layouts, PDF text, table and form handling, conversions with LibreOffice or pandoc, metadata clean-up before sharing, and accessible structure. Use when asked to make a report, letter, spreadsheet, budget, slide deck or PDF; to fill, merge, split or convert documents; to pull text or tables out of them; or to batch-edit many files.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/libraries.md",
+    "references/verification.md"
+   ]
+  },
+  {
    "id": "performance-optimization",
    "name": "Performance Optimization",
    "group": "general",

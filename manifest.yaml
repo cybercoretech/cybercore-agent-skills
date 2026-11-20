@@ -60,6 +60,7 @@ skills:
   mcp-server-development:         {group: general, category: ai, icon: "🧩"}
   mobile-cross-platform:         {group: general, category: mobile, icon: "📲"}
   observability-and-debugging:   {group: general, category: devops, icon: "🔭"}
+  office-documents:               {group: general, category: workflow, icon: "📄"}
   performance-optimization:      {group: general, category: quality, icon: "⚡"}
   plain-writing:                  {group: general, category: workflow, icon: "✍️"}
   prompt-engineering-for-agents: {group: general, category: ai, icon: "🧠"}
