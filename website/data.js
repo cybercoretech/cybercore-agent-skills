@@ -108,8 +108,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "security",
    "icon": "🔒",
-   "desc": "Security guidelines for handling secrets, credentials, and sensitive data. Covers .env protection, SSH/GPG keys, token management, and secure IPC.",
-   "version": "2",
+   "desc": "Secure development, covering both handling secrets and building with secure defaults. Covers .env and token files, SSH/GPG keys, file permissions, secure IPC, credential rotation, lightweight threat modeling, authentication and authorization, input validation and output encoding, and safe configuration defaults. Use when code or config touches secrets, credentials, keys, permissions, login or access control, untrusted input, network exposure or security settings, or when designing a feature with security impact. Not for auditing existing code for vulnerabilities (use security-audit) or dependency and lockfile hygiene (use dependency-and-supply-chain).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -497,25 +497,13 @@ window.CC_DATA = {
    "group": "general",
    "category": "security",
    "icon": "🕵️",
-   "desc": "Run a structured, defensive security audit of code you are authorized to review and produce a findings report. Scopes the audit, maps the attack surface and trust boundaries, runs read-only scanners for secrets, dependencies and code patterns, reviews by vulnerability class, validates each finding by tracing data from source to sink, rates severity and confidence, and recommends fixes with regression tests. Use for security reviews of a pull request, component or whole repository; vulnerability assessments; pre-release audits; or when asked to \"audit\", \"pen-test the code\", \"find vulnerabilities\", or \"check this for security issues\". For secure-by-default practices while building, use security-hardening; for handling secrets, security-guidelines.",
-   "version": "1",
+   "desc": "Run a structured, defensive security audit of code you are authorized to review and produce a findings report. Scopes the audit, maps the attack surface and trust boundaries, runs read-only scanners for secrets, dependencies and code patterns, reviews by vulnerability class, validates each finding by tracing data from source to sink, rates severity and confidence, and recommends fixes with regression tests. Use for security reviews of a pull request, component or whole repository; vulnerability assessments; pre-release audits; or when asked to \"audit\", \"pen-test the code\", \"find vulnerabilities\", or \"check this for security issues\". For secure-by-default practices while building and for handling secrets, use security-guidelines.",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/report-template.md",
     "references/review-checklist.md",
     "references/tools.md"
-   ]
-  },
-  {
-   "id": "security-hardening",
-   "name": "Security Hardening",
-   "group": "general",
-   "category": "security",
-   "icon": "🛡️",
-   "desc": "Security hardening practices that extend Cybercore security guidelines. Covers threat modeling, least privilege, secure defaults, authn/z, secrets, input handling, and dependency risk.",
-   "version": "1",
-   "files": [
-    "SKILL.md"
    ]
   },
   {

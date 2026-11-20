@@ -53,8 +53,16 @@ export function matchesQuery(text, query) {
   return terms.every(t => hay.includes(t));
 }
 
+// Sentences that only point elsewhere ("Not for X (use other-skill)." or
+// "For X, use other-skill.") describe other skills, so search skips them.
+const POINTER = /^not for\b|\buse [a-z0-9]+(?:-[a-z0-9]+)+\b/i;
+
+export function searchableDesc(desc = '') {
+  return desc.split(/(?<=[.!?])\s+/).filter(sentence => !POINTER.test(sentence)).join(' ');
+}
+
 export function filterSkills(skills, query) {
-  return skills.filter(s => matchesQuery([s.id, s.name, s.desc, s.category].join(' '), query));
+  return skills.filter(s => matchesQuery([s.id, s.name, searchableDesc(s.desc), s.category].join(' '), query));
 }
 
 export function filterAgents(agents, query) {

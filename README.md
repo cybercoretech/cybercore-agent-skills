@@ -1,10 +1,10 @@
 # 🔒 CyberCore Agent Skills
 
-Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 53 default skills, an opt-in 4-skill Omarchy pack, and five shared rule files, adapted to the configuration layout that agent actually reads.
+Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 52 default skills, an opt-in 4-skill Omarchy pack, and five shared rule files, adapted to the configuration layout that agent actually reads.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
-[![57 skills](https://img.shields.io/badge/skills-57-green)](#-included-skills)
+[![56 skills](https://img.shields.io/badge/skills-56-green)](#-included-skills)
 [![Skills Explorer](https://img.shields.io/badge/explorer-live-7df9ff)](https://cybercoretech.github.io/cybercore-agent-skills/)
 
 🌐 **Browse the skills in the [Skills Explorer](https://cybercoretech.github.io/cybercore-agent-skills/)**: search the catalog, read each skill, compare agents, and copy a one-skill install command.
@@ -101,7 +101,7 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 | 🔀 `git-workflow` | Branches, commits, pull requests, and safe Git operations |
 | 🖥️ `qt-cpp-desktop` | Qt 6, C++, QML, and desktop application development |
 | 🦀 `rust-development` | Cargo workspaces, crates.io publishing, MSRV, and library error handling |
-| 🔒 `security-guidelines` | Secrets, credentials, permissions, and secure defaults |
+| 🔒 `security-guidelines` | Secrets, credentials, permissions, threat modeling, auth, input handling, and secure defaults |
 | 🐚 `shell-scripting` | Bash and Zsh scripting, shell safety, and automation |
 | 🐧 `system-administration` | Linux administration, systemd, packages, and services |
 | 🧪 `testing-qa` | Unit, integration, UI, and CI testing practices |
@@ -137,7 +137,6 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 | 🧠 `prompt-engineering-for-agents` | Writing effective skills, rules, and system prompts |
 | 🐍 `python-development` | Packaging, typing, async, testing, and tooling |
 | 🕵️ `security-audit` | Scoped, defensive audits: attack surface, scanners, review by vulnerability class, validated findings report |
-| 🛡️ `security-hardening` | Threat modeling, least privilege, authn/z, and input handling |
 | 🤝 `session-handoff` | Verified, current-state handoff files so work survives session ends, context resets and agent switches |
 | 🎯 `skill-evaluation` | Prove a skill helps: trigger tests, with/without comparisons on target and control tasks, scoped verdicts |
 | 🚦 `test-first-development` | Red, green, refactor: failing test first, regression tests for bugs, characterization tests for legacy code |
@@ -206,7 +205,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 
 ## 🧪 Validation
 
-GitHub Actions validates the manifest and all 57 canonical skills, checks that every template copy matches its source, lints and syntax-checks every installer, and smoke-tests each installer in a temporary home directory.
+GitHub Actions validates the manifest and all 56 canonical skills, checks that every template copy matches its source, lints and syntax-checks every installer, and smoke-tests each installer in a temporary home directory.
 
 ```bash
 python3 -m pip install PyYAML

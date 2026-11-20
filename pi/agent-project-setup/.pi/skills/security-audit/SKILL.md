@@ -1,8 +1,8 @@
 ---
 name: security-audit
-description: Run a structured, defensive security audit of code you are authorized to review and produce a findings report. Scopes the audit, maps the attack surface and trust boundaries, runs read-only scanners for secrets, dependencies and code patterns, reviews by vulnerability class, validates each finding by tracing data from source to sink, rates severity and confidence, and recommends fixes with regression tests. Use for security reviews of a pull request, component or whole repository; vulnerability assessments; pre-release audits; or when asked to "audit", "pen-test the code", "find vulnerabilities", or "check this for security issues". For secure-by-default practices while building, use security-hardening; for handling secrets, security-guidelines.
+description: Run a structured, defensive security audit of code you are authorized to review and produce a findings report. Scopes the audit, maps the attack surface and trust boundaries, runs read-only scanners for secrets, dependencies and code patterns, reviews by vulnerability class, validates each finding by tracing data from source to sink, rates severity and confidence, and recommends fixes with regression tests. Use for security reviews of a pull request, component or whole repository; vulnerability assessments; pre-release audits; or when asked to "audit", "pen-test the code", "find vulnerabilities", or "check this for security issues". For secure-by-default practices while building and for handling secrets, use security-guidelines.
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Security Audit
@@ -18,7 +18,7 @@ You find real, exploitable weaknesses in code the user owns or is authorized to 
 - Validating findings, rating severity and confidence
 - Writing the report and re-checking fixes
 
-Building secure features from the start is `security-hardening`; secrets and credential handling is `security-guidelines`; dependency hygiene is `dependency-and-supply-chain`.
+Building secure features from the start, and secrets and credential handling, is `security-guidelines`; dependency hygiene is `dependency-and-supply-chain`.
 
 ## Safety Rules (Non-Negotiable)
 

@@ -52,6 +52,18 @@ test('search needs every term', () => {
   assert.deepEqual(filterAgents(data.agents, 'qwen').map(a => a.id), ['qwen']);
 });
 
+test('search ignores the pointers a description makes to other skills', () => {
+  const skills = [
+    { id: 'guard', name: 'guard', category: 'security', desc: 'Secure development. Use when code touches secrets. Not for auditing existing code (use audit-skill).' },
+    { id: 'auditor', name: 'auditor', category: 'security', desc: 'Audit code for vulnerabilities. For building securely, use guard-skill.' },
+  ];
+  assert.deepEqual(filterSkills(skills, 'auditing').map(s => s.id), []);
+  assert.deepEqual(filterSkills(skills, 'secrets').map(s => s.id), ['guard']);
+  assert.deepEqual(filterSkills(skills, 'building securely').map(s => s.id), []);
+  assert.deepEqual(filterSkills(skills, 'vulnerabilities').map(s => s.id), ['auditor']);
+  assert.deepEqual(filterSkills(data.skills, 'security audit').map(s => s.id), ['security-audit']);
+});
+
 test('hash parsing and unknown deep links', () => {
   assert.deepEqual(parseHash('#skill/security-audit'), { type: 'skill', id: 'security-audit' });
   assert.deepEqual(parseHash('#agent/claude'), { type: 'agent', id: 'claude' });
