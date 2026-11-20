@@ -435,6 +435,21 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "security-audit",
+   "name": "Security Audit",
+   "group": "general",
+   "category": "security",
+   "icon": "🕵️",
+   "desc": "Run a structured, defensive security audit of code you are authorized to review and produce a findings report. Scopes the audit, maps the attack surface and trust boundaries, runs read-only scanners for secrets, dependencies and code patterns, reviews by vulnerability class, validates each finding by tracing data from source to sink, rates severity and confidence, and recommends fixes with regression tests. Use for security reviews of a pull request, component or whole repository; vulnerability assessments; pre-release audits; or when asked to \"audit\", \"pen-test the code\", \"find vulnerabilities\", or \"check this for security issues\". For secure-by-default practices while building, use security-hardening; for handling secrets, security-guidelines.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/report-template.md",
+    "references/review-checklist.md",
+    "references/tools.md"
+   ]
+  },
+  {
    "id": "security-hardening",
    "name": "Security Hardening",
    "group": "general",
