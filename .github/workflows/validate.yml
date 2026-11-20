@@ -12,7 +12,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,3 +53,16 @@ jobs:
 
       - name: Smoke-test all installers in temporary directories
         run: bash tests/smoke_installers.sh
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Site logic and browser tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          export CHROME_BIN SITE_REQUIRE_BROWSER=1
+          node --test tests/site/*.test.mjs
