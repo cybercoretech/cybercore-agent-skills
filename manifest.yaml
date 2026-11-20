@@ -62,6 +62,7 @@ skills:
   prompt-engineering-for-agents: {group: general, category: ai, icon: "🧠"}
   python-development:            {group: general, category: language, icon: "🐍"}
   security-hardening:            {group: general, category: security, icon: "🛡️"}
+  test-first-development:         {group: general, category: quality, icon: "🚦"}
   typescript-nodejs:             {group: general, category: language, icon: "🟦"}
   zig-development:               {group: general, category: language, icon: "⚙️"}
   # rust
