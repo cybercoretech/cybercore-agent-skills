@@ -433,6 +433,21 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "test-first-development",
+   "name": "Test-First Development",
+   "group": "general",
+   "category": "quality",
+   "icon": "🚦",
+   "desc": "Write the failing test first, watch it fail for the right reason, make it pass with the smallest change, then refactor with the tests green (red, green, refactor). Use when implementing a feature or behaviour change, when fixing a bug (reproduce it with a failing regression test before touching the code), when changing code that has no tests (pin current behaviour with characterization tests first), or when the user asks for TDD or test-driven work. Works in any language; covers choosing the test level, deterministic tests, and reporting test evidence honestly.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/cycle-examples.md",
+    "references/runners.md",
+    "references/test-design.md"
+   ]
+  },
+  {
    "id": "typescript-nodejs",
    "name": "TypeScript & Node.js Development",
    "group": "general",
