@@ -1,10 +1,10 @@
 # 🔒 CyberCore Agent Skills
 
-Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 48 default skills, an opt-in 4-skill Omarchy pack, and four shared rule files, adapted to the configuration layout that agent actually reads.
+Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 49 default skills, an opt-in 4-skill Omarchy pack, and four shared rule files, adapted to the configuration layout that agent actually reads.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
-[![52 skills](https://img.shields.io/badge/skills-52-green)](#-included-skills)
+[![53 skills](https://img.shields.io/badge/skills-53-green)](#-included-skills)
 [![Skills Explorer](https://img.shields.io/badge/explorer-live-7df9ff)](https://cybercoretech.github.io/cybercore-agent-skills/)
 
 🌐 **Browse the skills in the [Skills Explorer](https://cybercoretech.github.io/cybercore-agent-skills/)**: search the catalog, read each skill, compare agents, and copy a one-skill install command.
@@ -138,6 +138,7 @@ Installers merge rules and skills, keep unrelated files, and back up every file 
 | 🎯 `skill-evaluation` | Prove a skill helps: trigger tests, with/without comparisons on target and control tasks, scoped verdicts |
 | 🚦 `test-first-development` | Red, green, refactor: failing test first, regression tests for bugs, characterization tests for legacy code |
 | 🟦 `typescript-nodejs` | Strict TypeScript, module systems, tooling, and testing |
+| 🧐 `ux-design-audit` | Audit existing UIs by area, prioritize findings with screenshots, fix within the design system with before/after proof |
 | ⚙️ `zig-development` | `build.zig`, allocators, C interop, and testing |
 
 ### Rust applications
@@ -201,7 +202,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 
 ## 🧪 Validation
 
-GitHub Actions validates the manifest and all 52 canonical skills, checks that every template copy matches its source, lints and syntax-checks every installer, and smoke-tests each installer in a temporary home directory.
+GitHub Actions validates the manifest and all 53 canonical skills, checks that every template copy matches its source, lints and syntax-checks every installer, and smoke-tests each installer in a temporary home directory.
 
 ```bash
 python3 -m pip install PyYAML
