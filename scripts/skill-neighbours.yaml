@@ -1,0 +1,43 @@
+# Skill pairs an agent could confuse, settled by the 2026-11 overlap audit.
+# check_skill_descriptions.py requires at least one skill in each pair to
+# point to the other in its description ("Not for X (use other-skill)"),
+# so an edit cannot silently undo the split. Add a pair when a new skill
+# shares ground with an existing one.
+pairs:
+  # review and diagnosis
+  - [deep-investigation, code-review-and-refactoring]
+  - [deep-investigation, security-audit]
+  - [deep-investigation, ux-design-audit]
+  - [deep-investigation, observability-and-debugging]
+  # containers and CI
+  - [container-devops, ci-cd-pipelines]
+  # evaluation
+  - [agent-evaluation-and-benchmarking, skill-evaluation]
+  - [prompt-engineering-for-agents, skill-evaluation]
+  # Qt apps vs Omarchy plugins
+  - [qt-cpp-desktop, omarchy-plugin-theme]
+  # security
+  - [security-guidelines, security-audit]
+  - [security-guidelines, dependency-and-supply-chain]
+  # testing
+  - [testing-qa, test-first-development]
+  - [testing-qa, rust-testing]
+  # web
+  - [web-design-and-frontend-craft, accessibility-a11y]
+  - [web-design-and-frontend-craft, performance-optimization]
+  - [web-design-and-frontend-craft, ux-design-audit]
+  # docs and writing
+  - [documentation-and-adrs, plain-writing]
+  - [documentation-and-adrs, diagrams-as-code]
+  # understand, clarify, plan
+  - [codebase-intelligence, clarify-before-building]
+  - [codebase-intelligence, engineering-planning]
+  - [clarify-before-building, engineering-planning]
+  # system
+  - [system-administration, omarchy-agent-operations]
+  - [system-administration, shell-scripting]
+  # Rust apps on Omarchy
+  - [rust-omarchy-tooling, rust-applications]
+  # AI building
+  - [llm-application-patterns, prompt-engineering-for-agents]
+  - [llm-application-patterns, mcp-server-development]
