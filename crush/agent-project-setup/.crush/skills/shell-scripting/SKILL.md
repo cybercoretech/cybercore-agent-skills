@@ -1,8 +1,8 @@
 ---
 name: shell-scripting
-description: Zsh and shell scripting for dotfiles, automation, and agent integration. Covers preexec/precmd hooks, keybindings, ZLE widgets, and safe command execution.
+description: Shell scripting in Bash and Zsh for automation, installers and dotfiles. Covers safe scripting (quoting, set -euo pipefail, traps), Zsh hooks, keybindings and ZLE widgets, and running commands without leaking secrets. Use when writing or debugging a shell script, an installer, a Zsh config or a command-line one-liner. Not for systemd, packages and system services (use system-administration).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # Shell Scripting

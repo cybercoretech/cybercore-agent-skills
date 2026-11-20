@@ -1,8 +1,8 @@
 ---
 name: rust-omarchy-tooling
-description: Rust development for Omarchy-related tooling, CLIs, system utilities, and desktop-adjacent apps. Use when building or modifying Rust tools intended to run on Omarchy/Arch, integrate with agent workflows, or accelerate user-space utilities.
+description: Omarchy-specific integration for Rust tools, covering Omarchy paths, theme and config hooks, desktop notifications, and running alongside Hyprland and Omarchy services. Use when a Rust tool must integrate with Omarchy or its agent workflows. Not for general Rust application structure (use rust-applications).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Rust Omarchy Tooling

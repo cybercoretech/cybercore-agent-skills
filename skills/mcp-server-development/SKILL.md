@@ -1,8 +1,8 @@
 ---
 name: mcp-server-development
-description: Design, build, secure and test Model Context Protocol (MCP) servers that expose tools, resources and prompts to AI agents. Covers agent-friendly tool design (names, descriptions, strict input schemas, structured output, errors the model can recover from), the stdio and Streamable HTTP transports, the stateless request model of current spec revisions, authorization for remote servers, security against prompt injection and over-broad permissions, and testing at the handler, protocol and real-client levels. Use when creating or changing an MCP server or tool, wrapping an API or CLI for agents, reviewing an MCP server's safety, or debugging why a client cannot see or call a tool.
+description: Design, build, secure and test Model Context Protocol (MCP) servers that expose tools, resources and prompts to AI agents. Covers agent-friendly tool design (names, descriptions, strict input schemas, structured output, errors the model can recover from), the stdio and Streamable HTTP transports, the stateless request model of current spec revisions, authorization for remote servers, security against prompt injection and over-broad permissions, and testing at the handler, protocol and real-client levels. Use when creating or changing an MCP server or tool, wrapping an API or CLI for agents, reviewing an MCP server's safety, or debugging why a client cannot see or call a tool. Not for LLM features inside an application (use llm-application-patterns).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # MCP Server Development

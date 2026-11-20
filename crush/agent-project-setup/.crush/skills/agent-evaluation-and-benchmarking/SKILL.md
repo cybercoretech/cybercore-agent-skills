@@ -1,8 +1,8 @@
 ---
 name: agent-evaluation-and-benchmarking
-description: Design, audit, run, compare, and improve AI agent evaluations. Use when measuring agent capability or reliability, selecting or building benchmarks, evaluating prompts or skills, comparing models/harnesses/tools, analyzing execution traces, investigating failures, attributing systemic causes, validating repairs, or deciding whether an agent is ready for a defined workload.
+description: Design, run, compare and improve AI agent evaluations. Use when measuring an agent's capability or reliability, selecting or building benchmarks, comparing models, harnesses or tools, analyzing execution traces, investigating failures and their systemic causes, validating repairs, or deciding whether an agent is ready for a defined workload. Not for testing a single skill, rule or prompt (use skill-evaluation).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # AI Agent Evaluation & Benchmarking

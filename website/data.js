@@ -36,8 +36,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "mobile",
    "icon": "📱",
-   "desc": "Android development with Gradle, APK signing, and Android CLI tooling.",
-   "version": "2",
+   "desc": "Native Android development with Gradle, the Android SDK and command-line tools, APK and AAB signing, and release builds. Use when building, signing, debugging or releasing a native Android app, editing Gradle files, or running adb and emulator tasks. Not for Flutter, React Native or Kotlin Multiplatform apps (use mobile-cross-platform).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -48,8 +48,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "backend",
    "icon": "🔌",
-   "desc": "API backend development with REST design, JSON schemas, error handling, and HTTP service patterns.",
-   "version": "2",
+   "desc": "Design and build HTTP API backends with REST resource design, JSON request and response schemas, status codes, error formats, pagination, versioning and service patterns. Use when adding or changing API endpoints, defining request and response contracts, or structuring a backend service. Not for database schema and queries (use database-and-sql) or MCP servers for AI agents (use mcp-server-development).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -60,8 +60,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "devops",
    "icon": "☁️",
-   "desc": "Container development and DevOps practices with Docker, GitHub Actions, and CI/CD pipelines.",
-   "version": "2",
+   "desc": "Containers for development and deployment with Docker and Docker Compose. Covers Dockerfiles, multi-stage builds, image size and security, volumes, networks, health checks and local service stacks. Use when writing or debugging a Dockerfile or compose file, containerizing an app, or running services in containers. Not for CI workflows and GitHub Actions (use ci-cd-pipelines).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -72,8 +72,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "workflow",
    "icon": "🔀",
-   "desc": "Git workflow standards for Cybercore repositories. Covers commit conventions, branch strategies, PR hygiene, and safe Git operations.",
-   "version": "2",
+   "desc": "Git workflow standards for commits, branches and pull requests. Covers commit message conventions, branch naming, PR hygiene, rebasing and merging, and safe Git operations that never lose work. Use when committing, branching, opening or updating a pull request, resolving conflicts, or cleaning up history. Not for reviewing the code in a pull request (use code-review-and-refactoring).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -84,8 +84,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "language",
    "icon": "🖥️",
-   "desc": "Qt6/C++ desktop application development with qmake6, Quickshell/Omarchy plugins, and QML.",
-   "version": "2",
+   "desc": "Qt6 and C++ desktop applications built with qmake6 or CMake, including widgets, QML, signals and slots, resources and packaging. Use when building or changing a Qt desktop app, a QML interface, or C++ desktop code. Not for Omarchy or Quickshell plugins and themes (use omarchy-plugin-theme).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -96,8 +96,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "language",
    "icon": "🦀",
-   "desc": "Rust development standards for Cargo workspaces, crates.io publishing, MSRV compliance, and error handling patterns.",
-   "version": "2",
+   "desc": "Rust standards for Cargo workspaces, library crates, crates.io publishing, MSRV compliance and library error handling. Use when working on a Rust library or workspace, publishing a crate, changing the minimum supported Rust version, or designing a library's error types. Not for structuring Rust applications and CLIs (use rust-applications and its focused skills).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -120,8 +120,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "system",
    "icon": "🐚",
-   "desc": "Zsh and shell scripting for dotfiles, automation, and agent integration. Covers preexec/precmd hooks, keybindings, ZLE widgets, and safe command execution.",
-   "version": "2",
+   "desc": "Shell scripting in Bash and Zsh for automation, installers and dotfiles. Covers safe scripting (quoting, set -euo pipefail, traps), Zsh hooks, keybindings and ZLE widgets, and running commands without leaking secrets. Use when writing or debugging a shell script, an installer, a Zsh config or a command-line one-liner. Not for systemd, packages and system services (use system-administration).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -132,8 +132,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "system",
    "icon": "🐧",
-   "desc": "Linux system administration for Arch Linux, Omarchy, and Cybercore environments. Covers systemd, package management, user services, dotfiles, and server maintenance.",
-   "version": "2",
+   "desc": "Linux system administration on Arch-based systems, including systemd units and timers, user services, package management, logs, users and permissions, and server maintenance. Use when managing services, packages, journals, disks or users, or keeping a Linux machine or server healthy. Not for Omarchy desktop settings, themes and Hyprland config (use omarchy-agent-operations) or writing scripts (use shell-scripting).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -144,8 +144,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "quality",
    "icon": "🧪",
-   "desc": "Testing and QA standards for Rust, shell scripts, and desktop applications. Covers unit tests, integration tests, CI/CD, and verification procedures.",
-   "version": "2",
+   "desc": "Decide what to test and where, covering test levels (unit, integration, end-to-end), coverage of risky paths, CI test gates and release verification for Rust, shell and desktop projects. Use when setting up or reviewing a project's test strategy, adding test suites or CI test steps, or checking a change is properly verified. Not for the red-green-refactor workflow (use test-first-development) or Rust-specific test tooling (use rust-testing).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -156,8 +156,8 @@ window.CC_DATA = {
    "group": "core",
    "category": "web",
    "icon": "🎨",
-   "desc": "Build polished, distinctive, responsive websites and web apps. Covers UI/UX direction, CSS custom properties, neon/cyber aesthetics, component systems, cards and hero sections, motion, accessibility, performance, and complete visual asset packs including SVG, PNG, icons, and optimized images.",
-   "version": "2",
+   "desc": "Build new, polished, responsive websites and web apps with a distinctive look. Covers visual direction, CSS custom properties and themes, neon and cyber aesthetics, layout, components, cards and hero sections, motion, and complete visual asset packs (SVG, PNG, icons, optimized images). Use when designing or building a new page, site, component or visual style. Not for reviewing an existing interface (use ux-design-audit), in-depth accessibility work (use accessibility-a11y) or speed problems (use performance-optimization).",
+   "version": "3",
    "files": [
     "SKILL.md"
    ]
@@ -168,8 +168,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "web",
    "icon": "♿",
-   "desc": "Accessibility (a11y) standards and practical implementation guidance for Cybercore web and UI work. Covers semantic HTML, keyboard support, ARIA, contrast, testing, and inclusive defaults.",
-   "version": "1",
+   "desc": "Accessibility standards and fixes for web and desktop interfaces, covering semantic HTML, keyboard support and focus order, ARIA, colour contrast, motion preferences, screen-reader testing and inclusive defaults. Use when building or reviewing UI for accessibility, fixing an accessibility bug, or meeting WCAG requirements. Not for general visual polish (use ux-design-audit).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -180,8 +180,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "quality",
    "icon": "📊",
-   "desc": "Design, audit, run, compare, and improve AI agent evaluations. Use when measuring agent capability or reliability, selecting or building benchmarks, evaluating prompts or skills, comparing models/harnesses/tools, analyzing execution traces, investigating failures, attributing systemic causes, validating repairs, or deciding whether an agent is ready for a defined workload.",
-   "version": "1",
+   "desc": "Design, run, compare and improve AI agent evaluations. Use when measuring an agent's capability or reliability, selecting or building benchmarks, comparing models, harnesses or tools, analyzing execution traces, investigating failures and their systemic causes, validating repairs, or deciding whether an agent is ready for a defined workload. Not for testing a single skill, rule or prompt (use skill-evaluation).",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/benchmark-integrity.md",
@@ -215,8 +215,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "devops",
    "icon": "🔁",
-   "desc": "CI/CD pipeline design and hygiene for Cybercore repositories. Covers GitHub Actions, reusable workflows, caching, matrix builds, secrets handling, and safe deployment practices.",
-   "version": "1",
+   "desc": "CI/CD pipelines with GitHub Actions. Covers workflow design, reusable workflows, caching, matrix builds, secrets and permissions, required checks, and safe deployments. Use when creating, fixing or speeding up a CI workflow, adding a deployment step, or debugging a failing check. Not for Dockerfiles and container images (use container-devops).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -227,8 +227,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "workflow",
    "icon": "❓",
-   "desc": "Find out what the user actually wants before writing code. Reads the repository and its docs first, asks only the questions whose answers would change what gets built (one or a few at a time, each with a recommended answer), plays the requirements back as a short brief, and gets confirmation before implementing. Use when a request is new, vague, underspecified, or large; when it conflicts with existing docs or code; before features, refactors, migrations, or UI work; or when the user says \"build\", \"add\", \"make\", or \"change\" something without saying why or what done looks like. Skip it for small, fully specified changes and when the user says to just proceed.",
-   "version": "1",
+   "desc": "Find out what the user actually wants before writing code. Reads the repository and its docs first, asks only the questions whose answers would change what gets built (one or a few at a time, each with a recommended answer), plays the requirements back as a short brief, and gets confirmation before implementing. Use when a request is new, vague, underspecified, or large; when it conflicts with existing docs or code; before features, refactors, migrations, or UI work; or when the user says \"build\", \"add\", \"make\", or \"change\" something without saying why or what done looks like. Skip it for small, fully specified changes and when the user says to just proceed. Not for planning implementation once requirements are clear (use engineering-planning).",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/brief-template.md",
@@ -242,8 +242,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "quality",
    "icon": "🔍",
-   "desc": "Code review standards, constructive feedback, safe refactoring practices, and PR hygiene for Cybercore repositories.",
-   "version": "1",
+   "desc": "Review code changes and refactor safely. Covers what to look for in a pull request (correctness, clarity, tests, risk), giving constructive feedback, and refactoring in small behaviour-preserving steps. Use when reviewing a pull request or diff, or restructuring code without changing what it does. Not for security reviews (use security-audit) or UI reviews (use ux-design-audit).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -254,8 +254,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "backend",
    "icon": "🗄️",
-   "desc": "Database design, SQL, migrations, and data-access patterns for Cybercore repositories. Covers schema design, query safety, migrations, ORMs, and operational hygiene.",
-   "version": "1",
+   "desc": "Database design and SQL, covering schemas, indexes, queries, migrations, transactions, ORMs and data-access patterns. Use when designing tables, writing or optimizing queries, adding a migration, or choosing how code talks to a database. Not for SQLite persistence in Rust apps (use rust-persistence).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -266,8 +266,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "quality",
    "icon": "🔎",
-   "desc": "Persistent, evidence-driven investigation for technical and non-technical problems. Use when asked to scan, inspect, review, audit, investigate, troubleshoot, diagnose, determine why something happens, examine a suspected cause, look deeper, or verify a conclusion or fix.",
-   "version": "1",
+   "desc": "Find the root cause of a problem with persistent, evidence-driven investigation that forms hypotheses, tests them, rules out alternatives and verifies the conclusion. Use when asked why something happens, to troubleshoot or diagnose a failure, to check a suspected cause, or to verify that a fix really worked, for technical or non-technical problems. Not for routine code review (use code-review-and-refactoring), security audits (use security-audit) or UI reviews (use ux-design-audit).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -278,8 +278,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "quality",
    "icon": "🧭",
-   "desc": "Systematic, evidence-backed understanding of software repositories, architecture, execution paths, dependencies, conventions, and integration points. Use when exploring an unfamiliar codebase, understanding how a project works, mapping architecture, tracing implementation or data flow, locating where functionality belongs, or establishing project context before making changes.",
-   "version": "1",
+   "desc": "Understand an unfamiliar codebase with evidence by mapping architecture, execution paths, data flow, dependencies, conventions and integration points. Use when exploring a repository for the first time, working out how a project works, tracing where something happens, or locating where new functionality belongs. Not for deciding what the user wants (use clarify-before-building) or planning the work (use engineering-planning).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -304,8 +304,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "workflow",
    "icon": "📐",
-   "desc": "Turn engineering objectives into evidence-grounded technical plans, executable task contracts, dependency models, and coordinated implementation work. Use when planning features, refactors, migrations, architecture changes, multi-step engineering work, or agent delegation; also use to validate, persist, or reconcile existing plans.",
-   "version": "1",
+   "desc": "Turn engineering goals into evidence-grounded technical plans with tasks, dependencies, interfaces and verification steps, then coordinate the work. Use when planning a feature, refactor, migration or architecture change, splitting work for several agents, or validating and updating an existing plan. Not for working out what the user wants first (use clarify-before-building).",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/dependency-model.md",
@@ -322,8 +322,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "security",
    "icon": "📦",
-   "desc": "Dependency management, lockfiles, vulnerability awareness, SBOM basics, and supply-chain hygiene for Cybercore repositories.",
-   "version": "1",
+   "desc": "Dependency and supply-chain hygiene, covering choosing dependencies, lockfiles, updates, vulnerability advisories, licences and SBOMs. Use when adding, updating or removing a dependency, reviewing a lockfile change, or triaging a vulnerability advisory. Not for secure coding practices (use security-guidelines) or full security audits (use security-audit).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -334,8 +334,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "workflow",
    "icon": "📝",
-   "desc": "Documentation, README quality, Architecture Decision Records (ADRs), and knowledge capture standards for Cybercore repositories.",
-   "version": "1",
+   "desc": "Decide what to document and how to structure it, including READMEs, guides, Architecture Decision Records (ADRs), changelogs and knowledge capture. Use when creating or reorganizing project documentation, recording a technical decision, or checking docs match the code. Not for improving the wording itself (use plain-writing) or drawing diagrams (use diagrams-as-code).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -346,8 +346,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "web",
    "icon": "🌐",
-   "desc": "Internationalization (i18n) and localization (l10n) practices for Cybercore repositories. Covers string extraction, locale handling, formatting, RTL awareness, and safe translation workflows.",
-   "version": "1",
+   "desc": "Internationalization and localization, covering string extraction, locale handling, plurals, date, number and currency formatting, right-to-left layouts and translation workflows. Use when making an app translatable, adding a language, or fixing locale-specific formatting or layout bugs.",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -358,8 +358,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "devops",
    "icon": "🚨",
-   "desc": "Lightweight incident response and on-call practices for Cybercore services. Covers detection, triage, communication, mitigation, rollback, and blameless follow-up.",
-   "version": "1",
+   "desc": "Lightweight incident response for running services, covering detection, triage, communication, mitigation, rollback and blameless follow-up. Use when a production service is down or degraded, during an outage, or when writing a post-incident review. Not for finding the root cause of a bug outside an incident (use deep-investigation).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -370,8 +370,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "ai",
    "icon": "🤖",
-   "desc": "Practical patterns for building LLM-powered features and agentic applications in Cybercore repositories. Covers prompting structure, tool use, evaluation, safety boundaries, and operational hygiene.",
-   "version": "1",
+   "desc": "Build LLM-powered features and agentic applications, covering prompt structure, tool use, retrieval, structured output, evaluation, safety boundaries, cost and latency. Use when adding an AI feature to an app or building an agent that calls a model. Not for writing agent skills, rules or system prompts (use prompt-engineering-for-agents) or building MCP servers (use mcp-server-development).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -382,8 +382,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "language",
    "icon": "🌙",
-   "desc": "Lua language and module development standards for Cybercore and Omarchy-related work. Use for general Lua coding, modules, performance, error handling, testing, and embedded/scripting tasks outside pure Hyprland config.",
-   "version": "1",
+   "desc": "Lua language and module development, covering modules, error handling, performance, testing, and embedded or scripting use. Use for general Lua code, Lua libraries, and Lua embedded in other programs. Not for Omarchy or Hyprland Lua configuration (use omarchy-lua-config).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -394,8 +394,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "ai",
    "icon": "🧩",
-   "desc": "Design, build, secure and test Model Context Protocol (MCP) servers that expose tools, resources and prompts to AI agents. Covers agent-friendly tool design (names, descriptions, strict input schemas, structured output, errors the model can recover from), the stdio and Streamable HTTP transports, the stateless request model of current spec revisions, authorization for remote servers, security against prompt injection and over-broad permissions, and testing at the handler, protocol and real-client levels. Use when creating or changing an MCP server or tool, wrapping an API or CLI for agents, reviewing an MCP server's safety, or debugging why a client cannot see or call a tool.",
-   "version": "1",
+   "desc": "Design, build, secure and test Model Context Protocol (MCP) servers that expose tools, resources and prompts to AI agents. Covers agent-friendly tool design (names, descriptions, strict input schemas, structured output, errors the model can recover from), the stdio and Streamable HTTP transports, the stateless request model of current spec revisions, authorization for remote servers, security against prompt injection and over-broad permissions, and testing at the handler, protocol and real-client levels. Use when creating or changing an MCP server or tool, wrapping an API or CLI for agents, reviewing an MCP server's safety, or debugging why a client cannot see or call a tool. Not for LLM features inside an application (use llm-application-patterns).",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/protocol-shapes.md",
@@ -409,8 +409,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "mobile",
    "icon": "📲",
-   "desc": "Cross-platform mobile development standards for Cybercore repositories. Covers Flutter, React Native, and Kotlin Multiplatform patterns, navigation, platform APIs, release hygiene, and safe mobile practices.",
-   "version": "1",
+   "desc": "Cross-platform mobile apps with Flutter, React Native or Kotlin Multiplatform, covering navigation, state, platform APIs, permissions, builds and store releases. Use when building or releasing a cross-platform mobile app. Not for native Android with Gradle (use android-development).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -421,8 +421,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "devops",
    "icon": "🔭",
-   "desc": "Observability, logging, metrics, tracing, and systematic debugging practices for Cybercore repositories. Covers structured logging, failure diagnosis, profiling, and post-incident hygiene.",
-   "version": "1",
+   "desc": "Instrument code so problems are visible with structured logging, metrics, tracing, health checks and profiling, plus debugging with those signals. Use when adding logs, metrics or traces, setting up dashboards or alerts, or profiling slow code. Not for root-cause investigations of a specific failure (use deep-investigation) or Rust tracing setup (use rust-observability).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -447,8 +447,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "quality",
    "icon": "⚡",
-   "desc": "Performance analysis and optimization practices for Cybercore repositories. Covers measurement, algorithmic complexity, caching, frontend and backend hot paths, and safe optimization workflows.",
-   "version": "1",
+   "desc": "Measure and improve performance across algorithms, caching, memory, frontend load and rendering, and backend hot paths, always measuring before and after. Use when something is slow, uses too much memory, or must meet a speed target. Not for adding monitoring (use observability-and-debugging).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -459,8 +459,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "workflow",
    "icon": "✍️",
-   "desc": "Write and edit prose so it reads as clear, specific, human writing instead of generic AI text. Applies plain-language principles (reader first, concrete words, short active sentences, one idea per sentence) and removes common machine-writing patterns such as inflated vocabulary, filler openers, hedging chains, \"not just X but Y\" constructions, padded lists of three, decorative emoji and headings on everything, while keeping every fact, number, name and command intact. Use when drafting or revising READMEs, documentation, pull request and commit descriptions, release notes, announcements, emails, error messages and interface copy, or when asked to \"make this sound less like AI\", \"simplify\", \"tighten\" or \"rewrite in plain English\".",
-   "version": "1",
+   "desc": "Write and edit prose so it reads as clear, specific, human writing instead of generic AI text. Applies plain-language principles (reader first, concrete words, short active sentences, one idea per sentence) and removes common machine-writing patterns such as inflated vocabulary, filler openers, hedging chains, \"not just X but Y\" constructions, padded lists of three, decorative emoji and headings on everything, while keeping every fact, number, name and command intact. Use when drafting or revising READMEs, documentation, pull request and commit descriptions, release notes, announcements, emails, error messages and interface copy, or when asked to \"make this sound less like AI\", \"simplify\", \"tighten\" or \"rewrite in plain English\". Not for deciding what documentation a project needs (use documentation-and-adrs).",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/ai-tells.md",
@@ -473,8 +473,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "ai",
    "icon": "🧠",
-   "desc": "How to write effective agent skills, rules, and system prompts for the Cybercore agent ecosystem. Covers progressive disclosure, activation descriptions, safety framing, and maintainable instruction design.",
-   "version": "1",
+   "desc": "Write effective agent skills, rules and system prompts, covering activation descriptions, progressive disclosure, safety framing and maintainable instructions. Use when writing or revising a SKILL.md, a rules file, AGENTS.md or a system prompt. Not for measuring whether a skill works (use skill-evaluation) or LLM features in applications (use llm-application-patterns).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -485,8 +485,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "language",
    "icon": "🐍",
-   "desc": "Modern Python development standards for Cybercore repositories. Covers packaging, typing, async, error handling, testing, tooling, and safe practices.",
-   "version": "1",
+   "desc": "Modern Python development covering packaging with pyproject, type hints, async, error handling, testing with pytest, linting and formatting. Use when writing, packaging or testing Python code.",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -542,8 +542,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "quality",
    "icon": "🚦",
-   "desc": "Write the failing test first, watch it fail for the right reason, make it pass with the smallest change, then refactor with the tests green (red, green, refactor). Use when implementing a feature or behaviour change, when fixing a bug (reproduce it with a failing regression test before touching the code), when changing code that has no tests (pin current behaviour with characterization tests first), or when the user asks for TDD or test-driven work. Works in any language; covers choosing the test level, deterministic tests, and reporting test evidence honestly.",
-   "version": "1",
+   "desc": "Write the failing test first, watch it fail for the right reason, make it pass with the smallest change, then refactor with the tests green (red, green, refactor). Use when implementing a feature or behaviour change, when fixing a bug (reproduce it with a failing regression test before touching the code), when changing code that has no tests (pin current behaviour with characterization tests first), or when the user asks for TDD or test-driven work. Works in any language; covers choosing the test level, deterministic tests, and reporting test evidence honestly. Not for deciding a project's overall test strategy (use testing-qa).",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/cycle-examples.md",
@@ -557,8 +557,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "language",
    "icon": "🟦",
-   "desc": "TypeScript and Node.js development standards for Cybercore repositories. Covers strict typing, modern module systems, tooling, API patterns, testing, and safe practices.",
-   "version": "1",
+   "desc": "TypeScript and Node.js development covering strict typing, ES modules, tooling, API patterns, testing and safe practices. Use when writing or configuring TypeScript or Node.js code, packages or services.",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -569,8 +569,8 @@ window.CC_DATA = {
    "group": "general",
    "category": "web",
    "icon": "🧐",
-   "desc": "Audit an existing user interface for usability and visual quality, then fix what matters most in small, verified steps. Reviews hierarchy, layout and spacing, typography, colour and contrast, component states (empty, loading, error, disabled, hover, focus), forms, navigation, responsiveness, motion, consistency with the project's own design system, and interface copy; produces prioritized findings with screenshots; and proves fixes with before and after captures. Use when asked to review, critique, polish or \"make this look better\"; when a page feels off, cluttered, generic or inconsistent; before a launch; or after a redesign. Respects the project's existing brand and tokens; for building new designs from scratch, use web-design-and-frontend-craft.",
-   "version": "1",
+   "desc": "Audit an existing user interface for usability and visual quality, then fix what matters most in small, verified steps. Reviews hierarchy, layout and spacing, typography, colour and contrast, component states (empty, loading, error, disabled, hover, focus), forms, navigation, responsiveness, motion, consistency with the project's own design system, and interface copy; produces prioritized findings with screenshots; and proves fixes with before and after captures. Use when asked to review, critique, polish or \"make this look better\"; when a page feels off, cluttered, generic or inconsistent; before a launch; or after a redesign. Respects the project's existing brand and tokens. Not for building new designs from scratch (use web-design-and-frontend-craft).",
+   "version": "2",
    "files": [
     "SKILL.md",
     "references/heuristics.md",
@@ -703,8 +703,8 @@ window.CC_DATA = {
    "group": "omarchy",
    "category": "omarchy",
    "icon": "🛠️",
-   "desc": "Safe agent operations on Omarchy, the agent-first Arch/Hyprland OS. Use when an agent is changing system settings, desktop config, packages, themes, plugins, or diagnosing session issues on Omarchy.",
-   "version": "1",
+   "desc": "Safe agent operations on Omarchy, the agent-first Arch and Hyprland desktop OS. Use when changing Omarchy system settings, desktop config, packages, themes or plugins, or diagnosing desktop session issues on Omarchy. Not for generic Linux services and packages on other systems (use system-administration).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -727,8 +727,8 @@ window.CC_DATA = {
    "group": "omarchy",
    "category": "omarchy",
    "icon": "🧩",
-   "desc": "Omarchy plugin and theme development for Quickshell/Omarchy desktop extension points. Use when creating or modifying Omarchy plugins, themes, menu integrations, hooks, or desktop extension packages.",
-   "version": "1",
+   "desc": "Omarchy plugin and theme development for Quickshell and Omarchy desktop extension points, including menus, hooks, panels and theme packages. Use when creating or changing an Omarchy plugin, theme or desktop extension. Not for standalone Qt or QML desktop apps (use qt-cpp-desktop).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]
@@ -739,8 +739,8 @@ window.CC_DATA = {
    "group": "omarchy",
    "category": "omarchy",
    "icon": "🔧",
-   "desc": "Rust development for Omarchy-related tooling, CLIs, system utilities, and desktop-adjacent apps. Use when building or modifying Rust tools intended to run on Omarchy/Arch, integrate with agent workflows, or accelerate user-space utilities.",
-   "version": "1",
+   "desc": "Omarchy-specific integration for Rust tools, covering Omarchy paths, theme and config hooks, desktop notifications, and running alongside Hyprland and Omarchy services. Use when a Rust tool must integrate with Omarchy or its agent workflows. Not for general Rust application structure (use rust-applications).",
+   "version": "2",
    "files": [
     "SKILL.md"
    ]

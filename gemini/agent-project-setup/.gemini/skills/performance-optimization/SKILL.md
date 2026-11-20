@@ -1,8 +1,8 @@
 ---
 name: performance-optimization
-description: Performance analysis and optimization practices for Cybercore repositories. Covers measurement, algorithmic complexity, caching, frontend and backend hot paths, and safe optimization workflows.
+description: Measure and improve performance across algorithms, caching, memory, frontend load and rendering, and backend hot paths, always measuring before and after. Use when something is slow, uses too much memory, or must meet a speed target. Not for adding monitoring (use observability-and-debugging).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Performance Optimization

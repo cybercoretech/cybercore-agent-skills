@@ -1,8 +1,8 @@
 ---
 name: code-review-and-refactoring
-description: Code review standards, constructive feedback, safe refactoring practices, and PR hygiene for Cybercore repositories.
+description: Review code changes and refactor safely. Covers what to look for in a pull request (correctness, clarity, tests, risk), giving constructive feedback, and refactoring in small behaviour-preserving steps. Use when reviewing a pull request or diff, or restructuring code without changing what it does. Not for security reviews (use security-audit) or UI reviews (use ux-design-audit).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Code Review and Refactoring

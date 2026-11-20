@@ -1,8 +1,8 @@
 ---
 name: codebase-intelligence
-description: Systematic, evidence-backed understanding of software repositories, architecture, execution paths, dependencies, conventions, and integration points. Use when exploring an unfamiliar codebase, understanding how a project works, mapping architecture, tracing implementation or data flow, locating where functionality belongs, or establishing project context before making changes.
+description: Understand an unfamiliar codebase with evidence by mapping architecture, execution paths, data flow, dependencies, conventions and integration points. Use when exploring a repository for the first time, working out how a project works, tracing where something happens, or locating where new functionality belongs. Not for deciding what the user wants (use clarify-before-building) or planning the work (use engineering-planning).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Codebase Intelligence

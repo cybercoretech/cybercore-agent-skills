@@ -1,8 +1,8 @@
 ---
 name: container-devops
-description: Container development and DevOps practices with Docker, GitHub Actions, and CI/CD pipelines.
+description: Containers for development and deployment with Docker and Docker Compose. Covers Dockerfiles, multi-stage builds, image size and security, volumes, networks, health checks and local service stacks. Use when writing or debugging a Dockerfile or compose file, containerizing an app, or running services in containers. Not for CI workflows and GitHub Actions (use ci-cd-pipelines).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # Container & DevOps

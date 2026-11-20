@@ -1,8 +1,8 @@
 ---
 name: rust-development
-description: Rust development standards for Cargo workspaces, crates.io publishing, MSRV compliance, and error handling patterns.
+description: Rust standards for Cargo workspaces, library crates, crates.io publishing, MSRV compliance and library error handling. Use when working on a Rust library or workspace, publishing a crate, changing the minimum supported Rust version, or designing a library's error types. Not for structuring Rust applications and CLIs (use rust-applications and its focused skills).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # Rust Development Standards

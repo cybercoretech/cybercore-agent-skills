@@ -1,8 +1,8 @@
 ---
 name: ci-cd-pipelines
-description: CI/CD pipeline design and hygiene for Cybercore repositories. Covers GitHub Actions, reusable workflows, caching, matrix builds, secrets handling, and safe deployment practices.
+description: CI/CD pipelines with GitHub Actions. Covers workflow design, reusable workflows, caching, matrix builds, secrets and permissions, required checks, and safe deployments. Use when creating, fixing or speeding up a CI workflow, adding a deployment step, or debugging a failing check. Not for Dockerfiles and container images (use container-devops).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # CI/CD Pipelines

@@ -1,8 +1,8 @@
 ---
 name: api-backend
-description: API backend development with REST design, JSON schemas, error handling, and HTTP service patterns.
+description: Design and build HTTP API backends with REST resource design, JSON request and response schemas, status codes, error formats, pagination, versioning and service patterns. Use when adding or changing API endpoints, defining request and response contracts, or structuring a backend service. Not for database schema and queries (use database-and-sql) or MCP servers for AI agents (use mcp-server-development).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # API Backend Development

@@ -1,8 +1,8 @@
 ---
 name: qt-cpp-desktop
-description: Qt6/C++ desktop application development with qmake6, Quickshell/Omarchy plugins, and QML.
+description: Qt6 and C++ desktop applications built with qmake6 or CMake, including widgets, QML, signals and slots, resources and packaging. Use when building or changing a Qt desktop app, a QML interface, or C++ desktop code. Not for Omarchy or Quickshell plugins and themes (use omarchy-plugin-theme).
 metadata:
-  version: "2"
+  version: "3"
 ---
 
 # Qt6/C++ Desktop Development

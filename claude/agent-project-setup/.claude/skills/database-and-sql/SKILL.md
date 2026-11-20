@@ -1,8 +1,8 @@
 ---
 name: database-and-sql
-description: Database design, SQL, migrations, and data-access patterns for Cybercore repositories. Covers schema design, query safety, migrations, ORMs, and operational hygiene.
+description: Database design and SQL, covering schemas, indexes, queries, migrations, transactions, ORMs and data-access patterns. Use when designing tables, writing or optimizing queries, adding a migration, or choosing how code talks to a database. Not for SQLite persistence in Rust apps (use rust-persistence).
 metadata:
-  version: "1"
+  version: "2"
 ---
 
 # Database and SQL
