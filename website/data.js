@@ -411,6 +411,20 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "plain-writing",
+   "name": "Plain Writing",
+   "group": "general",
+   "category": "workflow",
+   "icon": "✍️",
+   "desc": "Write and edit prose so it reads as clear, specific, human writing instead of generic AI text. Applies plain-language principles (reader first, concrete words, short active sentences, one idea per sentence) and removes common machine-writing patterns such as inflated vocabulary, filler openers, hedging chains, \"not just X but Y\" constructions, padded lists of three, decorative emoji and headings on everything, while keeping every fact, number, name and command intact. Use when drafting or revising READMEs, documentation, pull request and commit descriptions, release notes, announcements, emails, error messages and interface copy, or when asked to \"make this sound less like AI\", \"simplify\", \"tighten\" or \"rewrite in plain English\".",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/ai-tells.md",
+    "references/before-after.md"
+   ]
+  },
+  {
    "id": "prompt-engineering-for-agents",
    "name": "Prompt Engineering for Agents",
    "group": "general",

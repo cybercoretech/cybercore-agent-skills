@@ -60,6 +60,7 @@ skills:
   mobile-cross-platform:         {group: general, category: mobile, icon: "📲"}
   observability-and-debugging:   {group: general, category: devops, icon: "🔭"}
   performance-optimization:      {group: general, category: quality, icon: "⚡"}
+  plain-writing:                  {group: general, category: workflow, icon: "✍️"}
   prompt-engineering-for-agents: {group: general, category: ai, icon: "🧠"}
   python-development:            {group: general, category: language, icon: "🐍"}
   security-audit:                 {group: general, category: security, icon: "🕵️"}
