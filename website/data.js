@@ -196,6 +196,20 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "browser-verification",
+   "name": "Browser Verification",
+   "group": "general",
+   "category": "web",
+   "icon": "🖱️",
+   "desc": "Check web changes in a real (usually headless) browser before claiming they work. Opens the running app, walks the changed user flow, and collects evidence, including screenshots at phone and desktop widths and in light and dark themes, console errors, failed network requests, and basic keyboard and accessibility checks. Use after changing a website, web app, component, style, route, form or client-side script; when a user reports something broken in the UI; or when asked to \"check it in the browser\", \"take a screenshot\", or \"verify the page\". Works with Playwright, browser automation tools or Chrome DevTools, whichever the environment provides.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/checklist.md",
+    "references/tool-options.md"
+   ]
+  },
+  {
    "id": "ci-cd-pipelines",
    "name": "CI/CD Pipelines",
    "group": "general",
