@@ -60,7 +60,7 @@ if [[ -z "$SKILLS_DIR" ]]; then
   exit 2
 fi
 
-# Default skills live in the skills folder, opt-in skills in packs/<pack>/.
+# Default skills live in the skills folder, pack skills in packs/<pack>/.
 SOURCE=""
 for candidate in "$TEMPLATE_DIR/$SKILLS_DIR/$SKILL" "$TEMPLATE_DIR"/packs/*/"$SKILL"; do
   if [[ -f "$candidate/SKILL.md" ]]; then SOURCE="$candidate"; break; fi

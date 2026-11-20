@@ -373,6 +373,7 @@ body.sheet-open { overflow: hidden; }
 
 /* ===== Install terminal and rules ===== */
 .section-note { color: var(--cc-fg-muted); font-size: 12.5px; margin-bottom: 12px; }
+.section-note code { color: var(--cc-neon-green); }
 .section-note.dim { color: var(--cc-fg-dim); margin: 10px 0 0; }
 .terminal, .rule-window { position: relative; border: 1px solid var(--cc-line); background: var(--cc-term); min-width: 0; }
 .term-tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--cc-line); background: var(--cc-bar); scrollbar-width: thin; }

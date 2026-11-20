@@ -38,11 +38,13 @@ test('status tones follow the manifest statuses', () => {
 
 test('folders follow group order and mark the opt-in pack', () => {
   const f = folders(data.skills, data.groups);
-  assert.deepEqual(f.map(x => x.id), ['core', 'general', 'rust', 'omarchy']);
-  assert.equal(f.find(x => x.id === 'omarchy').optIn, true);
+  assert.deepEqual(f.map(x => x.id), data.groups.map(g => g.id));
+  assert.equal(f[0].id, 'core');
+  assert.equal(f.find(x => x.id === 'core').optIn, false);
+  assert.ok(f.filter(x => x.id !== 'core').every(x => x.optIn), 'every pack is opt-in');
   assert.equal(f.reduce((n, x) => n + x.skills.length, 0), data.skills.length);
-  const general = f.find(x => x.id === 'general').skills.map(s => s.id);
-  assert.deepEqual(general, [...general].sort());
+  const core = f.find(x => x.id === 'core').skills.map(s => s.id);
+  assert.deepEqual(core, [...core].sort());
 });
 
 test('search needs every term', () => {
@@ -101,12 +103,12 @@ test('stats are computed', () => {
   assert.equal(s.skills, data.skills.length);
   assert.equal(s.agents, data.agents.length);
   assert.equal(s.rules, data.rules.length);
-  assert.equal(s.optIn, data.skills.filter(x => x.group === 'omarchy').length);
+  assert.equal(s.optIn, data.skills.filter(x => x.group !== 'core').length);
   assert.equal(s.defaultSkills, s.skills - s.optIn);
 });
 
 test('availability text names default or pack', () => {
-  const def = data.skills.find(s => s.group === 'general');
+  const def = data.skills.find(s => s.group === 'core');
   const pack = data.skills.find(s => s.group === 'omarchy');
   assert.match(availabilityText(def, data.groups, data.agents), /^Installed by default for all 12 agents with skills support\./);
   assert.match(availabilityText(pack, data.groups, data.agents), /--with omarchy/);

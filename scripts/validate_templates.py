@@ -5,8 +5,6 @@ Checks:
   - canonical skills/<name>/SKILL.md frontmatter (spec fields only, name matches folder, valid
     name format, non-empty description within 1024 characters)
   - templates/skill-skeleton is a valid template and never ships to an agent
-  - skill cross-references point at real skills, and default skills never
-    depend on an opt-in pack skill
   - each agent template: instruction file with the right ownership marker,
     exactly one installer (executable), rules, skills, packs as the manifest says
   - every template copy matches the canonical source (via sync_templates --check)
@@ -95,17 +93,10 @@ if skeleton.is_file():
 else:
     errors.append("templates/skill-skeleton/SKILL.md is missing")
 
-# Cross-references: `skill-name` in backticks must exist; default skills must
-# not point at pack-only skills, which are absent from a default install.
-names_pattern = re.compile(r"`(" + "|".join(map(re.escape, sorted(skills, key=len, reverse=True))) + r")`")
-for name, meta in skills.items():
-    skill_file = ROOT / "skills" / name / "SKILL.md"
-    if not skill_file.is_file():
-        continue
-    is_default = groups[meta["group"]].get("default", False)
-    for ref in set(names_pattern.findall(skill_file.read_text(encoding="utf-8"))):
-        if ref != name and is_default and not groups[skills[ref]["group"]].get("default", False):
-            errors.append(f"skills/{name}: default skill references pack-only skill `{ref}`")
+# Cross-references to other skills ("use `x`", "(use x)") may point into packs:
+# packs are the normal way to install domain skills, and an agent without the
+# pack simply does not have that skill. scripts/check_skill_descriptions.py
+# checks that every pointer names a skill that exists.
 
 # Agent templates.
 for agent, spec in manifest["agents"].items():

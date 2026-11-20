@@ -553,6 +553,10 @@ function renderInstall() {
         installers.map(a => el('button', { type: 'button', role: 'tab', class: 'term-tab', 'data-agent': a.id, 'aria-controls': 'installTerminal' }, a.id))),
       el('pre', { id: 'installTerminal', class: 'term-lines', role: 'tabpanel', tabindex: '0' }),
       el('button', { class: 'btn-copy term-copy', type: 'button', 'data-action': 'copy-install' }, '⧉ copy')),
+    el('p', { id: 'installPacks', class: 'section-note' },
+      `The installer adds the ${lib.stats(DATA).defaultSkills} default skills. Add optional packs with `,
+      el('code', {}, '--with rust,web'), ' or everything with ', el('code', {}, '--with all'), '. Packs: ',
+      DATA.groups.filter(g => g.pack).flatMap((g, i) => [i ? ', ' : '', el('code', {}, g.pack)]), '.'),
     el('p', { class: 'section-note dim' }, 'Cloned somewhere else? Replace ~/cybercore-agent-skills with your clone.'));
   renderInstallTerminal();
   $('#installTabs').addEventListener('click', e => {

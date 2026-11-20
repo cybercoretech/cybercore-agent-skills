@@ -1,6 +1,6 @@
 # Setup Guide
 
-This distribution contains 13 agent templates. Twelve install 38 default skills plus an opt-in 4-skill Omarchy pack; Ollama installs rules only. Each template is in `<agent>/agent-project-setup/`.
+This distribution contains 13 agent templates. Twelve install 18 default skills, with 38 more in 9 optional domain packs (`--with`); Ollama installs rules only. Each template is in `<agent>/agent-project-setup/`.
 
 ## Install
 
@@ -14,7 +14,7 @@ Options (every installer):
 
 | Option | Effect |
 |---|---|
-| `--with omarchy` | Also install the opt-in Omarchy skill pack |
+| `--with PACKS` | Also install optional skill packs: one (`--with rust`), a comma list (`--with rust,web`) or `all` |
 | `--list-packs` | List optional packs for this agent |
 | `-h`, `--help` | Show usage |
 
