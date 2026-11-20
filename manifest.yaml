@@ -44,6 +44,7 @@ skills:
   accessibility-a11y:            {group: general, category: web, icon: "♿"}
   agent-evaluation-and-benchmarking: {group: general, category: quality, icon: "📊"}
   ci-cd-pipelines:               {group: general, category: devops, icon: "🔁"}
+  clarify-before-building:       {group: general, category: workflow, icon: "❓"}
   code-review-and-refactoring:   {group: general, category: quality, icon: "🔍"}
   database-and-sql:              {group: general, category: backend, icon: "🗄️"}
   deep-investigation:            {group: general, category: quality, icon: "🔎"}
