@@ -47,20 +47,35 @@ export async function serveWebsite() {
   return { url: `http://127.0.0.1:${port}/`, close: () => new Promise(resolve => server.close(resolve)) };
 }
 
+const START_MS = Number(process.env.SITE_BROWSER_START_MS) || 20000;
+// After one failed start every later page fails at once with the same error,
+// so a broken runner fails in seconds instead of waiting out each test.
+let startFailure = null;
+
+// Browsers run in their own process group (see openPage), so they no longer
+// die with the terminal's Ctrl+C: kill any still running when this process ends.
+const liveGroups = new Set();
+const killGroup = pid => { try { process.kill(-pid, 'SIGKILL'); } catch { /* already gone */ } };
+process.on('exit', () => liveGroups.forEach(killGroup));
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.once(signal, () => { liveGroups.forEach(killGroup); process.kill(process.pid, signal); });
+}
+
 function devtoolsUrl(proc) {
   return new Promise((resolve, reject) => {
     let buf = '';
-    const timer = setTimeout(() => reject(new Error('browser did not start: ' + buf.slice(-400))), 20000);
+    const timer = setTimeout(() => reject(new Error(`browser did not start within ${START_MS} ms (${browserBinary()}): ${buf.slice(-400) || 'no output'}`)), START_MS);
     proc.stderr.on('data', chunk => {
       buf += chunk;
       const m = /DevTools listening on (ws:\/\/\S+)/.exec(buf);
       if (m) { clearTimeout(timer); resolve(m[1]); }
     });
-    proc.on('exit', code => reject(new Error('browser exited with ' + code + ': ' + buf.slice(-400))));
+    proc.on('exit', code => { clearTimeout(timer); reject(new Error(`browser exited with ${code} (${browserBinary()}): ${buf.slice(-400) || 'no output'}`)); });
   });
 }
 
 export async function openPage(url, { width, height, dpr = 2, reducedMotion = false } = {}) {
+  if (startFailure) throw startFailure;
   const profile = await mkdtemp(join(tmpdir(), 'cc-site-test-'));
   const proc = spawn(browserBinary(), [
     '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`,
@@ -68,8 +83,20 @@ export async function openPage(url, { width, height, dpr = 2, reducedMotion = fa
     // CI runners (Ubuntu 24.04) restrict the user namespaces Chrome's sandbox needs; the tests only load the local site and the org kit.
     ...(process.env.CI ? ['--no-sandbox'] : []),
     `--window-size=${width},${height}`, 'about:blank',
-  ], { stdio: ['ignore', 'ignore', 'pipe'] });
-  const browserWs = await devtoolsUrl(proc);
+  ], { stdio: ['ignore', 'ignore', 'pipe'], detached: true }); // own process group, so a stuck start can be killed with its helpers
+  liveGroups.add(proc.pid);
+  proc.once('exit', () => liveGroups.delete(proc.pid));
+  let browserWs;
+  try {
+    browserWs = await devtoolsUrl(proc);
+  } catch (error) {
+    startFailure = error;
+    // Never leave a stuck browser (or its helper processes) holding the test run open.
+    killGroup(proc.pid);
+    proc.stderr.destroy();
+    await rm(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }).catch(() => {});
+    throw error;
+  }
   const base = browserWs.replace(/^ws:/, 'http:').replace(/\/devtools\/browser\/.*$/, '');
   const targets = await (await fetch(base + '/json/list')).json();
   const target = targets.find(t => t.type === 'page');
@@ -138,6 +165,7 @@ export async function openPage(url, { width, height, dpr = 2, reducedMotion = fa
       try { ws.close(); } catch { /* already closed */ }
       proc.kill();
       await new Promise(resolve => (proc.exitCode !== null ? resolve() : proc.once('exit', resolve)));
+      killGroup(proc.pid); // any helper processes left in the browser's group
       // Chromium's helper processes can still be writing the profile briefly
       // after the main process exits; retry, and never fail a test over clean-up.
       await rm(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }).catch(() => {});
