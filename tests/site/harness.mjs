@@ -65,6 +65,8 @@ export async function openPage(url, { width, height, dpr = 2, reducedMotion = fa
   const proc = spawn(browserBinary(), [
     '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`,
     '--no-first-run', '--no-default-browser-check', '--disable-gpu', '--hide-scrollbars', '--mute-audio',
+    // CI runners (Ubuntu 24.04) restrict the user namespaces Chrome's sandbox needs; the tests only load the local site and the org kit.
+    ...(process.env.CI ? ['--no-sandbox'] : []),
     `--window-size=${width},${height}`, 'about:blank',
   ], { stdio: ['ignore', 'ignore', 'pipe'] });
   const browserWs = await devtoolsUrl(proc);
@@ -124,6 +126,13 @@ export async function openPage(url, { width, height, dpr = 2, reducedMotion = fa
   return {
     evaluate,
     consoleErrors,
+    /** Real key press through the browser's input pipeline (Tab, Escape, Enter, '/'). */
+    async press(key, { shift = false } = {}) {
+      const codes = { Tab: 9, Escape: 27, Enter: 13, '/': 191 };
+      const base = { key, code: key === '/' ? 'Slash' : key, windowsVirtualKeyCode: codes[key] || 0, modifiers: shift ? 8 : 0 };
+      await send('Input.dispatchKeyEvent', { type: 'keyDown', ...base, ...(key.length === 1 ? { text: key } : key === 'Enter' ? { text: '\r' } : {}) });
+      await send('Input.dispatchKeyEvent', { type: 'keyUp', ...base });
+    },
     screenshot: async () => Buffer.from((await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false })).data, 'base64'),
     async close() {
       try { ws.close(); } catch { /* already closed */ }

@@ -396,7 +396,7 @@ function renderAgentSheet(agent) {
     el('div', { class: 'sheet-body' },
       el('p', { class: 'agent-status' }, el('span', { class: 'led', 'data-tone': status.tone, 'aria-hidden': 'true' }), status.label, ' · ', agent.statusText),
       el('dl', { class: 'agent-facts' }, rows.flatMap(([k, v]) => [el('dt', {}, k), el('dd', {}, el('code', {}, v))])),
-      el('div', { class: 'install-box' },
+      el('div', { class: 'install-box agent-setup' },
         el('span', { class: 'install-label' }, 'setup'),
         el('code', { id: 'agentCommand', class: 'install-command' }, lib.setupCommand(agent)),
         el('button', { class: 'btn-copy', type: 'button', 'data-action': 'copy-agent' }, '⧉ copy')),
@@ -490,7 +490,7 @@ function renderAgents() {
         el('span', { class: 'agent-badge', 'aria-hidden': 'true' }, agent.icon || agent.badge),
         el('span', { class: 'agent-name' }, agent.name),
         el('span', { class: 'led', 'data-tone': status.tone, 'aria-hidden': 'true' })),
-      el('span', { class: 'agent-path' }, agent.skillsDir ? `~/${agent.skillsDir}/` : 'rules only'),
+      el('span', { class: 'agent-path' }, agent.skillsDir ? `~/${agent.skillsDir}/` : `~/${agent.rulesDir}/`),
       el('span', { class: 'agent-state', 'data-tone': status.tone }, status.label));
   })));
   $('#agentGrid').addEventListener('click', e => {

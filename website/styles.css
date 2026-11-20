@@ -270,6 +270,7 @@ footer > cybercore-contact { width: min(100%, 1280px); text-align: center; }
   padding: 10px 12px; border: 1px solid var(--cc-line); background: var(--cc-term);
 }
 .install-label { color: var(--cc-fg-dim); font-size: 11px; }
+.install-box.agent-setup { grid-template-columns: auto minmax(0, 1fr) auto; }
 .install-agent { background: var(--cc-bar); color: var(--cc-fg); border: 1px solid var(--cc-line); font: inherit; font-size: 12px; padding: 4px 6px; min-height: 32px; }
 .install-command { color: var(--cc-neon-green); font-size: 12px; white-space: normal; overflow-wrap: anywhere; padding: 4px 0; }
 .install-command::before { content: "$ "; color: var(--cc-fg-dim); }
