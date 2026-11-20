@@ -43,6 +43,7 @@ skills:
   # general
   accessibility-a11y:            {group: general, category: web, icon: "♿"}
   agent-evaluation-and-benchmarking: {group: general, category: quality, icon: "📊"}
+  browser-verification:           {group: general, category: web, icon: "🖱️"}
   ci-cd-pipelines:               {group: general, category: devops, icon: "🔁"}
   clarify-before-building:       {group: general, category: workflow, icon: "❓"}
   code-review-and-refactoring:   {group: general, category: quality, icon: "🔍"}
