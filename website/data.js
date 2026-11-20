@@ -285,6 +285,20 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "diagrams-as-code",
+   "name": "Diagrams as Code",
+   "group": "general",
+   "category": "workflow",
+   "icon": "🗺️",
+   "desc": "Draw architecture, flow, sequence, state, data-model and dependency diagrams as text (Mermaid, Graphviz DOT, D2, PlantUML or hand-written SVG) that lives next to the code, renders in documentation, and stays accurate. Chooses the format for where the diagram will be read, keeps each diagram focused on one question, derives it from the actual code or system rather than memory, renders it to check layout, and adds a text description for accessibility. Use when documenting a system or decision, explaining a flow in a README, pull request or ADR, mapping dependencies, modelling states or database tables, or when asked to \"draw\", \"diagram\", \"visualise\" or \"map\" how something works.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/formats.md",
+    "references/style.md"
+   ]
+  },
+  {
    "id": "engineering-planning",
    "name": "Engineering Planning & Task Decomposition",
    "group": "general",
