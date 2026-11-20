@@ -22,7 +22,7 @@ test('tree lists every skill in folders, favourites first', { skip }, async () =
 });
 
 test('the first skill opens on load', { skip }, async () => {
-  assert.equal(await page.evaluate(`document.querySelector('#paneTabs [aria-selected="true"]').dataset.tab`), data.skills[0].id);
+  assert.equal(await page.evaluate(`document.querySelector('#paneTabs [aria-current="true"]').dataset.tab`), data.skills[0].id);
 });
 
 test('opening a skill shows support, command and deep link', { skip }, async () => {
@@ -55,7 +55,7 @@ test('back and forward follow skill deep links', { skip }, async () => {
   await page.evaluate(`document.querySelector('#tree [data-skill="security-audit"]').click()`);
   await page.evaluate(`history.back()`);
   await page.evaluate(`new Promise(r => setTimeout(r, 300))`);
-  assert.equal(await page.evaluate(`document.querySelector('#paneTabs [aria-selected="true"]').dataset.tab`), 'clarify-before-building');
+  assert.equal(await page.evaluate(`document.querySelector('#paneTabs [aria-current="true"]').dataset.tab`), 'clarify-before-building');
 });
 
 test('matrix tab scrolls inside its container', { skip }, async () => {
@@ -67,7 +67,7 @@ test('matrix tab scrolls inside its container', { skip }, async () => {
 test('unknown deep link falls back with a toast', { skip }, async () => {
   const p = await openPage(site.url + '#skill/does-not-exist', { width: 1440, height: 900 });
   try {
-    assert.equal(await p.evaluate(`document.querySelector('#paneTabs [aria-selected="true"]').dataset.tab`), data.skills[0].id);
+    assert.equal(await p.evaluate(`document.querySelector('#paneTabs [aria-current="true"]').dataset.tab`), data.skills[0].id);
     assert.match(await p.evaluate(`document.getElementById('toast').textContent`), /No skill named does-not-exist/);
     assert.deepEqual(p.consoleErrors, []);
   } finally { await p.close(); }

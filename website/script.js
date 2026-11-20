@@ -126,8 +126,8 @@ function renderExplorerShell() {
           el('input', { id: 'treeSearch', type: 'search', placeholder: 'filter skills…', autocomplete: 'off', spellcheck: 'false', 'aria-label': 'Filter skills' })),
         el('div', { id: 'tree', class: 'tree' })),
       el('div', { class: 'editor' },
-        el('div', { id: 'paneTabs', class: 'pane-tabs', role: 'tablist', 'aria-label': 'Open skills' }),
-        el('div', { id: 'pane', class: 'pane', role: 'tabpanel', tabindex: '-1' }))));
+        el('div', { id: 'paneTabs', class: 'pane-tabs', role: 'group', 'aria-label': 'Open skills' }),
+        el('div', { id: 'pane', class: 'pane', role: 'region', 'aria-label': 'Skill details', tabindex: '-1' }))));
 }
 
 function renderTree() {
@@ -170,10 +170,10 @@ function renderTabs() {
   const tabs = $('#paneTabs');
   tabs.replaceChildren(
     ...state.openTabs.map(id => el('div', { class: 'pane-tab' + (id === state.active ? ' active' : '') },
-      el('button', { class: 'tab-open', type: 'button', role: 'tab', 'data-tab': id, 'aria-selected': String(id === state.active), tabindex: id === state.active ? '0' : '-1' }, `${id}.md`),
+      el('button', { class: 'tab-open', type: 'button', 'data-tab': id, 'aria-current': id === state.active ? 'true' : false }, `${id}.md`),
       el('button', { class: 'tab-close', type: 'button', 'data-close': id, 'aria-label': `Close ${id}` }, '×'))),
     el('div', { class: 'pane-tab matrix' + (state.active === 'matrix' ? ' active' : '') },
-      el('button', { class: 'tab-open', type: 'button', role: 'tab', 'data-tab': 'matrix', 'aria-selected': String(state.active === 'matrix'), tabindex: state.active === 'matrix' ? '0' : '-1' }, '⊞ matrix')));
+      el('button', { class: 'tab-open', type: 'button', 'data-tab': 'matrix', 'aria-current': state.active === 'matrix' ? 'true' : false }, '⊞ matrix')));
 }
 
 function agentOptions() {
@@ -313,7 +313,7 @@ function setupExplorer() {
   });
   $('#paneTabs').addEventListener('keydown', e => {
     if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
-    const tabs = $$('#paneTabs [role="tab"]');
+    const tabs = $$('#paneTabs .tab-open');
     const i = tabs.indexOf(document.activeElement);
     if (i < 0) return;
     const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
@@ -369,7 +369,7 @@ function loadDocs() {
   return docsPromise;
 }
 
-const sheetState = { kind: null, id: null, opener: null };
+const sheetState = { kind: null, id: null, opener: null, pushed: false };
 const BACKGROUND = ['header.titlebar', '#drawer', 'main', 'footer'];
 
 function setBackgroundInert(on) {
@@ -434,7 +434,7 @@ function openSheet(kind, id, opener = null) {
   setBackgroundInert(true);
   if (kind === 'agent') {
     renderAgentSheet(item);
-    if (location.hash !== '#agent/' + id) history.pushState(null, '', '#agent/' + id);
+    if (location.hash !== '#agent/' + id) { history.pushState(null, '', '#agent/' + id); sheetState.pushed = true; }
   } else {
     renderSkillDoc(item);
   }
@@ -449,8 +449,13 @@ function closeSheet() {
   sheet.hidden = true;
   sheet.replaceChildren();
   setBackgroundInert(false);
+  const pushed = sheetState.pushed;
   sheetState.kind = sheetState.id = null;
-  if (wasAgent && location.hash.startsWith('#agent/')) history.replaceState(null, '', location.pathname + location.search);
+  sheetState.pushed = false;
+  if (wasAgent && location.hash.startsWith('#agent/')) {
+    // Step back over the entry this sheet added; a sheet opened from a deep link has none, so clear the hash instead.
+    if (pushed) history.back(); else history.replaceState(null, '', location.pathname + location.search);
+  }
   const opener = sheetState.opener;
   sheetState.opener = null;
   if (opener && opener.isConnected) opener.focus();
@@ -491,7 +496,8 @@ function renderHero() {
   const counts = lib.stats(DATA);
   const claude = agentById.claude;
   $('#heroBody').append(
-    el('div', { class: 'hero-terminal', id: 'heroTerminal', 'aria-label': 'Example setup run' },
+    el('div', { class: 'hero-terminal', id: 'heroTerminal', role: 'img',
+      'aria-label': `Example setup run: ${claude ? `./${claude.script}` : './setup.sh'}, then ${counts.skills} skills · ${counts.rules} rules installed` },
       el('div', { class: 'term-bar', 'aria-hidden': 'true' }, el('i'), el('i'), el('i'), el('span', {}, 'zsh')),
       el('pre', { class: 'term-lines' },
         el('span', { class: 'term-line', 'data-type': '' }, el('span', { class: 'prompt' }, '$ '), claude ? `./${claude.script}` : './setup.sh'),
@@ -612,7 +618,7 @@ function scrollableTabs(strip) {
   };
   const by = dir => strip.scrollBy({ left: dir * strip.clientWidth * 0.7, behavior: 'smooth' });
   const reveal = () => {
-    const tab = strip.querySelector('[aria-selected="true"]');
+    const tab = strip.querySelector('[aria-selected="true"], [aria-current="true"]');
     if (!tab) return;
     const s = strip.getBoundingClientRect();
     const t = tab.getBoundingClientRect();
@@ -633,7 +639,7 @@ function scrollableTabs(strip) {
     strip.scrollLeft += e.deltaY;
   }, { passive: false });
   new ResizeObserver(update).observe(strip);
-  new MutationObserver(() => requestAnimationFrame(reveal)).observe(strip, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-selected'] });
+  new MutationObserver(() => requestAnimationFrame(reveal)).observe(strip, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-selected', 'aria-current'] });
   requestAnimationFrame(reveal);
   update();
 }
@@ -698,7 +704,9 @@ function setupTheme() {
 }
 
 // ===== Routing =====
+let routeRuns = 0;
 function route() {
+  routeRuns += 1;
   const target = lib.parseHash(location.hash);
   if (!target) { closeSheet(); closeViewing(); return; }
   if (target.type === 'skill') {
@@ -721,8 +729,7 @@ function startRoute() {
     showToast(`No agent named ${target.id}`);
     history.replaceState(null, '', location.pathname + location.search);
   }
-  window.addEventListener('popstate', route);
-  window.addEventListener('hashchange', route);
+  window.addEventListener('popstate', route); // also fires for in-page #links, so no hashchange listener
 }
 
 function init() {
@@ -740,7 +747,7 @@ function init() {
   requestAnimationFrame(() => startEffects(document));
   if (TEST) {
     window.applySearchForTest = applySearch;
-    window.__cc = { lib, DATA, showToast, openDrawer, openSkill, openSheet, closeSheet };
+    window.__cc = { lib, DATA, showToast, openDrawer, openSkill, openSheet, closeSheet, routeRuns: () => routeRuns };
   }
 }
 
