@@ -28,6 +28,11 @@ jobs:
       - name: Validate manifest, skills, templates, and sync state
         run: python scripts/validate_templates.py
 
+      - name: Check skill descriptions route agents to the right skill
+        run: |
+          python scripts/check_skill_descriptions.py
+          python -m unittest discover -s tests -p "test_*.py"
+
       - name: Check website data is generated from the manifest
         run: python scripts/build_site_data.py --check
 
