@@ -19,6 +19,9 @@ test('hero stats come from data', { skip }, async () => {
   assert.equal(await page.evaluate(`document.querySelector('#heroStats [data-stat="skills"]').textContent`), String(data.skills.length));
   assert.equal(await page.evaluate(`document.querySelector('#heroStats [data-stat="agents"]').textContent`), String(data.agents.length));
   assert.equal(await page.evaluate(`document.querySelector('#heroStats [data-stat="rules"]').textContent`), String(data.rules.length));
+  // The hero terminal types itself in; wait for it to finish (or for 5 s).
+  await page.evaluate(`new Promise(r => { const t0 = Date.now(); (function poll() {
+    if (!document.querySelector('#heroTerminal .typing') || Date.now() - t0 > 5000) r(); else setTimeout(poll, 100); })(); })`);
   assert.match(await page.evaluate(`document.getElementById('heroTerminal').textContent`),
     new RegExp(`${data.skills.length} skills · ${data.rules.length} rules`));
 });

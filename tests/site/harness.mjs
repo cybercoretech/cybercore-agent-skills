@@ -106,6 +106,8 @@ export async function openPage(url, { width, height, dpr = 2, reducedMotion = fa
 
   await send('Page.enable');
   await send('Runtime.enable');
+  // Headless Chromium stops animation frames on an unfocused page after a few seconds; keep it focused.
+  await send('Emulation.setFocusEmulationEnabled', { enabled: true });
   await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: dpr, mobile: width < 600 });
   if (reducedMotion) await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   const loaded = once('Page.loadEventFired');

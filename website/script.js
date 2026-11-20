@@ -2,6 +2,7 @@
 // Renders the page from window.CC_DATA (data.js) using the pure helpers in
 // lib.js. docs.js (full SKILL.md text) loads only when a skill's text is opened.
 import * as lib from './lib.js';
+import { startEffects } from './effects.js';
 
 const DATA = window.CC_DATA || { repo: '', ref: 'main', groups: [], skills: [], agents: [], rules: [] };
 const params = new URLSearchParams(location.search);
@@ -607,6 +608,25 @@ function renderRepo() {
   });
 }
 
+
+// ===== Theme: map the org chooser palette onto the page tokens =====
+const PALETTE_TOKENS = {
+  acid_green: '--cc-neon-green', hot_pink: '--cc-neon-pink', cyan: '--cc-neon-cyan', purple: '--cc-neon-purple',
+  bg: '--cc-bg', panel: '--cc-card', line: '--cc-border', muted: '--cc-fg-muted', white: '--cc-fg',
+};
+function setupTheme() {
+  document.addEventListener('cc:theme', e => {
+    const { id, palette } = e.detail || {};
+    if (!id) return;
+    const root = document.documentElement;
+    root.dataset.theme = id;
+    for (const [key, token] of Object.entries(PALETTE_TOKENS)) {
+      if (palette && /^[0-9a-f]{3,8}$/i.test(palette[key] || '')) root.style.setProperty(token, `#${palette[key]}`);
+    }
+    if (palette && /^[0-9a-f]{3,8}$/i.test(palette.panel || '')) root.style.setProperty('--cc-bg-secondary', `#${palette.panel}`);
+  });
+}
+
 // ===== Routing =====
 function route() {
   const target = lib.parseHash(location.hash);
@@ -644,8 +664,10 @@ function init() {
   renderInstall();
   renderRules();
   renderRepo();
+  setupTheme();
   setupSheet();
   startRoute();
+  requestAnimationFrame(() => startEffects(document));
   if (TEST) {
     window.applySearchForTest = applySearch;
     window.__cc = { lib, DATA, showToast, openDrawer, openSkill, openSheet, closeSheet };
