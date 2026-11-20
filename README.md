@@ -1,6 +1,6 @@
 # 🔒 CyberCore Agent Skills
 
-Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 49 default skills, an opt-in 4-skill Omarchy pack, and four shared rule files, adapted to the configuration layout that agent actually reads.
+Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 49 default skills, an opt-in 4-skill Omarchy pack, and five shared rule files, adapted to the configuration layout that agent actually reads.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)

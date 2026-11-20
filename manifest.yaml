@@ -6,7 +6,7 @@
 # Run `python3 scripts/sync_templates.py` after editing anything here,
 # in skills/, in rules/, or in templates/setup.sh.in.
 
-rules: [safety, workflow, rust, gleam]
+rules: [safety, workflow, concise-output, rust, gleam]
 
 # Skill groups. Default groups are installed by every skills-capable agent.
 # Pack groups ship in <template>/packs/<pack>/ and install only with
