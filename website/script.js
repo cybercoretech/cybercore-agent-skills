@@ -111,6 +111,8 @@ const state = {
   installAgent: agentById[sessionGet('cc-install-agent')] ? sessionGet('cc-install-agent') : 'claude',
 };
 const MAX_TABS = 6;
+// Phones start with skill folders collapsed (favourites open) so later sections stay reachable.
+const collapsed = new Set(PHONE.matches ? DATA.groups.map(g => g.id) : []);
 
 function renderExplorerShell() {
   $('#explorerBody').replaceChildren(
@@ -137,7 +139,8 @@ function renderTree() {
         el('span', { class: 'file-icon', 'aria-hidden': 'true' }, skill.icon || '#'),
         el('span', { class: 'file-name' }, `${skill.id}.md`))));
     if (folder.id === 'favourites' && !folder.skills.length) files.append(el('p', { class: 'folder-empty' }, '// star a skill to pin it here'));
-    const toggle = el('button', { class: 'folder-toggle', type: 'button', 'aria-expanded': 'true' },
+    files.hidden = collapsed.has(folder.id);
+    const toggle = el('button', { class: 'folder-toggle', type: 'button', 'aria-expanded': String(!files.hidden) },
       el('span', { class: 'caret', 'aria-hidden': 'true' }, '▾'),
       el('span', { class: 'folder-name' }, folder.id === 'favourites' ? '★ favourites/' : `${folder.id}/`),
       el('span', { class: 'count' }, String(folder.skills.length)),
@@ -146,6 +149,7 @@ function renderTree() {
       const open = toggle.getAttribute('aria-expanded') !== 'true';
       toggle.setAttribute('aria-expanded', String(open));
       files.hidden = !open;
+      if (open) collapsed.delete(folder.id); else collapsed.add(folder.id);
     });
     return el('div', { class: 'folder', 'data-folder': folder.id }, toggle, files);
   }));
@@ -252,6 +256,7 @@ function applySearch(query, { mirror = true } = {}) {
   const skills = new Set(lib.filterSkills(DATA.skills, query).map(s => s.id));
   $$('#tree button.file').forEach(b => { b.hidden = !skills.has(b.dataset.skill); });
   $$('#tree .folder').forEach(f => { f.hidden = Boolean(query.trim()) && !f.querySelector('button.file:not([hidden])'); });
+  $('#tree').classList.toggle('searching', Boolean(query.trim())); // matches show even inside collapsed folders
   const agents = new Set(lib.filterAgents(DATA.agents, query).map(a => a.id));
   $$('#agentGrid .agent-card').forEach(c => { c.hidden = !agents.has(c.dataset.agent); });
   if (mirror) {
@@ -456,6 +461,152 @@ function setupSheet() {
   }, true);
 }
 
+
+// ===== Sections: hero, agents, install, rules, repo =====
+const REPO_URL = `https://github.com/${DATA.repo}`;
+const CLONE = `git clone ${REPO_URL}.git ~/cybercore-agent-skills`;
+
+function renderHero() {
+  const counts = lib.stats(DATA);
+  const claude = agentById.claude;
+  $('#heroBody').append(
+    el('div', { class: 'hero-terminal', id: 'heroTerminal', 'aria-label': 'Example setup run' },
+      el('div', { class: 'term-bar', 'aria-hidden': 'true' }, el('i'), el('i'), el('i'), el('span', {}, 'zsh')),
+      el('pre', { class: 'term-lines' },
+        el('span', { class: 'term-line', 'data-type': '' }, el('span', { class: 'prompt' }, '$ '), claude ? `./${claude.script}` : './setup.sh'),
+        '\n',
+        el('span', { class: 'term-line ok', 'data-type': '' }, `✓ ${counts.skills} skills · ${counts.rules} rules`))),
+    el('dl', { id: 'heroStats', class: 'hero-stats' },
+      [['skills', counts.skills], ['agents', counts.agents], ['rules', counts.rules], ['opt-in', counts.optIn]].map(([label, value]) =>
+        el('div', { class: 'stat' }, el('dt', {}, label), el('dd', { 'data-stat': label }, String(value))))));
+}
+
+function renderAgents() {
+  $('#agentsBody').replaceChildren(el('div', { id: 'agentGrid', class: 'agent-grid' }, DATA.agents.map(agent => {
+    const status = lib.statusInfo(agent);
+    return el('button', { class: 'agent-card', type: 'button', 'data-agent': agent.id, 'aria-label': `${agent.name}, ${status.label}. Show details` },
+      el('span', { class: 'agent-top' },
+        el('span', { class: 'agent-badge', 'aria-hidden': 'true' }, agent.icon || agent.badge),
+        el('span', { class: 'agent-name' }, agent.name),
+        el('span', { class: 'led', 'data-tone': status.tone, 'aria-hidden': 'true' })),
+      el('span', { class: 'agent-path' }, agent.skillsDir ? `~/${agent.skillsDir}/` : 'rules only'),
+      el('span', { class: 'agent-state', 'data-tone': status.tone }, status.label));
+  })));
+  $('#agentGrid').addEventListener('click', e => {
+    const card = e.target.closest('.agent-card');
+    if (card) openSheet('agent', card.dataset.agent, card);
+  });
+  applySearch(state.query, { mirror: false });
+}
+
+const installers = DATA.agents.filter(a => a.script);
+let installAgentId = installers.some(a => a.id === 'claude') ? 'claude' : (installers[0] || {}).id;
+
+function installLines() {
+  const agent = agentById[installAgentId];
+  return [`${CLONE}`, `cd ~/cybercore-agent-skills`, agent ? lib.setupCommand(agent) : ''];
+}
+
+function renderInstallTerminal() {
+  $('#installTerminal').replaceChildren(...installLines().flatMap((line, i) => [
+    ...(i ? ['\n'] : []),
+    el('span', { class: 'term-line', 'data-type': '' }, el('span', { class: 'prompt' }, '$ '), line)]));
+  $$('#installTabs [data-agent]').forEach(t => {
+    const on = t.dataset.agent === installAgentId;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+  });
+}
+
+function renderInstall() {
+  $('#installBody').replaceChildren(
+    el('p', { class: 'section-note' }, 'Clone once, then run your agent\'s installer. It installs into your home directory, so the rules and skills apply in every project.'),
+    el('div', { class: 'terminal' },
+      el('div', { id: 'installTabs', class: 'term-tabs', role: 'tablist', 'aria-label': 'Installer per agent' },
+        installers.map(a => el('button', { type: 'button', role: 'tab', class: 'term-tab', 'data-agent': a.id, 'aria-controls': 'installTerminal' }, a.id))),
+      el('pre', { id: 'installTerminal', class: 'term-lines', role: 'tabpanel', tabindex: '0' }),
+      el('button', { class: 'btn-copy term-copy', type: 'button', 'data-action': 'copy-install' }, '⧉ copy')),
+    el('p', { class: 'section-note dim' }, 'Cloned somewhere else? Replace ~/cybercore-agent-skills with your clone.'));
+  renderInstallTerminal();
+  $('#installTabs').addEventListener('click', e => {
+    const tab = e.target.closest('[data-agent]');
+    if (!tab) return;
+    installAgentId = tab.dataset.agent;
+    renderInstallTerminal();
+  });
+  tabArrows($('#installTabs'));
+  $('#installBody [data-action="copy-install"]').addEventListener('click', () => copyText(installLines().join('\n'), 'Copied install commands'));
+}
+
+let activeRule = (DATA.rules[0] || {}).id;
+function renderRuleBody() {
+  const rule = DATA.rules.find(r => r.id === activeRule);
+  const body = $('#ruleBody');
+  body.innerHTML = rule ? lib.renderMarkdown(rule.body) : ''; // renderMarkdown escapes all rule text
+  $$('#ruleTabs [data-rule]').forEach(t => {
+    const on = t.dataset.rule === activeRule;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+  });
+}
+
+function renderRules() {
+  $('#rulesBody').replaceChildren(
+    el('p', { class: 'section-note' }, 'Shared guardrails every installer writes into the agent\'s rules folder.'),
+    el('div', { class: 'rule-window' },
+      el('div', { id: 'ruleTabs', class: 'term-tabs', role: 'tablist', 'aria-label': 'Rule files' },
+        DATA.rules.map(r => el('button', { type: 'button', role: 'tab', class: 'term-tab', 'data-rule': r.id, 'aria-controls': 'ruleBody' }, r.file || `${r.id}.md`))),
+      el('div', { id: 'ruleBody', class: 'rule-body md', role: 'tabpanel', tabindex: '0' })));
+  renderRuleBody();
+  $('#ruleTabs').addEventListener('click', e => {
+    const tab = e.target.closest('[data-rule]');
+    if (!tab) return;
+    activeRule = tab.dataset.rule;
+    renderRuleBody();
+  });
+  tabArrows($('#ruleTabs'));
+}
+
+/** Left/right arrows move between tabs in a tablist (and activate them). */
+function tabArrows(list) {
+  list.addEventListener('keydown', e => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+    const tabs = $$('[role="tab"]', list);
+    const i = tabs.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+    next.click();
+    next.focus();
+  });
+}
+
+function renderRepo() {
+  const counts = lib.stats(DATA);
+  const links = [
+    ['a1f0c3e', 'repository', REPO_URL],
+    ['7be21d4', 'README', `${REPO_URL}#readme`],
+    ['3c9e8f2', 'setup guide (SETUP.md)', `${REPO_URL}/blob/${DATA.ref}/SETUP.md`],
+    ['e45d0a7', 'MIT licence', `${REPO_URL}/blob/${DATA.ref}/LICENSE`],
+    ['0d6b9c1', 'issues', `${REPO_URL}/issues`],
+  ];
+  $('#repoBody').replaceChildren(
+    el('ol', { class: 'git-log' }, links.map(([hash, label, href]) => el('li', {},
+      el('span', { class: 'log-hash', 'aria-hidden': 'true' }, hash),
+      el('span', { class: 'log-ref', 'aria-hidden': 'true' }, '(HEAD → main)'),
+      el('a', { href, target: '_blank', rel: 'noopener' }, label, el('span', { class: 'visually-hidden' }, ' (opens in a new tab)'))))),
+    el('div', { id: 'statusStrip', class: 'status-strip' },
+      el('span', { 'data-status': 'branch' }, `⎇ ${DATA.ref}`),
+      el('span', {}, `${counts.skills} skills`),
+      el('span', {}, `${counts.agents} agents`),
+      el('span', {}, `${counts.rules} rules`),
+      el('span', { class: 'status-theme' }, 'theme ', el('span', { 'data-status': 'theme' }, 'CyberCore Tech'))));
+  document.addEventListener('cc:theme', e => {
+    const { id, label } = e.detail || {};
+    if (id || label) $('#statusStrip [data-status="theme"]').textContent = label || id;
+  });
+}
+
 // ===== Routing =====
 function route() {
   const target = lib.parseHash(location.hash);
@@ -486,8 +637,13 @@ function startRoute() {
 
 function init() {
   renderGutter();
+  renderHero();
   setupTitlebar();
   setupExplorer();
+  renderAgents();
+  renderInstall();
+  renderRules();
+  renderRepo();
   setupSheet();
   startRoute();
   if (TEST) {
