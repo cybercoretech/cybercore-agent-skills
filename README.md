@@ -70,6 +70,10 @@ bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh
 
 > **OpenCode:** The installer script is `setup-agent.sh`, not `setup-opencode.sh`.
 
+Installers merge rules and skills, keep unrelated files, and back up every file they are about to replace to `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/<home folder name>-<id>/<agent>/<timestamp>/`. Review the generated files and the backup.
+
+> ⚠️ Codex, Copilot, Gemini, and most other agents share one root `AGENTS.md`. If you install two of these agents, the second installer replaces the first agent's `AGENTS.md` and prints a warning. The previous file is kept in the backup.
+
 ### Optional packs
 
 The installers add the default skills. Add domain packs with `--with`: one pack, a comma list, or `all` for the whole catalog:
@@ -108,10 +112,6 @@ bash ~/cybercore-agent-skills/scripts/update-skills.sh all --apply
 ```
 
 It compares every installed skill and rule with the versions in the clone's git history. Out-of-date copies are updated and new skills installed with `--apply`; copies you customised are never touched (it shows a `diff` command instead); skills removed from the catalog are only moved to the backup folder with `--apply --prune`. Your own skills that were never part of this repo are left alone.
-
-Installers merge rules and skills, keep unrelated files, and back up every file they are about to replace to `${XDG_STATE_HOME:-$HOME/.local/state}/cybercore-agent-skills/backups/<home folder name>-<id>/<agent>/<timestamp>/`. Review the generated files and the backup.
-
-> ⚠️ Codex, Copilot, Gemini, and most other agents share one root `AGENTS.md`. If you install two of these agents, the second installer replaces the first agent's `AGENTS.md` and prints a warning. The previous file is kept in the backup.
 
 ## 🧩 Included skills
 
@@ -248,17 +248,27 @@ Building and auditing web interfaces, accessibility, browser checks and localiza
 ```text
 cybercore-agent-skills/
 ├── manifest.yaml              # agents, install paths, skill groups, packs
+├── CHANGELOG.md               # release notes; the newest dated entry is the catalog version
 ├── skills/<name>/SKILL.md     # canonical skills (edit here)
 ├── rules/<rule>.md            # canonical rules (edit here)
 ├── templates/
 │   ├── setup.sh.in            # installer template for every agent
 │   └── skill-skeleton/        # starting point for new skills
 ├── scripts/
+│   ├── install-skill.sh       # install one skill for one agent
+│   ├── update-skills.sh       # check and update installed skills and rules
 │   ├── sync_templates.py      # copies skills/rules into templates, renders installers
 │   ├── build_site_data.py     # generates website/data.js and website/docs.js
-│   ├── validate_templates.py
+│   ├── validate_templates.py  # manifest, skills, templates and README tables
+│   ├── check_skill_descriptions.py  # "Use when" clauses, skill pointers, neighbour pairs
+│   ├── skill-neighbours.yaml  # skill pairs that must stay linked in their descriptions
+│   ├── check_release.py       # release tag vs CHANGELOG.md, release notes
 │   └── check_public_sanitization.py
-├── tests/smoke_installers.sh
+├── tests/
+│   ├── smoke_installers.sh    # every installer, packs, single-skill and update scripts
+│   ├── test_*.py              # unit tests for the Python checks
+│   └── site/                  # Skills Explorer logic and headless-browser tests
+├── .github/workflows/         # validate (every PR), pages (site deploy), release (on tags)
 ├── website/                   # Skills Explorer (GitHub Pages); data.js and docs.js are generated
 └── <agent>/agent-project-setup/   # generated per-agent templates (13)
     ├── AGENTS.md | CLAUDE.md
@@ -275,18 +285,25 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 1. Copy `templates/skill-skeleton/` to `skills/<your-skill>/` and set `name:` to the folder name. Use only [Agent Skills spec](https://agentskills.io/specification) frontmatter fields; extras such as `version` go under `metadata:`.
 2. Add the skill to `manifest.yaml` with a group, category, and icon. Choose the group by this rule: **default** (`core`) only if the skill is useful in nearly every software project, whatever the language or platform (ways of working, quality, testing, security, git, CI, docs, writing); otherwise the **pack** for its language, platform, stack or domain. Prefer an existing pack; a new pack needs at least two skills unless the domain clearly stands alone. If the skill shares ground with an existing one, add the pair to `scripts/skill-neighbours.yaml`.
 3. Add it to the matching table in this README.
-4. Run `python3 scripts/sync_templates.py` and `python3 scripts/build_site_data.py`, then the validation commands below.
+4. Run `python3 scripts/sync_templates.py` and `python3 scripts/build_site_data.py`, then every command in [Validation](#-validation). `check_skill_descriptions.py` is the one most likely to fail for a new skill: the description needs a "Use when …" clause, and "(use other-skill)" pointers must name real skills.
 
 ## 🧪 Validation
 
-GitHub Actions validates the manifest and all 56 canonical skills, checks that every skill description says when to use it and keeps its neighbour skills linked (`scripts/check_skill_descriptions.py`), checks that every template copy matches its source, lints and syntax-checks every installer, and smoke-tests each installer in a temporary home directory.
+GitHub Actions runs these on every pull request. It validates the manifest and all 56 canonical skills, checks that every template copy and the website data match their sources, checks that every skill description says when to use it and keeps its neighbour skills linked, runs the unit tests, checks for private machine and account references, lints and syntax-checks every shell script, smoke-tests every installer in a temporary home directory, and runs the Skills Explorer's logic and browser tests. Run the same checks locally before opening a pull request:
 
 ```bash
 python3 -m pip install PyYAML
 python3 scripts/validate_templates.py
+python3 scripts/sync_templates.py --check
+python3 scripts/build_site_data.py --check
+python3 scripts/check_skill_descriptions.py
+python3 -m unittest discover -s tests -p "test_*.py"
 python3 scripts/check_public_sanitization.py
 bash tests/smoke_installers.sh
+node --test tests/site/*.test.mjs   # Node 22+; browser tests use Chromium/Chrome if found (or CHROME_BIN) and skip otherwise
 ```
+
+The installer smoke tests and `update-skills.sh` need the clone's full git history (not a shallow clone).
 
 ## ⬆️ Upgrading from an earlier version
 
