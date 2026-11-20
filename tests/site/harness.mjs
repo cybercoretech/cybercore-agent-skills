@@ -74,8 +74,10 @@ function devtoolsUrl(proc) {
   });
 }
 
-export async function openPage(url, { width, height, dpr = 2, reducedMotion = false } = {}) {
-  if (startFailure) throw startFailure;
+// Launches one headless browser and waits for its DevTools endpoint. On
+// failure it kills the browser's whole process group, removes the profile
+// and rethrows, so nothing is left holding the test run open.
+async function startBrowser(width, height) {
   const profile = await mkdtemp(join(tmpdir(), 'cc-site-test-'));
   const proc = spawn(browserBinary(), [
     '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`,
@@ -86,17 +88,31 @@ export async function openPage(url, { width, height, dpr = 2, reducedMotion = fa
   ], { stdio: ['ignore', 'ignore', 'pipe'], detached: true }); // own process group, so a stuck start can be killed with its helpers
   liveGroups.add(proc.pid);
   proc.once('exit', () => liveGroups.delete(proc.pid));
-  let browserWs;
   try {
-    browserWs = await devtoolsUrl(proc);
+    return { proc, profile, browserWs: await devtoolsUrl(proc) };
   } catch (error) {
-    startFailure = error;
-    // Never leave a stuck browser (or its helper processes) holding the test run open.
     killGroup(proc.pid);
     proc.stderr.destroy();
     await rm(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }).catch(() => {});
     throw error;
   }
+}
+
+export async function openPage(url, { width, height, dpr = 2, reducedMotion = false } = {}) {
+  if (startFailure) throw startFailure;
+  // A slow runner sometimes misses one start; retry once before failing every later page fast.
+  let started;
+  try {
+    started = await startBrowser(width, height);
+  } catch {
+    try {
+      started = await startBrowser(width, height);
+    } catch (error) {
+      startFailure = error;
+      throw error;
+    }
+  }
+  const { proc, profile, browserWs } = started;
   const base = browserWs.replace(/^ws:/, 'http:').replace(/\/devtools\/browser\/.*$/, '');
   const targets = await (await fetch(base + '/json/list')).json();
   const target = targets.find(t => t.type === 'page');

@@ -1,18 +1,19 @@
-// Harness: a browser that never starts must fail fast, once, and not hang the run.
+// Harness: a browser that never starts gets one retry, then every page fails fast and the run exits.
 // Run: node --test tests/site/harness.test.mjs (no real browser needed)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync, chmodSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, chmodSync, readFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const harness = new URL('./harness.mjs', import.meta.url).href;
 
-test('a browser that never starts fails fast, then every later page fails at once, and the run exits', () => {
+test('a browser that never starts is retried once, then every later page fails at once, and the run exits', () => {
   const dir = mkdtempSync(join(tmpdir(), 'cc-fake-browser-'));
   const fake = join(dir, 'fake-chrome');
-  writeFileSync(fake, '#!/bin/sh\nsleep 60\n');
+  const launches = join(dir, 'launches.log');
+  writeFileSync(fake, `#!/bin/sh\necho launch >> '${launches}'\nsleep 60\n`);
   chmodSync(fake, 0o755);
   const script = `
     import { openPage } from ${JSON.stringify(harness)};
@@ -29,7 +30,9 @@ test('a browser that never starts fails fast, then every later page fails at onc
   });
   assert.equal(run.signal, null, `the run hung and was killed after ${Date.now() - t0} ms`);
   const times = JSON.parse(run.stdout.trim().split('\n').at(-1));
-  assert.ok(times[0].ms < 3000, `first start failed within the start timeout (${times[0].ms} ms)`);
+  assert.ok(times[0].ms < 3000, `first start (with its retry) failed within two start timeouts (${times[0].ms} ms)`);
+  const count = existsSync(launches) ? readFileSync(launches, 'utf8').trim().split('\n').length : 0;
+  assert.equal(count, 2, 'the browser is launched twice (one retry), and never again after that');
   assert.match(times[0].msg, /fake-chrome/, 'the error names the browser binary');
   assert.ok(times[1].ms < 200 && times[2].ms < 200, `later pages fail at once (${times[1].ms}, ${times[2].ms} ms)`);
   assert.equal(times[1].msg, times[0].msg);
