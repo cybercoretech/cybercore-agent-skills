@@ -477,6 +477,21 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "skill-evaluation",
+   "name": "Skill Evaluation",
+   "group": "general",
+   "category": "quality",
+   "icon": "🎯",
+   "desc": "Test whether an agent skill actually helps before shipping or changing it. Runs trigger tests (does it activate on the right requests and stay quiet on near misses), then an effect test that compares the same agent with and without the skill (or old versus new revision) on tasks where it should matter and control tasks where it should not, using the CyberCore Agent Evaluation Workbench when available. Covers holdout tasks, adherence checks, token and cost overhead, comparisons declared in advance, and an honest, scoped verdict. Use when writing, revising, choosing, or removing a skill, rule or system prompt; when asked whether a skill is worth it; or before publishing skills to others.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/task-design.md",
+    "references/trigger-tests.md",
+    "references/workbench-suite.md"
+   ]
+  },
+  {
    "id": "test-first-development",
    "name": "Test-First Development",
    "group": "general",

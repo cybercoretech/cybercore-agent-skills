@@ -65,6 +65,7 @@ skills:
   security-audit:                 {group: general, category: security, icon: "🕵️"}
   security-hardening:            {group: general, category: security, icon: "🛡️"}
   session-handoff:                {group: general, category: workflow, icon: "🤝"}
+  skill-evaluation:               {group: general, category: quality, icon: "🎯"}
   test-first-development:         {group: general, category: quality, icon: "🚦"}
   typescript-nodejs:             {group: general, category: language, icon: "🟦"}
   zig-development:               {group: general, category: language, icon: "⚙️"}
