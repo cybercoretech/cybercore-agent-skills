@@ -3,6 +3,7 @@
 window.CC_DATA = {
  "repo": "cybercoretech/cybercore-agent-skills",
  "ref": "main",
+ "version": "1.0.0",
  "groups": [
   {
    "id": "core",

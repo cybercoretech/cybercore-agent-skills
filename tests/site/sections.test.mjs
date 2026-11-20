@@ -77,6 +77,8 @@ test('repo log links and status strip', { skip }, async () => {
     'https://github.com/cybercoretech/cybercore-agent-skills/issues',
   ]) assert.ok(hrefs.includes(url), url);
   assert.match(await page.evaluate(`document.getElementById('statusStrip').textContent`), /main/);
+  assert.ok(data.version, 'data.js carries the catalog version');
+  assert.equal(await page.evaluate(`document.querySelector('#statusStrip [data-status="version"]').textContent`), `v${data.version}`);
   await page.evaluate(`document.dispatchEvent(new CustomEvent('cc:theme', { detail: { id: 'test-theme', label: 'Test Theme', palette: {} } }))`);
   assert.equal(await page.evaluate(`document.querySelector('#statusStrip [data-status="theme"]').textContent`), 'Test Theme');
 });

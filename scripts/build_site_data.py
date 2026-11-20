@@ -21,6 +21,8 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from check_release import latest_version  # noqa: E402  (the version comes from CHANGELOG.md, not git tags)
 DATA_OUT = ROOT / "website" / "data.js"
 DOCS_OUT = ROOT / "website" / "docs.js"
 REPO = "cybercoretech/cybercore-agent-skills"
@@ -96,7 +98,8 @@ def build() -> tuple[str, str]:
         body = text.split("\n", 1)[1].strip() + "\n" if text.startswith("# ") else text
         rules.append({"id": rule, "file": f"{rule}.md", "title": title, "body": body})
 
-    data = {"repo": REPO, "ref": REF, "groups": groups, "skills": skills, "agents": agents, "rules": rules}
+    version = latest_version((ROOT / "CHANGELOG.md").read_text(encoding="utf-8"))
+    data = {"repo": REPO, "ref": REF, "version": version, "groups": groups, "skills": skills, "agents": agents, "rules": rules}
     data_js = HEADER + f"window.CC_DATA = {json.dumps(data, ensure_ascii=False, indent=1)};\n"
     docs_js = HEADER + f"window.CC_DOCS = {json.dumps(docs, ensure_ascii=False, indent=1)};\n"
     return data_js, docs_js

@@ -678,6 +678,7 @@ function renderRepo() {
       el('a', { href, target: '_blank', rel: 'noopener' }, label, el('span', { class: 'visually-hidden' }, ' (opens in a new tab)'))))),
     el('div', { id: 'statusStrip', class: 'status-strip' },
       el('span', { 'data-status': 'branch' }, `⎇ ${DATA.ref}`),
+      DATA.version && el('a', { 'data-status': 'version', href: `${REPO_URL}/releases/tag/v${DATA.version}`, target: '_blank', rel: 'noopener' }, `v${DATA.version}`),
       el('span', {}, `${counts.skills} skills`),
       el('span', {}, `${counts.agents} agents`),
       el('span', {}, `${counts.rules} rules`),

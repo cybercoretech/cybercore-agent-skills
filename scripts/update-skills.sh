@@ -56,6 +56,18 @@ if [[ "$(git -C "$ROOT" rev-parse --is-shallow-repository)" == "true" ]]; then
   die "This clone has no full history. Run: git -C $ROOT fetch --unshallow"
 fi
 
+# Which catalog release this clone is on: v1.2.0, v1.2.0 + N commits, or unreleased.
+catalog_version() {
+  local desc tag ahead
+  if desc="$(git -C "$ROOT" describe --tags --long --match 'v[0-9]*' 2>/dev/null)"; then
+    tag="${desc%-*-g*}"
+    ahead="${desc#"$tag"-}"; ahead="${ahead%%-*}"
+    if [[ "$ahead" == 0 ]]; then printf '%s' "$tag"; else printf '%s + %s commit(s)' "$tag" "$ahead"; fi
+  else
+    printf 'unreleased (commit %s)' "$(git -C "$ROOT" rev-parse --short HEAD)"
+  fi
+}
+
 AGENTS=()
 for dir in "$ROOT"/*/agent-project-setup; do
   [[ -d "$dir" ]] && AGENTS+=("$(basename -- "$(dirname -- "$dir")")")
@@ -270,6 +282,7 @@ if upstream="$(git -C "$ROOT" rev-parse --abbrev-ref '@{u}' 2>/dev/null)"; then
   fi
 fi
 
+printf 'Catalog: %s (%s)\n\n' "$(catalog_version)" "$ROOT"
 for AGENT in "${SELECTED[@]}"; do check_agent "$AGENT"; done
 
 if [[ "$CHECKED" -eq 0 ]]; then

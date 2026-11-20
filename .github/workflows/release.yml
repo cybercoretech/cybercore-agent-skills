@@ -1,0 +1,50 @@
+name: Release
+
+# Runs when a version tag (vMAJOR.MINOR.PATCH) is pushed. Re-runs the
+# repository checks, confirms the tag is the newest dated release in
+# CHANGELOG.md, and publishes a GitHub Release with that entry as notes.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install validation dependency
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Check the tag matches CHANGELOG.md
+        run: python scripts/check_release.py "$GITHUB_REF_NAME"
+
+      - name: Validate the catalog
+        run: |
+          python scripts/validate_templates.py
+          python scripts/build_site_data.py --check
+          python scripts/check_skill_descriptions.py
+          python -m unittest discover -s tests -p "test_*.py"
+          python scripts/check_public_sanitization.py
+
+      - name: Smoke-test all installers
+        run: bash tests/smoke_installers.sh
+
+      - name: Publish the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/check_release.py --notes "$GITHUB_REF_NAME" > release-notes.md
+          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file release-notes.md --verify-tag
