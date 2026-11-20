@@ -68,6 +68,7 @@ skills:
   skill-evaluation:               {group: general, category: quality, icon: "🎯"}
   test-first-development:         {group: general, category: quality, icon: "🚦"}
   typescript-nodejs:             {group: general, category: language, icon: "🟦"}
+  ux-design-audit:                {group: general, category: web, icon: "🧐"}
   zig-development:               {group: general, category: language, icon: "⚙️"}
   # rust
   rust-applications:             {group: rust, category: rust, icon: "🧭"}
