@@ -67,7 +67,6 @@ skills:
   prompt-engineering-for-agents: {group: general, category: ai, icon: "🧠"}
   python-development:            {group: general, category: language, icon: "🐍"}
   security-audit:                 {group: general, category: security, icon: "🕵️"}
-  security-hardening:            {group: general, category: security, icon: "🛡️"}
   session-handoff:                {group: general, category: workflow, icon: "🤝"}
   skill-evaluation:               {group: general, category: quality, icon: "🎯"}
   test-first-development:         {group: general, category: quality, icon: "🚦"}
