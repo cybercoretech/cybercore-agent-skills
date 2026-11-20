@@ -145,6 +145,7 @@ restore_old() { # <commit> <repo path> <destination>
 }
 out="$(bash "$upd" claude)" || fail "update: fresh install not reported up to date (exit $?): $out"
 grep -q 'Everything is up to date' <<<"$out" || fail "update: fresh install summary missing: $out"
+grep -Eq '^Catalog: (v[0-9]+\.[0-9]+\.[0-9]+|unreleased)' <<<"$out" || fail "update: catalog version line missing: $out"
 
 old_clarify="$(git -C "$ROOT" log --format=%H -- skills/clarify-before-building | sed -n 2p)"
 [[ -n "$old_clarify" ]] || fail "update: need an older clarify-before-building revision (full git history?)"

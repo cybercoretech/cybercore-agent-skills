@@ -5,6 +5,7 @@ Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-cap
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
 [![56 skills](https://img.shields.io/badge/skills-56-green)](#-included-skills)
+[![Release](https://img.shields.io/github/v/release/cybercoretech/cybercore-agent-skills)](CHANGELOG.md)
 [![Skills Explorer](https://img.shields.io/badge/explorer-live-7df9ff)](https://cybercoretech.github.io/cybercore-agent-skills/)
 
 🌐 **Browse the skills in the [Skills Explorer](https://cybercoretech.github.io/cybercore-agent-skills/)**: search the catalog, read each skill, compare agents, and copy a one-skill install command.
@@ -297,6 +298,26 @@ Earlier installers wrote a few files that no agent reads. The installers never d
 - Codex: `.codex/skills/` (skills now live in `.agents/skills/`).
 - Copilot: `.copilot/skills/` (skills now live in `.github/skills/`).
 - Ollama: `.ollama/skills/` (Ollama is now rules-only).
+
+## 🔖 Releases and versions
+
+The catalog has one version, `vMAJOR.MINOR.PATCH`, listed in [CHANGELOG.md](CHANGELOG.md) and on the [releases page](https://github.com/cybercoretech/cybercore-agent-skills/releases). Each skill also keeps its own `metadata.version`.
+
+| Bump | When |
+|---|---|
+| **Major** | An existing install or habit breaks: a skill removed or renamed, a skill moved from the default into a pack, an installer option removed |
+| **Minor** | Something is added: a skill, a pack, an agent, a script feature |
+| **Patch** | Fixes and wording only |
+
+To stay on a release instead of `main`, check out its tag and update your installed skills from there (`update-skills.sh` works from any checkout and prints which version you are on):
+
+```bash
+git -C ~/cybercore-agent-skills fetch --tags
+git -C ~/cybercore-agent-skills checkout v1.0.0
+bash ~/cybercore-agent-skills/scripts/update-skills.sh all
+```
+
+Maintainers: a release is a pull request that moves the `Unreleased` notes under a dated version heading, then a pushed tag (`git tag v1.1.0 && git push origin v1.1.0`). The release workflow checks the tag against CHANGELOG.md, re-runs every check, and publishes the GitHub Release.
 
 ## 🛡️ Safety
 
