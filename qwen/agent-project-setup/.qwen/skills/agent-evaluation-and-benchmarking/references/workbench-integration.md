@@ -105,6 +105,8 @@ When the user has the Workbench checked out and the CLI built, it can run and in
 4. `workbench status <evaluation-id> --json` is read-only and reports each trial's runs, verification state and outcome.
 5. `workbench summary <evaluation-id> --json` gives the pass rate with a 95% interval and records `metric_result` and `analysis_result` records. `workbench compare <baseline-id> <treatment-id> --json` compares two evaluations paired by task and records a `comparison_result`.
 
+6. `workbench report <baseline-id> [<other-id>...] [--format html]` prints one shareable page (Markdown by default, or self-contained HTML) with the results table, each comparison against the first evaluation, a by-task table, every caveat and the record IDs. Prefer it over pasting command output when the user wants something to share; it uses the same numbers as `summary` and `compare`, and keeps the caveats next to them.
+
 When reporting summaries and comparisons:
 
 - Report the pass rate with its interval, status and notes, never the bare number. Trials without a verdict count as not passed, so say how many there were, and fix their cause (for example missing judge credentials) before drawing conclusions.
