@@ -73,4 +73,6 @@ jobs:
           set -euo pipefail
           CHROME_BIN="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           export CHROME_BIN SITE_REQUIRE_BROWSER=1
+          # Hosted runners sometimes start Chrome slowly; the harness also retries a failed start once.
+          export SITE_BROWSER_START_MS=60000
           node --test tests/site/*.test.mjs
