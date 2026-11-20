@@ -208,6 +208,21 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "clarify-before-building",
+   "name": "Clarify Before Building",
+   "group": "general",
+   "category": "workflow",
+   "icon": "❓",
+   "desc": "Find out what the user actually wants before writing code. Reads the repository and its docs first, asks only the questions whose answers would change what gets built (one or a few at a time, each with a recommended answer), plays the requirements back as a short brief, and gets confirmation before implementing. Use when a request is new, vague, underspecified, or large; when it conflicts with existing docs or code; before features, refactors, migrations, or UI work; or when the user says \"build\", \"add\", \"make\", or \"change\" something without saying why or what done looks like. Skip it for small, fully specified changes and when the user says to just proceed.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/brief-template.md",
+    "references/examples.md",
+    "references/question-bank.md"
+   ]
+  },
+  {
    "id": "code-review-and-refactoring",
    "name": "Code Review and Refactoring",
    "group": "general",
