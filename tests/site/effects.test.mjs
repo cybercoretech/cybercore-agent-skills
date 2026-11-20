@@ -40,7 +40,11 @@ test('the hero heading settles on its final text, labelled for screen readers', 
 
 test('the install terminal types its lines when it first appears', { skip }, async () => {
   await page.evaluate(`document.getElementById('install').scrollIntoView({ block: 'start', behavior: 'instant' })`);
-  await page.evaluate(settle(6000));
+  // Wait for typing to start and then finish (up to 10 s) rather than a fixed sleep.
+  await page.evaluate(`new Promise(r => { const t0 = Date.now(); let started = false; (function poll() {
+    const typing = document.getElementById('installTerminal').classList.contains('typing');
+    started = started || typing;
+    if ((started && !typing) || Date.now() - t0 > 10000) r(); else setTimeout(poll, 100); })(); })`);
   assert.match(await page.evaluate(`document.getElementById('installTerminal').textContent`),
     /git clone https:\/\/github\.com\/cybercoretech\/cybercore-agent-skills\.git ~\/cybercore-agent-skills/);
   assert.match(await page.evaluate(`document.getElementById('installTerminal').textContent`), /setup-claude\.sh/);
