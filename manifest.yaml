@@ -57,6 +57,7 @@ skills:
   incident-response-basics:      {group: general, category: devops, icon: "🚨"}
   llm-application-patterns:      {group: general, category: ai, icon: "🤖"}
   lua-development:               {group: general, category: language, icon: "🌙"}
+  mcp-server-development:         {group: general, category: ai, icon: "🧩"}
   mobile-cross-platform:         {group: general, category: mobile, icon: "📲"}
   observability-and-debugging:   {group: general, category: devops, icon: "🔭"}
   performance-optimization:      {group: general, category: quality, icon: "⚡"}

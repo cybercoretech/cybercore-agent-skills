@@ -375,6 +375,21 @@ window.CC_DATA = {
    ]
   },
   {
+   "id": "mcp-server-development",
+   "name": "MCP Server Development",
+   "group": "general",
+   "category": "ai",
+   "icon": "🧩",
+   "desc": "Design, build, secure and test Model Context Protocol (MCP) servers that expose tools, resources and prompts to AI agents. Covers agent-friendly tool design (names, descriptions, strict input schemas, structured output, errors the model can recover from), the stdio and Streamable HTTP transports, the stateless request model of current spec revisions, authorization for remote servers, security against prompt injection and over-broad permissions, and testing at the handler, protocol and real-client levels. Use when creating or changing an MCP server or tool, wrapping an API or CLI for agents, reviewing an MCP server's safety, or debugging why a client cannot see or call a tool.",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "references/protocol-shapes.md",
+    "references/testing.md",
+    "references/tool-design.md"
+   ]
+  },
+  {
    "id": "mobile-cross-platform",
    "name": "Mobile Cross-Platform Development",
    "group": "general",

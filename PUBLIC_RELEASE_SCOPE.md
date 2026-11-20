@@ -5,7 +5,7 @@ This repository is the sanitized public **agent-template distribution** for `cyb
 It includes:
 
 - 13 project-level agent templates (`<agent>/agent-project-setup/`)
-- 54 canonical skills in `skills/` (50 default, 4 in the opt-in Omarchy pack) and 5 canonical rules in `rules/`
+- 55 canonical skills in `skills/` (51 default, 4 in the opt-in Omarchy pack) and 5 canonical rules in `rules/`
 - `manifest.yaml`, the installer template, and the skill skeleton in `templates/`
 - sync, validation, and sanitization scripts, the installer smoke test, and the CI workflow
 - the Skills Explorer website (`website/`, published to GitHub Pages)
