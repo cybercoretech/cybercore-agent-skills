@@ -57,3 +57,17 @@ test('"/" focuses search; Enter on an agent card opens its sheet; Escape returns
     assert.equal(await p.evaluate('document.activeElement.dataset.agent'), 'hermes');
   } finally { await p.close(); }
 });
+
+test('phone: opening a skill moves focus into the pane; Escape returns to the tree', { skip }, async () => {
+  const p = await openPage(site.url, { width: 390, height: 844, reducedMotion: true });
+  try {
+    await p.evaluate(`document.querySelector('[data-folder="core"] .folder-toggle').click()`);
+    await p.evaluate(`document.querySelector('#tree [data-skill="api-backend"]').focus()`);
+    await p.press('Enter');
+    assert.equal(await p.evaluate(`document.querySelector('.explorer').classList.contains('viewing')`), true);
+    assert.equal(await p.evaluate(`document.querySelector('.editor').contains(document.activeElement)`), true, 'focus moved into the pane');
+    await p.press('Escape');
+    assert.equal(await p.evaluate(`document.querySelector('.explorer').classList.contains('viewing')`), false);
+    assert.equal(await p.evaluate('document.activeElement.dataset.skill'), 'api-backend');
+  } finally { await p.close(); }
+});

@@ -238,7 +238,12 @@ function openSkill(id, { push = true, view = false } = {}) {
   }
   activate(id);
   if (push && location.hash !== '#skill/' + id) history.pushState(null, '', '#skill/' + id);
-  if (view && PHONE.matches) $('.explorer').classList.add('viewing');
+  if (view && PHONE.matches) {
+    const explorer = $('.explorer');
+    if (!explorer.classList.contains('viewing')) viewOpener = document.activeElement;
+    explorer.classList.add('viewing');
+    $('#pane [data-action="back"]').focus(); // the pane covers the page on phones: move focus into it
+  }
   return true;
 }
 
@@ -247,8 +252,19 @@ function closeTab(id) {
   if (state.active === id) activate(state.openTabs.at(-1) || 'matrix'); else renderTabs();
 }
 
+let viewOpener = null;
+/** Closes the phone pane and returns focus to the tree item that opened it. */
+function closeViewing() {
+  const explorer = $('.explorer');
+  if (!explorer.classList.contains('viewing')) return;
+  explorer.classList.remove('viewing');
+  const opener = viewOpener;
+  viewOpener = null;
+  if (opener && opener.isConnected && opener.offsetParent) opener.focus();
+}
+
 function leaveViewing() {
-  $('.explorer').classList.remove('viewing');
+  closeViewing();
   if (lib.parseHash(location.hash)) history.replaceState(null, '', location.pathname + location.search);
 }
 
@@ -320,6 +336,9 @@ function setupExplorer() {
   }
   $('#search').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('explorer').scrollIntoView({ block: 'start' });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && $('#sheet').hidden && $('.explorer').classList.contains('viewing')) leaveViewing();
   });
   document.addEventListener('keydown', e => {
     if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
@@ -630,7 +649,7 @@ function setupTheme() {
 // ===== Routing =====
 function route() {
   const target = lib.parseHash(location.hash);
-  if (!target) { closeSheet(); if (PHONE.matches) $('.explorer').classList.remove('viewing'); return; }
+  if (!target) { closeSheet(); closeViewing(); return; }
   if (target.type === 'skill') {
     if (sheetState.kind === 'agent') closeSheet();
     if (!openSkill(target.id, { push: false, view: true })) showToast(`No skill named ${target.id}`);
