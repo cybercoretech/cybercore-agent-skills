@@ -194,7 +194,7 @@ window.CC_DATA = {
    "category": "web",
    "icon": "🎨",
    "desc": "Build new, polished, responsive websites and web apps with a distinctive look. Covers visual direction, CSS custom properties and themes, neon and cyber aesthetics, layout, components, cards and hero sections, motion, and complete visual asset packs (SVG, PNG, icons, optimized images). Use when designing or building a new page, site, component or visual style. Not for reviewing an existing interface (use ux-design-audit), in-depth accessibility work (use accessibility-a11y) or speed problems (use performance-optimization).",
-   "version": "3",
+   "version": "4",
    "files": [
     "SKILL.md"
    ]

@@ -4,6 +4,10 @@ All notable changes to the CyberCore Agent Skills catalog. The format follows [K
 
 ## [Unreleased]
 
+### Changed
+
+- `web-design-and-frontend-craft` (version 4): a new "Commit to a direction" subsection steers away from the generic default look (habitual sans-serif, purple gradient on white, timid palettes, flat backgrounds). Adds typography pairing and weight-contrast guidance, font starting points by product character, a single orchestrated page-load reveal in motion, two matching anti-patterns, and a credit to Anthropic's "Prompting for frontend aesthetics" cookbook. The token example no longer uses Inter, and the Cybercore font stack now names JetBrains Mono.
+
 ## [1.0.0] - 2026-11-20
 
 The first tagged release: the catalog as it stands after the 2026-11 overlap audit and packaging work.
