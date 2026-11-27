@@ -2,7 +2,7 @@
 name: web-design-and-frontend-craft
 description: Build new, polished, responsive websites and web apps with a distinctive look. Covers visual direction, CSS custom properties and themes, neon and cyber aesthetics, layout, components, cards and hero sections, motion, and complete visual asset packs (SVG, PNG, icons, optimized images). Use when designing or building a new page, site, component or visual style. Not for reviewing an existing interface (use ux-design-audit), in-depth accessibility work (use accessibility-a11y) or speed problems (use performance-optimization).
 metadata:
-  version: "3"
+  version: "4"
 ---
 
 # Web Design & Frontend Craft
@@ -118,6 +118,19 @@ Create a short design brief before implementation. Establish:
 
 Do not mix unrelated visual styles. One page should feel like one designed product.
 
+### Commit to a direction
+
+Left to defaults, generated frontends converge on the same safe look: a system or habitual sans-serif, a white page with a purple gradient, colors spread evenly with no clear lead, flat solid backgrounds, and a layout any template could produce. Treat that as a failure, not a neutral starting point.
+
+If the project already has a design system, tokens or a brand guide, that wins. Use the points below to make choices within it, not to replace it.
+
+- **Name the direction before writing code.** One line: the aesthetic, the two typefaces, the lead color and the accent. For example, "an IDE after dark: JetBrains Mono throughout, near-black panels, one cyan lead and one magenta accent."
+- **Typography carries identity.** Choose type for the product's character instead of by habit. Pair families with real contrast (a display face with a monospace, or a serif with a geometric sans), use weight extremes (200 against 800) and size jumps of about three times between display and body text, and then use the choice consistently.
+- **One committed palette.** A dominant color with one or two sharp accents reads as designed; five equally weighted colors read as undecided. Define the palette as CSS variables. Good sources of coherent palettes: editor and terminal themes, print and poster traditions, and the product's own domain.
+- **Light or dark is a decision.** Pick the one that suits the product and its audience instead of defaulting to either.
+- **Backgrounds create atmosphere.** Prefer layered gradients, a subtle pattern or grid, texture, or a context-specific illustration over a single flat fill, as long as text stays readable.
+- **Spend motion in one place.** A single well-orchestrated page-load reveal with staggered delays does more than scattered micro-animations. See section 15.
+
 ## 5. Framework and Library Selection
 
 **Inspect the project before choosing or installing anything.** Read `package.json`, lockfiles, build configuration, and existing components.
@@ -178,8 +191,8 @@ Example token structure (adapt values to the brand):
   --color-accent-dim: rgba(139, 92, 246, 0.12);
   --color-border-focus: #7df9ff;
 
-  --font-body: Inter, system-ui, sans-serif;
-  --font-display: Inter, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --space-1: 0.25rem;
@@ -329,8 +342,11 @@ Typography is a major part of the design, not a finishing detail.
 - Use muted text carefully; it must remain readable.
 - Use uppercase labels sparingly and with consistent tracking.
 - Never use typography alone to indicate an interactive state.
+- Do not reach for Inter, Roboto, Open Sans, Lato, Arial or the bare system stack out of habit. Use them only when the brand already does, or when you can say why they fit.
+- Pair for contrast: display with monospace, or serif with geometric sans. Use weight extremes and large size steps rather than many similar sizes.
+- Starting points by character: code and tools (JetBrains Mono, Fira Code, Space Grotesk); technical (IBM Plex Sans, Source Sans 3); editorial (Fraunces, Newsreader, Playfair Display, Crimson Pro); product and startup (Bricolage Grotesque, Satoshi, Clash Display). Check each font's license.
 
-**Cybercore font stack:** Inter (body/UI), JetBrains Mono (monospace/terminal accents).
+**Cybercore font stack:** JetBrains Mono for UI, body and code on editor-style pages. Some older pages use Inter for body text; keep that only where it already exists.
 **Example font stack:** Anton (display), Inter (UI), Source Serif 4 (prose).
 **Neon Coffin Video font stack:** UnifrakturMaguntia (town paper masthead), IM FELL English (town paper body).
 
@@ -451,7 +467,7 @@ Adapt names and formats to the app. Do not create empty folders or unused assets
 
 Motion should explain state, guide attention, or add brand character. It must not delay access to content.
 
-Good uses: - Subtle hover and press feedback. - Menu, dialog, and accordion transitions. - Loading and progress feedback. - Small reveal animations when they do not hide content. - Product demonstrations that show a real workflow. - Carefully controlled ambient motion.
+Good uses: - One orchestrated page-load reveal (staggered `animation-delay` on the hero and first sections) instead of many unrelated effects. - Subtle hover and press feedback. - Menu, dialog, and accordion transitions. - Loading and progress feedback. - Small reveal animations when they do not hide content. - Product demonstrations that show a real workflow. - Carefully controlled ambient motion.
 
 Rules: - Keep animations short and purposeful. - Avoid animation on every element. - Never make users wait through an intro animation before using the site. - Respect `prefers-reduced-motion: reduce`. - Provide pause/stop controls for prolonged or auto-running motion where required. - Avoid scroll hijacking, excessive parallax, and distracting cursor effects. - Prefer CSS transitions for simple UI motion. - Use a motion library only when the interaction genuinely needs it. - Ensure animation does not cause layout shifts or interfere with input.
 
@@ -580,6 +596,8 @@ Do not claim a test passed unless it was actually run.
 ## 21. Anti-patterns — Do Not Ship These
 
 - Generic template layouts with no product-specific identity.
+- The default generated look: a habitual sans-serif (Inter, Roboto, Arial, system UI), a purple gradient on white, evenly spread colors with no lead, and flat solid backgrounds.
+- Fonts or colors chosen without being able to say why they suit this product.
 - A hero made only of a heading, paragraph, and two buttons when the product needs a visual demonstration.
 - Three identical cards by default.
 - Random gradients, blobs, glows, glass panels, and decorative circles with no purpose.
@@ -600,6 +618,10 @@ Do not claim a test passed unless it was actually run.
 - Declaring the work finished without running the available checks.
 
 ## 22. Practical Reference Library
+
+### Prompting for distinctive design
+
+- Anthropic cookbook, "Prompting for frontend aesthetics" (Prithvi Rajasekaran, 2025): https://platform.claude.com/cookbook/coding-prompting-for-frontend-aesthetics. The source of the "Commit to a direction" guidance in section 4, restated here in this skill's own words.
 
 Prefer official documentation and maintained projects. Check current documentation for the project's installed version before copying APIs or configuration.
 
