@@ -221,17 +221,17 @@ jobs:
         name: Release ${{ github.ref_name }}
         body: |
           ## Cross-Platform Release ${{ github.ref_name }}
-          
+
           ### Built on:
           - Linux x64, arm64
           - macOS arm64, amd64
           - Windows x64
-          
+
           ### SHA256 checksums
           - Linux x64: `<checksum>`
           - macOS arm64: `<checksum>`
           - Windows x64: `<checksum>`
-        
+
           ### Assets
           - <binary-linux-x64>
           - <binary-mac-arm64>

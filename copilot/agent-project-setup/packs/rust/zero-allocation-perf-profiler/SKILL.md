@@ -328,25 +328,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: 1.98.1
-      
+
       - name: Install criterion
         run: cargo install criterion
-      
+
       - name: Run benchmarks
         run: |
           cargo bench --bench perf_bench
-      
+
       - name: Check for allocation changes
         run: |
           # Fail if allocations increase
           RUSTFLAGS="-Z allocs" cargo bench -- bench_hot_path 2>&1 | \
             grep "avg allocs" || true
-      
+
       - name: Profile with perf
         run: |
           perf record -g -o perf.data -- cargo test

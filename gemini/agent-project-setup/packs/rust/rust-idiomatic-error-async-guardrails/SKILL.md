@@ -41,7 +41,7 @@ Ensure all errors use idiomatic Rust error types rather than bare strings or cus
 **Check thiserror usage:**
 ```bash
 # Verify all public error types derive thiserror::Error
-grep -r "enum.*Error" --include="*.rs" | grep -v "thiserror" 
+grep -r "enum.*Error" --include="*.rs" | grep -v "thiserror"
 
 # Check that custom errors use thiserror
 grep -rn "pub.*struct.*Error" --include="*.rs" | head -20
@@ -133,17 +133,17 @@ grep -rn "AbortHandle" --include="*.rs" | head -20
 // Example: Proper cancellation handling
 async fn example() {
     let (tx, mut rx) = tokio::sync::mpsc::channel::<i32>(32);
-    
+
     // Properly handle cancellation
     let mut cx = CancellationToken::new();
-    
+
     tokio::spawn(async move {
         while let Some(item) = rx.recv().await {
             // Process item
             process(item).await;
         }
     });
-    
+
     // Handle cancellation
     cx.cancelled().await;
     rx.close().await;
@@ -295,23 +295,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: 1.98.1
-      
+
       - name: Run error pattern checks
         run: |
           # Check thiserror/anyhow compliance
           cargo check --all-targets
-          
+
           # Check for unsafe .unwrap() calls
           grep -rn "\.unwrap()\b" --include="*.rs" | grep -v "#\[test\]" > unwrap-report.txt || true
-          
+
           # Check tokio cancellation patterns
           grep -rn "tokio::spawn" --include="*.rs" > spawn-report.txt || true
-      
+
       - name: Enforce guardrails
         fail-fast: false
         # Additional guardrails enforcement can go here

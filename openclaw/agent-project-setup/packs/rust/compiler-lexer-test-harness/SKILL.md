@@ -51,7 +51,7 @@ mkdir -p tests/fixtures
 # Run parser A
 cargo run -- parser-a --input tests/fixtures/test1.l > /tmp/parser_a_output.txt
 
-# Run parser B  
+# Run parser B
 cargo run -- parser-b --input tests/fixtures/test1.l > /tmp/parser_b_output.txt
 
 # Compare outputs (allowing for whitespace differences)
@@ -82,13 +82,13 @@ fn differential_test_across_versions() {
         "(a + b) * c",
         "invalid_syntax!",
     ];
-    
+
     for input in &test_cases {
         let expected = run_parser(input, "latest");
         // Run against other versions and assert consistency
         for version in &["v1.0", "v1.1", "v2.0"] {
             let actual = run_parser(input, version);
-            insta::with_settings! { 
+            insta::with_settings! {
                 let mut snapshot = insta::Snapshot::new();
                 insta::assert_eq!(actual, expected);
             };
@@ -363,17 +363,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: 1.98.1
-      
+
       - name: Install test tools
         run: |
           cargo install cargo-fuzz
           cargo install insta
-      
+
       - name: Run ${{ matrix.test-type }} tests
         run: |
           case ${{ matrix.test-type }} in
@@ -387,7 +387,7 @@ jobs:
               INSTA_UPDATE=always cargo test
               ;;
           esac
-      
+
       - name: Upload test artifacts
         uses: actions/upload-artifact@v4
         with:

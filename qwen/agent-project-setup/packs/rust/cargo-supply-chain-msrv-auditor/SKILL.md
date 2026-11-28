@@ -228,21 +228,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: 1.98.1
-      
+
       - name: Install cargo-deny
         run: cargo install cargo-deny
-      
+
       - name: Run clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
-      
+
       - name: Run cargo deny
         run: cargo deny check
-      
+
       - name: Run cargo audit
         run: cargo audit
 ```
