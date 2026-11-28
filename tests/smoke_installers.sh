@@ -79,7 +79,7 @@ for row in "${AGENTS[@]}"; do
     expected="$(find "$ROOT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
     [[ "$installed" -eq "$expected" ]] || fail "$agent: --with all installed $installed skills, expected $expected"
     packs="$(bash "$installer" --list-packs)"
-    grep -Eq '^rust +10 skills' <<<"$packs" || fail "$agent: --list-packs missing counts: $packs"
+    grep -Eq '^rust +15 skills' <<<"$packs" || fail "$agent: --list-packs missing counts: $packs"
   else
     if find "$HOME" -name SKILL.md | grep -q .; then fail "$agent: rules-only template installed skills"; fi
     if bash "$installer" --with "$PACK" >/dev/null 2>&1; then fail "$agent: rules-only accepted --with"; fi

@@ -60,10 +60,22 @@ window.CC_DATA = {
    "pack": "rust"
   },
   {
+   "id": "terminal",
+   "title": "Terminal pack",
+   "default": false,
+   "pack": "terminal"
+  },
+  {
    "id": "web",
    "title": "Web pack",
    "default": false,
    "pack": "web"
+  },
+  {
+   "id": "workflow",
+   "title": "Workflow pack",
+   "default": false,
+   "pack": "workflow"
   }
  ],
  "skills": [
@@ -780,6 +792,320 @@ window.CC_DATA = {
    "version": "2",
    "files": [
     "SKILL.md"
+   ]
+  },
+  {
+   "id": "strict-scope-reviewer",
+   "name": "Strict Scope & Anti-Bloat Reviewer",
+   "group": "core",
+   "category": "quality",
+   "icon": "✂️",
+   "desc": "Keep every change to exactly what was asked: no unrequested abstractions, dependencies, configuration options, speculative features or drive-by refactors. Use before and after any code change, and when asked to \"keep it minimal\", \"only change what I asked\", \"no over-engineering\", \"review this diff for scope creep\", \"why did you add that\", \"remove the bloat\", or \"YAGNI\". Also use when you notice the urge to add a helper class, a new package, a flag \"for flexibility\", or to tidy code you weren't asked to touch. Not for reviewing code quality and design (use code-review-and-refactoring).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/scope_check.py"
+   ]
+  },
+  {
+   "id": "root-cause-debugging",
+   "name": "Root-Cause Debugging Protocol",
+   "group": "core",
+   "category": "quality",
+   "icon": "🐞",
+   "desc": "A strict debugging protocol: reproduce the bug with a failing test first, isolate one variable at a time until the root cause is proven, fix only that cause, and prove the fix (the test fails on the old code and passes on the new) before touching anything else. Use for any bug report, failing test, crash, regression, wrong output, flaky test or \"it stopped working\", and whenever you are tempted to try a quick fix to see if it helps. Not for adding tests to new features (use test-first-development) or open-ended investigations without a reproducible bug (use deep-investigation).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/prove_fix.py"
+   ]
+  },
+  {
+   "id": "skill-router",
+   "name": "Skill Router & Conflict Resolver",
+   "group": "core",
+   "category": "workflow",
+   "icon": "🪧",
+   "desc": "Meta-skill that decides which skill(s) to use when several match a prompt: an ordered set of priority rules (explicit request, guards, process before implementation, project over generic, specific over general, repo evidence, ask on real ties), plus a router script that ranks installed skills for a prompt and finds overlapping or shadowed skills. Use when more than one skill seems to apply, when unsure which workflow to follow, when adding a new skill, or when asked \"which skill should handle this\", \"skills conflict\", \"wrong skill was used\", or \"audit my skills for overlap\".",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/route.py",
+    "scripts/routing.toml"
+   ]
+  },
+  {
+   "id": "css-grid-motion-system",
+   "name": "CSS Micro-Interaction & Layout Grid System",
+   "group": "web",
+   "category": "web",
+   "icon": "🎞️",
+   "desc": "Build responsive CSS Grid and Flexbox layout shells and GPU-friendly micro-interactions in plain CSS (and a little vanilla JS), without heavy JS frameworks or animation libraries. Use when asked for a \"layout grid\", \"app shell\", \"dashboard layout\", \"sidebar layout\", \"card grid\", \"holy grail layout\", \"responsive grid\", \"container queries\", \"subgrid\", \"micro-interactions\", \"hover effects\", \"button animation\", \"smooth transitions\", \"animate a dialog or popover\", \"accordion animation\", \"skeleton loader\", \"view transitions\", \"scroll animations\", \"janky animation\", \"60fps\", or \"remove GSAP/Framer Motion for simple effects\". Not for setting a visual direction or building whole pages (use web-design-and-frontend-craft).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/css_motion_lint.py"
+   ]
+  },
+  {
+   "id": "cyberpunk-neon-palette",
+   "name": "Cyberpunk & High-Contrast Neon Palette Generator",
+   "group": "web",
+   "category": "web",
+   "icon": "🌈",
+   "desc": "Build dark-mode cyberpunk and high-contrast neon colour systems that pass WCAG contrast, with disciplined glow and border rules that add atmosphere without clutter. Use when asked for a \"neon palette\", \"cyberpunk theme\", \"synthwave colours\", \"dark mode tokens\", \"glowing borders\", \"neon glow CSS\", \"high-contrast dark theme\", \"check colour contrast\", \"WCAG contrast for a dark theme\", \"accent colours for a terminal or editor look\", or when a dark neon UI looks cluttered, washed out or hard to read. Not for extracting tokens or adding a theme switcher (use design-token-theme-switcher).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/neon_palette.py"
+   ]
+  },
+  {
+   "id": "design-token-theme-switcher",
+   "name": "Design-System Token & Theme Switcher",
+   "group": "web",
+   "category": "web",
+   "icon": "🎭",
+   "desc": "Extract hard-coded colours, spacing and radii from CSS and components into semantic design tokens (CSS custom properties, with TOML theme files as the source of truth), and add instant, flash-free theme switching. Use when asked to \"extract design tokens\", \"replace hardcoded colors\", \"tokenize the CSS\", \"create a design system\", \"add dark mode\", \"add a theme switcher\", \"theme toggle\", \"multiple themes\", \"CSS variables for theming\", \"spacing scale\", \"consolidate colours\", \"TOML theme\", or \"stop the theme flash on reload\". Not for Omarchy desktop themes (use omarchy-plugin-theme).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/tokenize.py"
+   ]
+  },
+  {
+   "id": "foss-font-bundler",
+   "name": "Self-Hosted FOSS Typography & Fontsource Bundler",
+   "group": "web",
+   "category": "web",
+   "icon": "🔤",
+   "desc": "Self-host open-source fonts as local WOFF2 subsets with generated @font-face rules and zero runtime CDN calls. Use when asked to \"self-host fonts\", \"remove Google Fonts\", \"stop loading fonts from a CDN\", \"use Fontsource\", \"download a font as WOFF2\", \"subset a font\", \"generate @font-face\", \"fix font layout shift\", \"font-display\", \"preload fonts\", \"GDPR font issue\", \"font-src CSP\", or \"check a site for external font requests\".",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/font_bundler.py"
+   ]
+  },
+  {
+   "id": "cloudflare-dns-iac",
+   "name": "Cloudflare & DNS Infrastructure-as-Code",
+   "group": "ops",
+   "category": "devops",
+   "icon": "🌤️",
+   "desc": "Manage Cloudflare DNS, Zero Trust (Access, Gateway, Tunnels) and Workers as infrastructure-as-code, and validate every change before it is applied. Use when asked to \"change DNS records\", \"add a Cloudflare record\", \"terraform cloudflare\", \"OpenTofu cloudflare\", \"import Cloudflare into Terraform\", \"cf-terraforming\", \"migrate the Cloudflare provider to v5\", \"Access policy\", \"Zero Trust policy\", \"cloudflared tunnel ingress\", \"Gateway rules\", \"deploy a Worker\", \"wrangler deploy\", \"Worker routes or custom domains\", \"DNSSEC\", \"SPF/DKIM/DMARC records\", \"CAA records\", or \"check a Cloudflare plan before apply\".",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/check_plan.py"
+   ]
+  },
+  {
+   "id": "forge-mirror-sync",
+   "name": "Cross-Forge Mirror & Backup Syncer",
+   "group": "ops",
+   "category": "devops",
+   "icon": "🪞",
+   "desc": "Mirror and back up repositories between GitHub and GitLab safely: append-only ref syncing that never force-pushes or deletes, branch-protection audits on both forges, and release (plus asset) syncing, with dry runs by default. Use when asked to \"mirror a repo to GitLab\", \"back up GitHub\", \"sync branches/tags between forges\", \"push mirror\", \"check branch protection\", \"sync releases\", \"copy release assets\", \"set up a backup timer\", or when a backup and its source have drifted. Not for everyday branch and pull request work (use git-workflow).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/forge_sync.py"
+   ]
+  },
+  {
+   "id": "linux-systemd-daemon-packager",
+   "name": "Linux Systemd & Daemon Packager",
+   "group": "ops",
+   "category": "system",
+   "icon": "🧰",
+   "desc": "Generate hardened systemd user/system unit files, XDG base directory paths, and clean uninstall scripts for Linux daemons and background services. Use when asked to \"write a systemd unit\", \"harden a service\", \"create a daemon\", \"XDG paths for a service\", \"user systemd service\", \"uninstall script\", \"systemd security hardening\", \"socket activation\", or \"package a Linux daemon\". Not for day-to-day service administration (use system-administration).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "network-firewall-rule-validator",
+   "name": "Network & Firewall Rule Validator",
+   "group": "ops",
+   "category": "security",
+   "icon": "🧱",
+   "desc": "Audit nftables, iptables, WireGuard/Tailscale routing, and CGNAT edge cases while preventing accidental lockouts. Use when asked to \"audit firewall rules\", \"validate nftables\", \"fix iptables\", \"WireGuard routing\", \"Tailscale ACL\", \"CGNAT edge cases\", \"prevent SSH lockout\", \"firewall lockout recovery\", \"port forwarding rules\", \"network policy review\", or \"routing table audit\". Not for application security reviews (use security-audit).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "cross-platform-ci-matrix-builder",
+   "name": "Cross-Platform CI Matrix Builder",
+   "group": "ops",
+   "category": "devops",
+   "icon": "🧮",
+   "desc": "Generates GitHub Actions or GitLab CI pipelines for multi-architecture builds, caching, and automated release artifacts. Supports Rust, Go, Node.js, and generic compiled languages with matrix strategies, layer caching, and release pipeline automation. Use when a project needs builds for several operating systems or architectures, cached CI, or automated release artifacts. Not for general workflow design (use ci-cd-pipelines).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "offline-first-privacy-auditor",
+   "name": "Offline-First & Zero-Telemetry Privacy Auditor",
+   "group": "ops",
+   "category": "security",
+   "icon": "🛡️",
+   "desc": "Scan dependencies and source code to guarantee zero outbound network calls, analytics, or hidden telemetry. Use when asked to \"audit telemetry\", \"remove analytics\", \"offline-first audit\", \"zero telemetry\", \"find phone-home calls\", \"privacy audit\", \"block outbound network\", \"dependency tracking scan\", \"GDPR source audit\", \"air-gap compatibility\", or \"disable telemetry in dependencies\". Not for vulnerability audits (use security-audit).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "cargo-supply-chain-msrv-auditor",
+   "name": "Cargo Supply-Chain & MSRV Auditor",
+   "group": "rust",
+   "category": "rust",
+   "icon": "📋",
+   "desc": "Runs cargo clippy, cargo deny, and cargo audit against a target Minimum Supported Rust Version (MSRV) before marking tasks complete. Validates supply-chain security and MSRV compliance for Rust projects. Use when finishing Rust work that must pass clippy, cargo-deny and cargo-audit at the project's MSRV, or when adding or upgrading dependencies. Not for general Rust conventions (use rust-development) or release builds (use rust-release-and-cross-compile).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "rust-idiomatic-error-async-guardrails",
+   "name": "Rust Idiomatic Error & Async Guardrails",
+   "group": "rust",
+   "category": "rust",
+   "icon": "🚧",
+   "desc": "Enforces thiserror/anyhow patterns, prohibits .unwrap() in production paths, and checks tokio cancellation safety for Rust async code. Ensures robust error handling and safe cancellation in production Rust projects. Use when writing or reviewing Rust error handling or async code headed for production. Not for async architecture and Tokio runtime design (use rust-async-tokio).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "ratatui-layout-state-architect",
+   "name": "Ratatui Layout State Architect",
+   "group": "rust",
+   "category": "rust",
+   "icon": "📺",
+   "desc": "Design and refactor Ratatui terminal applications around Elm-style state, messages, update logic, responsive layout constraints, and separated rendering widgets. Use for Rust TUI architecture, event-loop design, layout bugs, and maintainable screen composition. Not for choosing between a CLI, TUI or GUI (use rust-ui).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "agents/openai.yaml"
+   ]
+  },
+  {
+   "id": "zero-allocation-perf-profiler",
+   "name": "Zero-Allocation & Perf Profiler",
+   "group": "rust",
+   "category": "rust",
+   "icon": "🏎️",
+   "desc": "Guides the agent to benchmark hot paths, minimize heap allocations, and inspect assembly or flamegraphs for Rust code. Ensures performance-critical code is optimized for zero-allocation paths and profile-driven improvements. Use when a Rust hot path must get faster or allocate less, with benchmarks and profiles as evidence. Not for performance work outside Rust hot paths (use performance-optimization).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "compiler-lexer-test-harness",
+   "name": "Compiler & Lexer Test Harness",
+   "group": "rust",
+   "category": "rust",
+   "icon": "🧬",
+   "desc": "Automates differential testing, fuzzing (cargo-fuzz), and snapshot testing (insta) for parsers and custom languages. Ensures language implementation correctness across parser revisions, fuzz targets, and version compatibility. Use when building or changing a lexer, parser or language implementation that needs fuzz, differential or snapshot tests. Not for general Rust test strategy (use rust-testing).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "hyprland-wayland-theme-integrator",
+   "name": "Hyprland / Wayland Theme Integrator",
+   "group": "omarchy",
+   "category": "omarchy",
+   "icon": "🌊",
+   "desc": "Sync custom app color palettes, window rules, and IPC hooks with Hyprland and other Wayland compositors, and integrate with Linux desktop themes. Use when asked to \"sync theme colors\", \"write window rules\", \"Hyprland IPC\", \"Wayland theme integration\", \"GTK/Qt theming on Wayland\", \"hyprctl dispatch\", \"color palette from wallpaper\", \"pywal integration\", \"window decorations\", or \"compositor IPC hook\". Not for Omarchy theme plugins (use omarchy-plugin-theme).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "posix-cli-ux-designer",
+   "name": "POSIX-Compliant CLI Argument & UX Designer",
+   "group": "terminal",
+   "category": "system",
+   "icon": "⌨️",
+   "desc": "Enforce consistent POSIX-compliant CLI contracts: --help output, exit codes, stdin/stdout piping, and --json machine-readable flags. Use when asked to \"design CLI arguments\", \"standardize --help\", \"fix exit codes\", \"add pipe support\", \"machine-readable output\", \"POSIX argument conventions\", \"--json flag\", or \"audit CLI UX\". Not for implementing Rust CLI parsing and config (use rust-config-and-cli).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "terminal-keybinding-vim-nav",
+   "name": "Terminal Keybinding & Vim-Navigation Standardizer",
+   "group": "terminal",
+   "category": "system",
+   "icon": "🎹",
+   "desc": "Apply uniform modal navigation (hjkl, /, ?, q) and generate discoverable footer keybind hints for terminal UIs. Use when asked to \"add vim navigation\", \"standardize keybindings\", \"add keybind hints\", \"modal TUI navigation\", \"hjkl movement\", \"footer help bar\", \"discoverable shortcuts\", or \"keybinding audit\". Not for TUI state and layout architecture (use ratatui-layout-state-architect).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "ansi-nerd-font-glyph-stylist",
+   "name": "ANSI & Nerd Font Glyph Stylist",
+   "group": "terminal",
+   "category": "system",
+   "icon": "🔣",
+   "desc": "Standardize ANSI escape codes, box-drawing characters, and Nerd Font glyph alignment for consistent rendering across terminal emulators. Use when asked to \"style terminal output\", \"fix box-drawing glyphs\", \"align Nerd Font icons\", \"ANSI color fallbacks\", \"standardize terminal UI\", \"fix glyph width\", or \"make TUI portable\". Not for self-hosting web fonts (use foss-font-bundler).",
+   "version": "1",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": "doc-manpage-builder",
+   "name": "Self-Contained Documentation & Manpage Builder",
+   "group": "terminal",
+   "category": "workflow",
+   "icon": "📖",
+   "desc": "Generate crisp, accurate CLI documentation from the program itself: README quickstarts, usage and option tables, configuration references and man pages built from the real --help output and example config, with a drift check that fails when the docs and the CLI disagree. Use when asked to \"write a README\", \"document the CLI flags\", \"generate a man page\", \"add a configuration reference\", \"docs are out of date\", \"document the config file\", \"quickstart\", \"usage section\", or when flags or config keys changed. Not for deciding what to document or writing guides (use documentation-and-adrs).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/docgen.py"
+   ]
+  },
+  {
+   "id": "adr-writer",
+   "name": "Architectural Decision Record (ADR) Writer",
+   "group": "workflow",
+   "category": "workflow",
+   "icon": "🗳️",
+   "desc": "Write concise Architectural Decision Records (ADRs) in docs/adr/ that explain why a technical trade-off was chosen, what was rejected, and when to revisit it. Use when asked to \"write an ADR\", \"document this decision\", \"record why we chose X\", \"architecture decision record\", \"decision log\", \"supersede an ADR\", \"update the ADR index\", \"lint ADRs\", or when a change picks between real alternatives (framework, database, protocol, hosting, API shape, data model) that future maintainers will question. Not for structuring documentation in general (use documentation-and-adrs).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/adr.py"
+   ]
+  },
+  {
+   "id": "conventional-commit-changelog",
+   "name": "Conventional Commit & Changelog Generator",
+   "group": "workflow",
+   "category": "workflow",
+   "icon": "🏷️",
+   "desc": "Split staged changes into atomic Conventional Commits and keep CHANGELOG.md current in Keep a Changelog format, with a semantic-version suggestion for each release. Use when asked to \"commit these changes\", \"split this into commits\", \"atomic commits\", \"write a commit message\", \"conventional commits\", \"lint commit messages\", \"commit-msg hook\", \"update the changelog\", \"generate CHANGELOG.md\", \"prepare a release\", \"what version should this be\", or \"keep a changelog\". Not for branching, rebasing or pull request process (use git-workflow).",
+   "version": "1",
+   "files": [
+    "SKILL.md",
+    "scripts/ccl.py"
    ]
   }
  ],

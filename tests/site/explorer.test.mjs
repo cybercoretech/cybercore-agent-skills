@@ -44,9 +44,9 @@ test('choosing another agent changes the install command', { skip }, async () =>
 test('search filters and "/" focuses the title-bar search', { skip }, async () => {
   await page.evaluate(`document.body.focus(); document.dispatchEvent(new KeyboardEvent('keydown', { key: '/', bubbles: true }))`);
   assert.equal(await page.evaluate(`document.activeElement.id`), 'search');
-  await page.evaluate(`applySearchForTest('security audit')`);
+  await page.evaluate(`applySearchForTest('vulnerability class')`);
   assert.equal(await page.evaluate(`document.querySelectorAll('#tree button.file:not([hidden])').length`), 1);
-  assert.equal(await page.evaluate(`document.getElementById('treeSearch').value`), 'security audit');
+  assert.equal(await page.evaluate(`document.getElementById('treeSearch').value`), 'vulnerability class');
   await page.evaluate(`applySearchForTest('')`);
   assert.equal(await page.evaluate(`document.querySelectorAll('#tree button.file:not([hidden])').length`), data.skills.length);
 });

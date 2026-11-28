@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ratatui Layout State Architect"
+  short_description: "Architect Ratatui state, event loops, and responsive layouts"
+  default_prompt: "Use $ratatui-layout-state-architect to design or refactor this Ratatui app’s Elm-style state flow, event loop, responsive layout, and widget separation."

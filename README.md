@@ -1,10 +1,10 @@
 # 🔒 CyberCore Agent Skills
 
-Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 18 default skills, 9 optional domain packs (38 more skills, from Rust to web to AI), and five shared rule files, adapted to the configuration layout that agent actually reads.
+Reusable guardrails, rules, and skills for 13 AI coding agents. Every skills-capable agent gets the same 21 default skills, 11 optional domain packs (60 more skills, from Rust to web to AI), and five shared rule files, adapted to the configuration layout that agent actually reads.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![13 agents](https://img.shields.io/badge/agents-13-purple)](#-supported-agents)
-[![56 skills](https://img.shields.io/badge/skills-56-green)](#-included-skills)
+[![81 skills](https://img.shields.io/badge/skills-81-green)](#-included-skills)
 [![Release](https://img.shields.io/github/v/release/cybercoretech/cybercore-agent-skills)](CHANGELOG.md)
 [![Skills Explorer](https://img.shields.io/badge/explorer-live-7df9ff)](https://cybercoretech.github.io/cybercore-agent-skills/)
 
@@ -89,10 +89,12 @@ bash ~/cybercore-agent-skills/claude/agent-project-setup/setup-claude.sh --list-
 - `languages` (5): Python, TypeScript and Node.js, Zig, Lua, and Qt with C++.
 - `mobile` (2): Native Android and cross-platform mobile apps.
 - `office` (1): Word, Excel, PowerPoint and PDF documents.
-- `omarchy` (4): Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for Omarchy.
-- `ops` (4): Containers, Linux administration, observability and incident response.
-- `rust` (10): Rust libraries and applications, from architecture and async to testing, UI and releases.
-- `web` (5): Building and auditing web interfaces, accessibility, browser checks and localization.
+- `omarchy` (5): Omarchy desktop operations, Lua config, plugins and themes, Hyprland and Wayland theming, and Rust tooling for Omarchy.
+- `ops` (10): Containers, Linux administration, observability and incident response, plus Cloudflare DNS and Workers as code, forge mirroring, daemon packaging, firewall rules, CI build matrices and privacy audits.
+- `rust` (15): Rust libraries and applications, from architecture and async to testing, UI and releases, plus supply-chain checks, error and async guardrails, TUI architecture, allocation profiling and parser testing.
+- `terminal` (4): Command-line UX, terminal keybindings, glyph styling, and man pages and README references generated from CLI flags.
+- `web` (9): Building and auditing web interfaces, accessibility, browser checks and localization, plus CSS layout and motion, neon palettes, design tokens and self-hosted fonts.
+- `workflow` (2): Architectural decision records, atomic Conventional Commits and Keep a Changelog releases.
 
 ### Install a single skill
 
@@ -115,9 +117,9 @@ It compares every installed skill and rule with the versions in the clone's git 
 
 ## 🧩 Included skills
 
-Every skills-capable agent gets the **18 default skills**. Domain skills come in **optional packs**: add them with `--with <pack>`, `--with rust,web` or `--with all` (see [Optional packs](#optional-packs)).
+Every skills-capable agent gets the **21 default skills**. Domain skills come in **optional packs**: add them with `--with <pack>`, `--with rust,web` or `--with all` (see [Optional packs](#optional-packs)).
 
-### Default (18)
+### Default (21)
 
 Useful in nearly every software project, whatever the language or platform.
 
@@ -141,6 +143,9 @@ Useful in nearly every software project, whatever the language or platform.
 | 🕵️ `security-audit` | Scoped, defensive audits: attack surface, scanners, review by vulnerability class, validated findings report |
 | 🤝 `session-handoff` | Verified, current-state handoff files so work survives session ends, context resets and agent switches |
 | 🚦 `test-first-development` | Red, green, refactor: failing test first, regression tests for bugs, characterization tests for legacy code |
+| ✂️ `strict-scope-reviewer` | Exactly the requested change: scope contract, no unrequested abstractions, dependencies or flags; diff checker |
+| 🐞 `root-cause-debugging` | Failing test first, one variable at a time, minimal fix, proof that the test fails on old code and passes on new |
+| 🪧 `skill-router` | Priority rules when several skills match a prompt; ranks installed skills and finds overlapping or shadowed ones |
 
 ### 🧠 AI pack (`--with ai`, 5)
 
@@ -192,9 +197,9 @@ Word, Excel, PowerPoint and PDF documents.
 |---|---|
 | 📄 `office-documents` | Word, Excel, PowerPoint and PDF: templates and styles, intact formulas, local conversion, render-and-inspect checks |
 
-### 🖥️ Omarchy pack (`--with omarchy`, 4)
+### 🖥️ Omarchy pack (`--with omarchy`, 5)
 
-Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for Omarchy. For [Omarchy](https://omarchy.org) (Arch Linux + Hyprland) desktops.
+Omarchy desktop operations, Lua config, plugins and themes, Hyprland and Wayland theming, and Rust tooling for Omarchy. For [Omarchy](https://omarchy.org) (Arch Linux + Hyprland) desktops.
 
 | Skill | Purpose |
 |---|---|
@@ -202,10 +207,11 @@ Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for
 | 🎚️ `omarchy-lua-config` | Omarchy Lua configuration for Hyprland, bindings, and look-and-feel |
 | 🧩 `omarchy-plugin-theme` | Omarchy plugins, themes, and menu integrations |
 | 🔧 `rust-omarchy-tooling` | Omarchy integration for Rust tools |
+| 🌊 `hyprland-wayland-theme-integrator` | Sync app palettes, window rules and IPC hooks with Hyprland and other Wayland compositors and desktop themes |
 
-### ⚙️ Ops pack (`--with ops`, 4)
+### ⚙️ Ops pack (`--with ops`, 10)
 
-Containers, Linux administration, observability and incident response.
+Containers, Linux administration, observability and incident response, plus Cloudflare DNS and Workers as code, forge mirroring, daemon packaging, firewall rules, CI build matrices and privacy audits.
 
 | Skill | Purpose |
 |---|---|
@@ -213,10 +219,16 @@ Containers, Linux administration, observability and incident response.
 | 🐧 `system-administration` | Linux administration, systemd, packages, and services |
 | 🚨 `incident-response-basics` | Detection, triage, communication, rollback, and blameless follow-up |
 | 🔭 `observability-and-debugging` | Structured logging, metrics, tracing, and profiling |
+| 🌤️ `cloudflare-dns-iac` | Cloudflare DNS, Zero Trust and Workers as code, with a plan checker before every apply |
+| 🪞 `forge-mirror-sync` | Append-only GitHub to GitLab mirroring, protection audits, release and asset sync |
+| 🧰 `linux-systemd-daemon-packager` | systemd units, sandboxing, install and uninstall scripts for daemons |
+| 🧱 `network-firewall-rule-validator` | nftables, iptables, WireGuard and Tailscale changes without locking yourself out |
+| 🧮 `cross-platform-ci-matrix-builder` | Multi-OS and multi-arch CI matrices, caching, and release artifacts |
+| 🛡️ `offline-first-privacy-auditor` | Find outbound network calls, analytics and hidden telemetry in code and dependencies |
 
-### 🦀 Rust pack (`--with rust`, 10)
+### 🦀 Rust pack (`--with rust`, 15)
 
-Rust libraries and applications, from architecture and async to testing, UI and releases.
+Rust libraries and applications, from architecture and async to testing, UI and releases, plus supply-chain checks, error and async guardrails, TUI architecture, allocation profiling and parser testing.
 
 | Skill | Purpose |
 |---|---|
@@ -230,10 +242,26 @@ Rust libraries and applications, from architecture and async to testing, UI and 
 | 🚀 `rust-release-and-cross-compile` | Release profiles, features, and cross-compilation |
 | ✅ `rust-testing` | Integration, async, temp-dir, and property tests |
 | 🪟 `rust-ui` | Choosing CLI, TUI (`ratatui`), or GUI, and building TUIs |
+| 📋 `cargo-supply-chain-msrv-auditor` | clippy, cargo-deny and cargo-audit at the MSRV before work is marked done |
+| 🚧 `rust-idiomatic-error-async-guardrails` | `thiserror`/`anyhow` patterns, no `unwrap` in production, cancellation-safe async |
+| 📺 `ratatui-layout-state-architect` | Elm-style state, messages and layout for Ratatui apps |
+| 🏎️ `zero-allocation-perf-profiler` | Benchmarks, allocation counts, flamegraphs and assembly for hot paths |
+| 🧬 `compiler-lexer-test-harness` | Fuzz, differential and snapshot tests for lexers and parsers |
 
-### 🌐 Web pack (`--with web`, 5)
+### ⌨️ Terminal pack (`--with terminal`, 4)
 
-Building and auditing web interfaces, accessibility, browser checks and localization.
+Command-line UX, terminal keybindings, glyph styling, and man pages and README references generated from CLI flags.
+
+| Skill | Purpose |
+|---|---|
+| ⌨️ `posix-cli-ux-designer` | `--help`, exit codes, stdin/stdout piping and `--json` output that follow POSIX conventions |
+| 🎹 `terminal-keybinding-vim-nav` | Modal `hjkl` navigation and discoverable footer keybinding hints for terminal UIs |
+| 🔣 `ansi-nerd-font-glyph-stylist` | ANSI escape codes, box drawing and Nerd Font glyph alignment across terminal emulators |
+| 📖 `doc-manpage-builder` | Man pages, README usage tables and config references from `--help`, with a drift check |
+
+### 🌐 Web pack (`--with web`, 9)
+
+Building and auditing web interfaces, accessibility, browser checks and localization, plus CSS layout and motion, neon palettes, design tokens and self-hosted fonts.
 
 | Skill | Purpose |
 |---|---|
@@ -242,6 +270,19 @@ Building and auditing web interfaces, accessibility, browser checks and localiza
 | 🖱️ `browser-verification` | Walk changed flows in a real browser: screenshots by width and theme, console, network, and keyboard checks |
 | 🌐 `i18n-and-localization` | String extraction, locales, formatting, and RTL awareness |
 | 🧐 `ux-design-audit` | Audit existing UIs by area, prioritize findings with screenshots, fix within the design system with before/after proof |
+| 🎞️ `css-grid-motion-system` | Grid and Flexbox shells and compositor-only micro-interactions, with a motion linter |
+| 🌈 `cyberpunk-neon-palette` | Dark neon palettes that pass WCAG contrast, with disciplined glow rules and a generator |
+| 🎭 `design-token-theme-switcher` | Extract hard-coded values into tokens, TOML themes, and a flash-free theme switcher |
+| 🔤 `foss-font-bundler` | Self-hosted WOFF2 subsets and `@font-face` rules with zero CDN calls |
+
+### 🔁 Workflow pack (`--with workflow`, 2)
+
+Architectural decision records, atomic Conventional Commits and Keep a Changelog releases.
+
+| Skill | Purpose |
+|---|---|
+| 🗳️ `adr-writer` | Concise ADRs in `docs/adr/`: options, consequences, revisit triggers; create, index and lint |
+| 🏷️ `conventional-commit-changelog` | Split staged changes into atomic commits, lint messages, update CHANGELOG.md |
 
 ## 📁 Repository layout
 
@@ -289,7 +330,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 
 ## 🧪 Validation
 
-GitHub Actions runs these on every pull request. It validates the manifest and all 56 canonical skills, checks that every template copy and the website data match their sources, checks that every skill description says when to use it and keeps its neighbour skills linked, runs the unit tests, checks for private machine and account references, lints and syntax-checks every shell script, smoke-tests every installer in a temporary home directory, and runs the Skills Explorer's logic and browser tests. Run the same checks locally before opening a pull request:
+GitHub Actions runs these on every pull request. It validates the manifest and all 81 canonical skills, checks that every template copy and the website data match their sources, checks that every skill description says when to use it and keeps its neighbour skills linked, runs the unit tests, checks for private machine and account references, lints and syntax-checks every shell script, smoke-tests every installer in a temporary home directory, and runs the Skills Explorer's logic and browser tests. Run the same checks locally before opening a pull request:
 
 ```bash
 python3 -m pip install PyYAML

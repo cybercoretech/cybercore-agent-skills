@@ -4,6 +4,17 @@ All notable changes to the CyberCore Agent Skills catalog. The format follows [K
 
 ## [Unreleased]
 
+### Added
+
+- 25 skills (81 in total). Default: `strict-scope-reviewer`, `root-cause-debugging` and `skill-router` (21 default skills).
+- Web pack: `css-grid-motion-system`, `cyberpunk-neon-palette`, `design-token-theme-switcher`, `foss-font-bundler`.
+- Ops pack: `cloudflare-dns-iac`, `forge-mirror-sync`, `linux-systemd-daemon-packager`, `network-firewall-rule-validator`, `cross-platform-ci-matrix-builder`, `offline-first-privacy-auditor`.
+- Rust pack: `cargo-supply-chain-msrv-auditor`, `rust-idiomatic-error-async-guardrails`, `ratatui-layout-state-architect`, `zero-allocation-perf-profiler`, `compiler-lexer-test-harness`.
+- Omarchy pack: `hyprland-wayland-theme-integrator`.
+- New `terminal` pack: `posix-cli-ux-designer`, `terminal-keybinding-vim-nav`, `ansi-nerd-font-glyph-stylist`, `doc-manpage-builder`.
+- New `workflow` pack: `adr-writer`, `conventional-commit-changelog`.
+- 24 neighbour pairs in `scripts/skill-neighbours.yaml`, each linked by a "Not for … (use x)" line.
+
 ### Changed
 
 - `web-design-and-frontend-craft` (version 4): a new "Commit to a direction" subsection steers away from the generic default look (habitual sans-serif, purple gradient on white, timid palettes, flat backgrounds). Adds typography pairing and weight-contrast guidance, font starting points by product character, a single orchestrated page-load reveal in motion, two matching anti-patterns, and a credit to Anthropic's "Prompting for frontend aesthetics" cookbook. The token example no longer uses Inter, and the Cybercore font stack now names JetBrains Mono.
