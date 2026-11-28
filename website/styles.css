@@ -132,6 +132,8 @@ code, pre { font-family: var(--cc-font-mono); }
 .menu { display: flex; gap: 2px; margin-left: 6px; }
 .menu a { color: var(--cc-fg-muted); font-size: 12px; padding: 6px 10px; border-bottom: 2px solid transparent; }
 .menu a:hover { color: var(--cc-fg); text-decoration: none; }
+/* external sign-up link: accent colour so it reads as an invitation, not a section */
+.menu a.menu-ext, .drawer a.menu-ext { color: var(--cc-neon-cyan); }
 .menu a[aria-current="true"] { color: var(--cc-fg); border-bottom-color: var(--cc-neon-cyan); }
 .search {
   margin-left: auto; display: flex; align-items: center; gap: 8px;
