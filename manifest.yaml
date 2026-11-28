@@ -14,7 +14,7 @@ rules: [safety, workflow, concise-output, rust, gleam]
 groups:
   core:
     title: Default
-    description: Installed for every agent. Ways of working, quality, security, git, CI, docs and writing.
+    description: Installed for every agent. Ways of working, quality, security, git, CI, docs and writing, plus scope discipline, root-cause debugging and skill routing.
     default: true
   ai:
     title: AI pack
@@ -43,24 +43,34 @@ groups:
     pack: office
   omarchy:
     title: Omarchy pack
-    description: Omarchy desktop operations, Lua config, plugins and themes, and Rust tooling for Omarchy.
+    description: Omarchy desktop operations, Lua config, plugins and themes, Hyprland and Wayland theming, and Rust tooling for Omarchy.
     default: false
     pack: omarchy
   ops:
     title: Ops pack
-    description: Containers, Linux administration, observability and incident response.
+    description: Containers, Linux administration, observability and incident response, plus Cloudflare DNS and Workers as code, forge mirroring, daemon packaging, firewall rules, CI build matrices and privacy audits.
     default: false
     pack: ops
   rust:
     title: Rust pack
-    description: Rust libraries and applications, from architecture and async to testing, UI and releases.
+    description: Rust libraries and applications, from architecture and async to testing, UI and releases, plus supply-chain checks, error and async guardrails, TUI architecture, allocation profiling and parser testing.
     default: false
     pack: rust
+  terminal:
+    title: Terminal pack
+    description: Command-line UX, terminal keybindings, glyph styling, and man pages and README references generated from CLI flags.
+    default: false
+    pack: terminal
   web:
     title: Web pack
-    description: Building and auditing web interfaces, accessibility, browser checks and localization.
+    description: Building and auditing web interfaces, accessibility, browser checks and localization, plus CSS layout and motion, neon palettes, design tokens and self-hosted fonts.
     default: false
     pack: web
+  workflow:
+    title: Workflow pack
+    description: Architectural decision records, atomic Conventional Commits and Keep a Changelog releases.
+    default: false
+    pack: workflow
 # category and icon are display metadata for the website and README.
 # `group` decides where a skill installs: core (default) or one of the packs above.
 skills:
@@ -120,6 +130,32 @@ skills:
   omarchy-lua-config:            {group: omarchy, category: omarchy, icon: "🎚️"}
   omarchy-plugin-theme:          {group: omarchy, category: omarchy, icon: "🧩"}
   rust-omarchy-tooling:          {group: omarchy, category: omarchy, icon: "🔧"}
+  # 2026-11-28 batch: discipline (default), web, ops, rust, omarchy, terminal and workflow
+  strict-scope-reviewer:         {group: core, category: quality, icon: "✂️"}
+  root-cause-debugging:          {group: core, category: quality, icon: "🐞"}
+  skill-router:                  {group: core, category: workflow, icon: "🪧"}
+  css-grid-motion-system:        {group: web, category: web, icon: "🎞️"}
+  cyberpunk-neon-palette:        {group: web, category: web, icon: "🌈"}
+  design-token-theme-switcher:   {group: web, category: web, icon: "🎭"}
+  foss-font-bundler:             {group: web, category: web, icon: "🔤"}
+  cloudflare-dns-iac:            {group: ops, category: devops, icon: "🌤️"}
+  forge-mirror-sync:             {group: ops, category: devops, icon: "🪞"}
+  linux-systemd-daemon-packager: {group: ops, category: system, icon: "🧰"}
+  network-firewall-rule-validator: {group: ops, category: security, icon: "🧱"}
+  cross-platform-ci-matrix-builder: {group: ops, category: devops, icon: "🧮"}
+  offline-first-privacy-auditor: {group: ops, category: security, icon: "🛡️"}
+  cargo-supply-chain-msrv-auditor: {group: rust, category: rust, icon: "📋"}
+  rust-idiomatic-error-async-guardrails: {group: rust, category: rust, icon: "🚧"}
+  ratatui-layout-state-architect: {group: rust, category: rust, icon: "📺"}
+  zero-allocation-perf-profiler: {group: rust, category: rust, icon: "🏎️"}
+  compiler-lexer-test-harness:   {group: rust, category: rust, icon: "🧬"}
+  hyprland-wayland-theme-integrator: {group: omarchy, category: omarchy, icon: "🌊"}
+  posix-cli-ux-designer:         {group: terminal, category: system, icon: "⌨️"}
+  terminal-keybinding-vim-nav:   {group: terminal, category: system, icon: "🎹"}
+  ansi-nerd-font-glyph-stylist:  {group: terminal, category: system, icon: "🔣"}
+  doc-manpage-builder:           {group: terminal, category: workflow, icon: "📖"}
+  adr-writer:                    {group: workflow, category: workflow, icon: "🗳️"}
+  conventional-commit-changelog: {group: workflow, category: workflow, icon: "🏷️"}
 
 # Per-agent install layout (paths are relative to the target project).
 #   skills_dir: null       -> rules-only template (no skills, no packs)

@@ -1,0 +1,36 @@
+# Bundled routing rules for route.py. Personal rules go in ~/.config/skill-router/routing.toml
+# (same format); they are applied on top of these. Unknown skill names are ignored.
+#
+# [overlays]        guard skills layered on top of any workflow (never chosen as primary);
+#                   value = prompt words that activate the guard
+# process           name fragments that mark workflow skills (they win near-ties over domain skills)
+# project_prefixes  names that mark project/owner-specific skills (they win near-ties over generic)
+# project_dirs      skill folders whose skills count as project/owner-specific
+# [prefer]          "loser" = "winner": when both match, the winner becomes primary
+# [intents]         skill = words or phrases that signal it strongly (adds weight beyond word overlap)
+
+process = ["debug", "investigat", "plan", "brainstorm", "review", "audit", "diagnos", "verif", "root-cause"]
+project_prefixes = ["cybercore-", "omarchy-"]
+project_dirs = []
+
+[overlays]
+strict-scope-reviewer = ["implement", "fix", "refactor", "feature", "code", "patch", "bug"]
+git-guardrails = ["push", "force", "reset", "rebase", "delete branch"]
+
+[prefer]
+systematic-debugging = "root-cause-debugging"
+diagnosing-bugs = "root-cause-debugging"
+documentation-and-adrs = "adr-writer"
+
+[intents]
+root-cause-debugging = ["bug", "failing", "fails", "crash", "crashes", "regression", "flaky", "broken", "stopped working", "find out why", "why does", "why is", "reproduce"]
+strict-scope-reviewer = ["keep it minimal", "only change", "scope creep", "over-engineer", "over-engineering", "yagni", "bloat"]
+conventional-commit-changelog = ["commit", "commits", "changelog", "release notes", "conventional commits", "semver"]
+adr-writer = ["adr", "decision record", "why we chose", "document this decision"]
+foss-font-bundler = ["font", "fonts", "woff2", "@font-face", "fontsource", "google fonts"]
+cyberpunk-neon-palette = ["neon", "cyberpunk", "palette", "wcag contrast", "glow"]
+css-grid-motion-system = ["css grid", "flexbox", "micro-interaction", "micro-interactions", "app shell", "animation", "transitions"]
+design-token-theme-switcher = ["design tokens", "theme switcher", "theme toggle", "dark mode", "hardcoded colors", "css variables"]
+doc-manpage-builder = ["man page", "manpage", "readme", "config reference", "usage section"]
+forge-mirror-sync = ["mirror", "gitlab", "backup repo", "branch protection", "sync releases"]
+cloudflare-dns-iac = ["cloudflare", "dns record", "dns records", "zero trust", "wrangler", "terraform"]
