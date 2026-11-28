@@ -4,6 +4,8 @@ All notable changes to the CyberCore Agent Skills catalog. The format follows [K
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-27
+
 ### Added
 
 - 25 skills (81 in total). Default: `strict-scope-reviewer`, `root-cause-debugging` and `skill-router` (21 default skills).
@@ -14,10 +16,18 @@ All notable changes to the CyberCore Agent Skills catalog. The format follows [K
 - New `terminal` pack: `posix-cli-ux-designer`, `terminal-keybinding-vim-nav`, `ansi-nerd-font-glyph-stylist`, `doc-manpage-builder`.
 - New `workflow` pack: `adr-writer`, `conventional-commit-changelog`.
 - 24 neighbour pairs in `scripts/skill-neighbours.yaml`, each linked by a "Not for … (use x)" line.
+- Contributor Covenant code of conduct (`CODE_OF_CONDUCT.md`).
 
 ### Changed
 
 - `web-design-and-frontend-craft` (version 4): a new "Commit to a direction" subsection steers away from the generic default look (habitual sans-serif, purple gradient on white, timid palettes, flat backgrounds). Adds typography pairing and weight-contrast guidance, font starting points by product character, a single orchestrated page-load reveal in motion, two matching anti-patterns, and a credit to Anthropic's "Prompting for frontend aesthetics" cookbook. The token example no longer uses Inter, and the Cybercore font stack now names JetBrains Mono.
+- README: layout, validation and contributing sections brought up to date.
+
+### Fixed
+
+- `network-firewall-rule-validator`: the cron rollback no longer runs `crontab -r` (which deleted the whole crontab); it removes only its own `/etc/cron.d` drop-in.
+- `linux-systemd-daemon-packager`: uninstall purge paths use `${APP:?}`, so an empty `APP` aborts instead of deleting `/var/lib/` or whole XDG folders.
+- Site tests retry a failed browser start once and allow 60 seconds in CI.
 
 ## [1.0.0] - 2026-11-20
 
