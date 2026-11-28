@@ -330,7 +330,7 @@ Skills, rules, and installers inside `<agent>/agent-project-setup/` are generate
 
 ## 🧪 Validation
 
-GitHub Actions runs these on every pull request. It validates the manifest and all 56 canonical skills, checks that every template copy and the website data match their sources, checks that every skill description says when to use it and keeps its neighbour skills linked, runs the unit tests, checks for private machine and account references, lints and syntax-checks every shell script, smoke-tests every installer in a temporary home directory, and runs the Skills Explorer's logic and browser tests. Run the same checks locally before opening a pull request:
+GitHub Actions runs these on every pull request. It validates the manifest and all 81 canonical skills, checks that every template copy and the website data match their sources, checks that every skill description says when to use it and keeps its neighbour skills linked, runs the unit tests, checks for private machine and account references, lints and syntax-checks every shell script, smoke-tests every installer in a temporary home directory, and runs the Skills Explorer's logic and browser tests. Run the same checks locally before opening a pull request:
 
 ```bash
 python3 -m pip install PyYAML

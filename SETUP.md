@@ -1,6 +1,6 @@
 # Setup Guide
 
-This distribution contains 13 agent templates. Twelve install 18 default skills, with 38 more in 9 optional domain packs (`--with`); Ollama installs rules only. Each template is in `<agent>/agent-project-setup/`.
+This distribution contains 13 agent templates. Twelve install 21 default skills, with 60 more in 11 optional domain packs (`--with`); Ollama installs rules only. Each template is in `<agent>/agent-project-setup/`.
 
 ## Install
 
